@@ -1,0 +1,25 @@
+header {
+    text-align: center;
+    height: 200px;
+    background: url("../images/world.jpg") no-repeat bottom/cover;
+}
+nav {
+    height: 100px;
+    background-color: #D3FBFD;
+}
+footer{
+    height: 100px;
+    background-color: #999;
+}
+.container{
+    display: flex;
+    height: 600px;
+}
+.container .dleft{
+    flex: 1;
+    background-color: #ccc;
+}
+.container .dright {
+    flex: 3;
+    background-color: #eee
+}
