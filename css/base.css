@@ -1,4 +1,14 @@
-body,img{
+body,ul,li,a,h1,h2,h3,h4,h5,h6,p,dl,dt,dd{
     padding: 0;
     margin: 0;
+    list-style: none;
+    text-decoration: none;
+}
+.clearfix::before,.clearfix::after{
+    content: "";
+    display: block;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    clear: both;
 }
