@@ -1,23 +1,23 @@
 body{
     background-color: #EDEDED;
     position: relative;
-    min-width: 400px;
     top: 0;
     left: 0;
 }
 .topbar{
-    height: 28px;
-    background: url("../images/topbar.gif") no-repeat;
+    height: 1.5rem;
+    background: url("../images/topbar.gif") no-repeat center;
 }
 .box{
-    margin: 36px auto 0;
-    width: 80%;
+    margin: 0.5rem auto 0;
+    width: 95%;
 }
 .box h2{
-    margin-bottom: 42px;
+    margin-bottom: 1rem;
+    font-size: 18px;
 }
 nav ul{
-    background: url("../images/navbg.gif") no-repeat left/80%;
+    background: url("../images/navbg.gif") no-repeat left/90%;
 }
 nav ul li{
     float: left;
@@ -28,7 +28,7 @@ nav ul li a:link,nav ul li a:visited,nav ul li a:hover,nav ul li a:active{
     font: 16px/80px "Microsoft Himalaya";
 }
 .container{
-    margin: 10px 0 50px;
+    padding: 0.2rem 0.2rem 2rem;
     box-sizing: border-box;
 }
 .container .bar{
@@ -82,29 +82,29 @@ nav ul li a:link,nav ul li a:visited,nav ul li a:hover,nav ul li a:active{
 .container .body{
     box-sizing: border-box;
     display: flex;
-    height: 600px;
-    padding: 20px 20px 26px;
+    height: 35rem;
+    padding: 0.2rem 0.2rem 0.3rem;
     background-color: #E5E5E5;
 }
 .bg_l{
     position: absolute;
-    bottom: 0;
+    bottom: 3rem;
     left: 0;
-    height: 35%;
-    width: 40%;
-    background: url("../images/bg_l.gif") no-repeat left/60%;
+    height: 20rem;
+    width: 50%;
+    background: url("../images/bg_l.gif") no-repeat left;
     z-index: -1;
 }
 .bg_r{
     position: absolute;
-    bottom: 0;
+    bottom: 3rem;
     right: 0;
-    height: 40%;
-    width: 45%;
-    background: url("../images/bg_r.gif") no-repeat right/60%;
+    height: 20rem;
+    width: 50%;
+    background: url("../images/bg_r.gif") no-repeat right;
     z-index: -1;
 }
 .footer{
-    height: 115px;
+    height: 3rem;
     background-color: #000000;
 }

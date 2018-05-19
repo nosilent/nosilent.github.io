@@ -6,29 +6,49 @@
     flex-direction: column;
 }
 .container .body .left{
-    margin-right: 10px;
+    margin-right: 0.3rem;
 }
 .container .body .left div,
 .container .body .right div{
     position: relative;
     background-color: #EBEBEB;
     flex: 1;
-    margin-top: 10px;
+    margin-top: 0.3rem;
 }
 .container .body h3{
-    padding: 5px;
+    padding: 0.2rem;
     color: #666;
     font-weight: 400;
     border-bottom: 1px solid #ccc;
+    font-size: 16px;
 }
 .container .body a{
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0.3rem;
+    right: 0.3rem;
 }
 .container .body a:link,
 .container .body a:visited,
 .container .body a:hover,
 .container .body a:active{
     color: #666;
+}
+@media screen and (max-width: 750px){
+    .container .body{
+        flex-direction: column;
+    }
+    .container .body .left,
+    .container .body .right{
+        flex: 1;
+        display: flex;
+    }
+    .container .body .left{
+        margin-right: 0;
+    }
+    .container .body .left div,
+    .container .body .right div{
+        position: relative;
+        background-color: #EBEBEB;
+        flex: 1;
+    }
 }
