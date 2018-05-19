@@ -10,14 +10,19 @@ body{
 }
 .box{
     margin: 0.5rem auto 0;
-    width: 95%;
+    width: 75%;
+}
+@media (max-width: 750px){
+    .box{
+        width: 95%;
+    }
 }
 .box h2{
     margin-bottom: 1rem;
     font-size: 18px;
 }
 nav ul{
-    background: url("../images/navbg.gif") no-repeat left/85%;
+    background: url("../images/navbg.gif") no-repeat left/80%;
 }
 nav ul li{
     float: left;
