@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-18 18:24:45
+ * @LastEditTime: 2019-09-18 18:40:47
  * @LastEditors: Please set LastEditors
  */
 let navData = 'html,css,js,typescript,jquery,bootstrap,vue,react,flutter,dart'.split(',');
@@ -12,7 +12,7 @@ let active;
 navData.forEach(item=>{
     let a = document.createElement('a');
     a.classList.add('nav-link')
-    a.setAttribute('href','#')
+    a.setAttribute('href',`#api/${item}`)
     a.textContent = item;
     frame.appendChild(a)
 })
