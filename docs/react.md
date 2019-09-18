@@ -1,6 +1,6 @@
 #  `react` 、`react-dom`
 
-```jsx
+```javascript
 import React from 'react'
 import ReactDOM from 'react-dom'
 //React创建jsx内容，ReactDom渲染数据
@@ -31,7 +31,7 @@ ReactDOM.render(<App/>,node)
 
 ​		**主要用于创建`css`只作用于当前组件的组件**
 
-```jsx
+```js
 //style.js
 import styled from 'styled-components'
 
@@ -52,7 +52,7 @@ import { Div } from 'style.js'
 
 ​		**创建公共管理数据的仓库**
 
-```jsx
+```javascript
 import { createStore，combineReducers } from 'redux'
 // redux用于创建公共管理数据的仓库
 
@@ -167,7 +167,7 @@ export default connect(mapState，mapDispatch)(App)
 
 ​		**用于创建路由**
 
-```jsx
+```js
 import { Route, BrowserRouter } from 'react-router-dom'
 //在App组件中，创建路由
 function App(){
