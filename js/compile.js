@@ -7,7 +7,7 @@
  */
 let root = document.querySelector('.body')
 $.get('/docs/react.md',function(res){
-    console.log(res.data)
-    console.log(marked(res.data))
+    console.log(0，res.data)
+    console.log(1，marked(res.data))
     root.innerHTML = marked(res.data)
 })
