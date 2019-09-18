@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-18 18:13:42
+ * @LastEditTime: 2019-09-18 18:18:36
  * @LastEditors: Please set LastEditors
  */
 let navData = 'html,css,js,typescript,jquery,bootstrap,vue,react,flutter,dart'.split(',');
@@ -24,8 +24,14 @@ function clickhandler(e){
     let url = e.target.textContent
     console.log(e.target.textContent);
     $.get(`/api/${url}-title.md`,res=>{
+        if(!res)return;
         let title = document.querySelector('.list-group')
         title.innerHTML = marked(res)
+    })
+    $.get(`/api/${url}.md`,res=>{
+        if(!res)return;
+        let content = document.querySelector('.content');
+        content.innerHTML = marked(res)
     })
 }
 active = frame.firstChild;
