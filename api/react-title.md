@@ -6,7 +6,7 @@
  * @LastEditors: your name
  -->
 
-[react](#api/react)
+[react](#tt)
 
 [jquery](#api/jquery)
 

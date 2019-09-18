@@ -117,7 +117,7 @@ export default connect(mapState，mapDispatch)(App)
 
 
 
-#  `redux-thunk` 
+#  [redux-thunk](#tt) 
 
 ​		**使dispatch可以发送一个函数,发送异步action**
 
