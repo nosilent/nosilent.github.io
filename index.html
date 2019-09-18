@@ -2,31 +2,52 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 09:36:58
- * @LastEditTime: 2019-09-18 11:54:01
+ * @LastEditTime: 2019-09-18 18:02:32
  * @LastEditors: Please set LastEditors
  -->
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="viewport" content="initial-scale=1">
-    <meta charset="UTF-8">
-    <title>nosilent</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-</head>
-<body>
-<div class="topbar"></div>
-<div class="box">
-    <h2>个人博客</h2>
-    <nav>
-        <ul class="clearfix">
-            <li><a href="index.html">首页</a></li>
-            <li><a href="journal.html">日志</a></li>
-        </ul>
-    </nav>
-    <div class="container"></div>
-</div>
 
-<script src="./js/axios.js"></script>
-<script src="./js/jquery-3.4.1.js"></script>
-<script src="./js/compile.js"></script>
+<head>
+  <meta name="viewport" content="initial-scale=1">
+  <meta charset="UTF-8">
+  <title>nosilent</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="bg-info">
+    <div class="container ">
+      <div class="navbar navbar-light navbar-expand-lg">
+        <a class="navbar-brand" href="#">
+          个人博客
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+          <div class="navbar-nav"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="list-group">
+        <a href='#' class="list-group-item-action list-group-item active">ddd</a>
+        <a href='#' class="list-group-item-action list-group-item ">ddd</a>
+        <a href='#' class="list-group-item-action list-group-item">ddd</a>
+        <a href='#' class="list-group-item-action list-group-item">ddd</a>
+        <a href='#' class="list-group-item-action list-group-item">ddd</a>
+      </ul>
+      <div class="content"></div>
+    </div>
+  </div>
+  <script src="js/marked.min.js"></script>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="config.js"></script>
+  <script src="compile.js"></script>
 </body>
+
 </html>
