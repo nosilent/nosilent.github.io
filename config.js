@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-18 18:18:36
+ * @LastEditTime: 2019-09-18 18:24:45
  * @LastEditors: Please set LastEditors
  */
 let navData = 'html,css,js,typescript,jquery,bootstrap,vue,react,flutter,dart'.split(',');
@@ -31,6 +31,7 @@ function clickhandler(e){
     $.get(`/api/${url}.md`,res=>{
         if(!res)return;
         let content = document.querySelector('.content');
+        console.log(content)
         content.innerHTML = marked(res)
     })
 }
