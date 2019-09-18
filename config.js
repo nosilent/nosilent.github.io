@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-18 18:08:18
+ * @LastEditTime: 2019-09-18 18:13:42
  * @LastEditors: Please set LastEditors
  */
 let navData = 'html,css,js,typescript,jquery,bootstrap,vue,react,flutter,dart'.split(',');
@@ -25,7 +25,7 @@ function clickhandler(e){
     console.log(e.target.textContent);
     $.get(`/api/${url}-title.md`,res=>{
         let title = document.querySelector('.list-group')
-        title.appendChild(marked(res))
+        title.innerHTML = marked(res)
     })
 }
 active = frame.firstChild;
