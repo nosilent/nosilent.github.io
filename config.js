@@ -2,9 +2,10 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-18 18:40:47
+ * @LastEditTime: 2019-09-19 14:49:24
  * @LastEditors: Please set LastEditors
  */
+var converter = new showdown.Converter()
 let navData = 'html,css,js,typescript,jquery,bootstrap,vue,react,flutter,dart'.split(',');
 let frame = document.createDocumentFragment();
 let nav = document.querySelector('div.navbar-nav');
@@ -26,13 +27,13 @@ function clickhandler(e){
     $.get(`/api/${url}-title.md`,res=>{
         if(!res)return;
         let title = document.querySelector('.list-group')
-        title.innerHTML = marked(res)
+        title.innerHTML = converter.makeHtml(res)
     })
     $.get(`/api/${url}.md`,res=>{
         if(!res)return;
         let content = document.querySelector('.content');
         console.log(content)
-        content.innerHTML = marked(res)
+        content.innerHTML = converter.makeHtml(res)
     })
 }
 active = frame.firstChild;
