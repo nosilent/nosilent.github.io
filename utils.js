@@ -2,11 +2,11 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-19 17:42:11
+ * @LastEditTime: 2019-09-19 21:54:18
  * @LastEditors: Please set LastEditors
  */
 var utils = {
-    Ajax(url,callback){
+    Ajax:function(url,callback){
         let xhr = new XMLHttpRequest();
         xhr.open('get',url);
         xhr.send();
@@ -17,12 +17,12 @@ var utils = {
         };
         return this;   
     },
-    addProp(target,tag,prop,fn){
+    addProp:function(target,tag,prop,fn){
         let regExp = new RegExp(tag,'g')
         data = target.replace(regExp,`${tag} ${prop}`)
         fn(data)
     },
-    removeTag(target,tag,fn){
+    removeTag:function(target,tag,fn){
         let regExp1 = new RegExp(`(<${tag}>)|(<\/${tag}>)`,'g');
         let data = target.replace(regExp1,'');
         fn(data)
