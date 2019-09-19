@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-19 17:38:05
+ * @LastEditTime: 2019-09-19 17:59:45
  * @LastEditors: Please set LastEditors
  */
 var converter = new showdown.Converter()
@@ -26,21 +26,24 @@ function clickhandler(e){
     active.classList.add('active');
     let url = e.target.textContent
     console.log(e.target.textContent);
+    render(url)
+}
+active = frame.firstChild;
+active.classList.add('active');
+nav.append(frame)
+
+function render(url){
     //渲染对应点击导航内容的目录
     utils.Ajax(`/api/${url}-title.md`,res=>{
         if(!res)return;
         let title = document.querySelector('.list-group')
         let data = converter.makeHtml(res)
-        console.log('1',data)
         let className = 'list-group-item-action list-group-item'
         utils.addProp(data,'<a',`class=\"${className}\"`,res=>{
-            console.log('修改后',res)
             utils.removeTag(res,'p',data=>{
-                console.log('ddd',data)
                 title.innerHTML = data;
             })
         })
-        
     })
     //渲染对应内容
     utils.Ajax(`/api/${url}.md`,res=>{
@@ -49,6 +52,3 @@ function clickhandler(e){
         content.innerHTML = converter.makeHtml(res)
     })
 }
-active = frame.firstChild;
-active.classList.add('active');
-nav.append(frame)
