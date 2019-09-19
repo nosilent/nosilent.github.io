@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-19 21:20:48
+ * @LastEditTime: 2019-09-19 21:38:33
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -39,14 +39,14 @@
     active.classList.remove('active');
     active = e.target;
     active.classList.add('active');
-    let url = e.target.textContent
-    console.log(e.target.textContent);
+    let url = e.target.href.slice(1)
+    console.log(url);
     render(url)
   }
 
   function render(url) {
     //渲染对应点击导航内容的目录
-    utils.Ajax(`/api/${url}-${config.title_end_tag}.md`, res => {
+    utils.Ajax(`${url}-${config.title_end_tag}.md`, res => {
       if (!res) return;
       let title = document.querySelector('.list-group');
       let data = converter.makeHtml(res);
@@ -58,7 +58,7 @@
       })
     })
     //渲染对应内容
-    utils.Ajax(`/api/${url}.md`, res => {
+    utils.Ajax(`${url}.md`, res => {
       if (!res) return;
       let content = document.querySelector('.content');
       content.innerHTML = converter.makeHtml(res);
