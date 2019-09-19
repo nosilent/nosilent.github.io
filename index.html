@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 09:36:58
- * @LastEditTime: 2019-09-19 14:48:31
+ * @LastEditTime: 2019-09-19 16:06:50
  * @LastEditors: Please set LastEditors
  -->
 <!DOCTYPE html>
@@ -13,11 +13,12 @@
   <meta charset="UTF-8">
   <title>nosilent</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
-  <div class="bg-info">
-    <div class="container ">
+  <div class="bg-info sticky-top">
+    <div class="container">
       <div class="navbar navbar-light navbar-expand-lg">
         <a class="navbar-brand" href="#">
           个人博客
@@ -31,23 +32,25 @@
       </div>
     </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <div class="list-group col-3">
+  <div class='custom-container'>
+    <div class='custom-row'>
+      <div class="list-group col-md-2 d-none d-md-block fixed">
         <a href='#' class="list-group-item-action list-group-item active">ddd</a>
         <a href='#' class="list-group-item-action list-group-item ">ddd</a>
         <a href='#' class="list-group-item-action list-group-item">ddd</a>
         <a href='#' class="list-group-item-action list-group-item">ddd</a>
         <a href='#' class="list-group-item-action list-group-item">ddd</a>
       </div>
-      <div class="content col-9"></div>
+      <div class="content col col-md-10 offset-md-2">
+        <p>1</p>
+
+      </div>
     </div>
   </div>
   <script src="js/showdown.min.js"></script>
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="config.js"></script>
-  <script src="compile.js"></script>
 </body>
 
 </html>
