@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-19 21:41:41
+ * @LastEditTime: 2019-09-19 21:42:53
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -39,7 +39,7 @@
     active.classList.remove('active');
     active = e.target;
     active.classList.add('active');
-    let url = active.getAttribute(href).slice(1);
+    let url = active.getAttribute('href').slice(1);
     console.log(url);
     render(url)
   }
