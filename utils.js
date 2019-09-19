@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-19 17:34:55
+ * @LastEditTime: 2019-09-19 17:42:11
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -23,7 +23,7 @@ var utils = {
         fn(data)
     },
     removeTag(target,tag,fn){
-        let regExp1 = new RegExp(`(<${tag}.+>)|(<\/${tag}>)`,'g');
+        let regExp1 = new RegExp(`(<${tag}>)|(<\/${tag}>)`,'g');
         let data = target.replace(regExp1,'');
         fn(data)
     }
