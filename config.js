@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-19 16:27:10
+ * @LastEditTime: 2019-09-19 16:44:04
  * @LastEditors: Please set LastEditors
  */
 var converter = new showdown.Converter()
@@ -35,10 +35,15 @@ function clickhandler(e){
         title.innerHTML = data
     })
     //渲染对应内容
-    $.get(`/api/${url}.md`,res=>{
+    // $.get(`/api/${url}.md`,res=>{
+    //     if(!res)return;
+    //     let content = document.querySelector('.content');
+    //     content.innerHTML = converter.makeHtml(res)
+    // })
+    utils.Ajax(`/api/${url}.md`,res=>{
+        console.log(res)
         if(!res)return;
         let content = document.querySelector('.content');
-        console.log(content)
         content.innerHTML = converter.makeHtml(res)
     })
 }
