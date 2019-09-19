@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-18 09:45:25
+ * @LastEditTime: 2019-09-18 09:45:25
+ * @LastEditors: your name
+ -->
 #  `react` 、`react-dom`
 
 ```javascript
@@ -117,7 +124,7 @@ export default connect(mapState，mapDispatch)(App)
 
 
 
-#  [redux-thunk](#tt) 
+#  redux-thunk 
 
 ​		**使dispatch可以发送一个函数,发送异步action**
 
