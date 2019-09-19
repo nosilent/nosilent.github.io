@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-19 18:29:56
+ * @LastEditTime: 2019-09-19 18:33:38
  * @LastEditors: Please set LastEditors
  */
 var converter = new showdown.Converter()
@@ -15,6 +15,7 @@ init()
 function init() {
     //导航栏内容初始化
     utils.Ajax('config.json', res => {
+        console.log('config',res)
         res.navData.forEach(item => {
             let a = document.createElement('a');
             a.classList.add('nav-link')
