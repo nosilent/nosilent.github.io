@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-19 18:33:38
+ * @LastEditTime: 2019-09-19 18:36:53
  * @LastEditors: Please set LastEditors
  */
 var converter = new showdown.Converter()
@@ -15,7 +15,7 @@ init()
 function init() {
     //导航栏内容初始化
     utils.Ajax('config.json', res => {
-        console.log('config',res)
+        console.log('config', res)
         res.navData.forEach(item => {
             let a = document.createElement('a');
             a.classList.add('nav-link')
@@ -23,6 +23,9 @@ function init() {
             a.textContent = item;
             frame.appendChild(a)
         })
+        active = frame.firstChild;
+        active.classList.add('active');
+        nav.append(frame)
     })
     //导航栏点击事件
     nav.addEventListener('click', clickhandler)
@@ -36,9 +39,7 @@ function clickhandler(e) {
     console.log(e.target.textContent);
     render(url)
 }
-active = frame.firstChild;
-active.classList.add('active');
-nav.append(frame)
+
 
 function render(url) {
     //渲染对应点击导航内容的目录
