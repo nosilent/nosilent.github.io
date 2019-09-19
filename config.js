@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-19 17:20:45
+ * @LastEditTime: 2019-09-19 17:38:05
  * @LastEditors: Please set LastEditors
  */
 var converter = new showdown.Converter()
@@ -35,7 +35,10 @@ function clickhandler(e){
         let className = 'list-group-item-action list-group-item'
         utils.addProp(data,'<a',`class=\"${className}\"`,res=>{
             console.log('修改后',res)
-            title.innerHTML = res
+            utils.removeTag(res,'p',data=>{
+                console.log('ddd',data)
+                title.innerHTML = data;
+            })
         })
         
     })

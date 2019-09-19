@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-19 17:25:02
+ * @LastEditTime: 2019-09-19 17:34:55
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -20,6 +20,11 @@ var utils = {
     addProp(target,tag,prop,fn){
         let regExp = new RegExp(tag,'g')
         data = target.replace(regExp,`${tag} ${prop}`)
+        fn(data)
+    },
+    removeTag(target,tag,fn){
+        let regExp1 = new RegExp(`(<${tag}.+>)|(<\/${tag}>)`,'g');
+        let data = target.replace(regExp1,'');
         fn(data)
     }
 }
