@@ -54,3 +54,19 @@
       position: fixed;
       top:3.5rem;
   }
+  .to_top {
+    position: fixed;
+    bottom: 5rem;
+    right: 4rem;
+    text-align: center;
+  }
+  .to_top img {
+    height: 32px;
+    width: 32px;
+  }
+  @media (max-width:576px){
+    .to_top {
+      right: 1rem;
+      bottom: 3rem;
+    }
+  }
