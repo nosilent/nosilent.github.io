@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 15:17:12
+ * @LastEditTime: 2019-09-20 15:22:31
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -63,15 +63,14 @@
     utils.Ajax(`${url}-${config.title_end_tag}.md`, res => {
       if (!res) return;
       let title = document.querySelector('.list-group');
-      let data = marked(res,{render:marked_render()});
+      let data = marked(res);
       let className = 'list-group-item-action list-group-item';
       console.log('data',data)
-      title.innerHTML = data
-      // utils.addProp(data, '<a', `class=\"${className}\"`, res => {
-      //   utils.removeTag(res, 'p', data => {
-      //     title.innerHTML = data;
-      //   })
-      // })
+      utils.addProp(data, '<a', `class=\"${className}\"`, res => {
+        utils.removeTag(res, 'p', data => {
+          title.innerHTML = data;
+        })
+      })
     })
     //渲染对应内容
     utils.Ajax(`${url}.md`, res => {
