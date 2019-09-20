@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:53:03
+ * @LastEditTime: 2019-09-20 16:56:36
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -57,6 +57,7 @@
   function hightlight_init(ele) {
     hljs.initHighlightingOnLoad();
       ele.querySelectorAll('pre code').forEach((block) => {
+        console.log(12)
         hljs.highlightBlock(block);
       });
   }
