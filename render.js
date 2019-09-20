@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 19:45:44
+ * @LastEditTime: 2019-09-20 19:54:27
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -35,22 +35,24 @@
   }
 
   function content_init() {
-    utils.Ajax('config.json').then(res => {
-      config = JSON.parse(res);
-      config.navData.forEach(item => {
-        let a = document.createElement('a');
-        a.classList.add('nav-link');
-        a.setAttribute('href', `#api/${item}`);
-        a.textContent = item;
-        frame.appendChild(a);
+    utils.Ajax('config.json')
+      .then(res => {
+        config = JSON.parse(res);
+        config.navData.forEach(item => {
+          let a = document.createElement('a');
+          a.classList.add('nav-link');
+          a.setAttribute('href', `#api/${item}`);
+          a.textContent = item;
+          frame.appendChild(a);
+        })
+        active = frame.firstChild;
+        active.classList.add('active');
+        //导航栏内容初始化
+        nav.append(frame);
       })
-      active = frame.firstChild;
-      active.classList.add('active');
-      //导航栏内容初始化
-      nav.append(frame);
-    })
+
     //导航栏点击事件
-    nav.addEventListener('click', clickhandler)
+    nav.addEventListener('click', clickhandler);
   }
 
   //文本中代码高亮
