@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:31:45
+ * @LastEditTime: 2019-09-20 16:36:07
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -77,7 +77,6 @@
       let title = document.querySelector('.list-group');
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
-      console.log('data', data)
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
         utils.removeTag(res, 'p', data => {
           title.innerHTML = data;
@@ -93,7 +92,7 @@
         render: marked_render()
       })
       console.log(string)
-      fragment.innerHTML = string
+      fragment.appendChild(string)
       console.log('qian',fragment)
       hightlight_init(fragment)
       console.dir('后',fragment)
