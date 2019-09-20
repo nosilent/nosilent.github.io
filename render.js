@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:50:05
+ * @LastEditTime: 2019-09-20 16:53:03
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -87,14 +87,10 @@
     utils.Ajax(`${url}.md`, res => {
       if (!res) return;
       let content = document.querySelector('.content');
-      let string = marked(res, {
+      content.innerHTML = marked(res, {
         render: marked_render()
       })
-      let parse = new DOMParser()
-      let doc = parse.parseFromString(string,'text/html')
-      hightlight_init(doc)
-      console.log('后',doc)
-      content.innerHTML = doc
+      hightlight_init(content)
     })
   }
   //去顶部按钮处理
