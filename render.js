@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 18:41:46
+ * @LastEditTime: 2019-09-20 19:09:25
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -46,11 +46,11 @@
       })
       active = frame.firstChild;
       active.classList.add('active');
-
       //导航栏内容初始化
       nav.append(frame);
-
+    }).then(res => {
       //内容初始化
+      console.log(res)
       render(config.index);
     })
     //导航栏点击事件
@@ -74,7 +74,7 @@
   }
 
   function render(url) {
-    //渲染对应点击导航内容的目录
+    //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`, res => {
       if (!res) return;
       let title = document.querySelector('.list-group');
