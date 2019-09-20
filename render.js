@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 18:27:19
+ * @LastEditTime: 2019-09-20 18:31:08
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -30,14 +30,14 @@
   init()
 
   function init() {
-    await nav_init();
+    nav_init();
     render(config.index);
     toTop();
   }
 
   //导航栏内容初始化
   async function nav_init() {
-    utils.Ajax('config.json', res => {
+    await utils.Ajax('config.json', res => {
       config = JSON.parse(res);
       config.navData.forEach(item => {
         let a = document.createElement('a');
@@ -53,13 +53,13 @@
     //导航栏点击事件
     nav.addEventListener('click', clickhandler)
   }
-  
+
   //文本中代码高亮
   function hightlight_init(ele) {
     hljs.initHighlightingOnLoad();
-      ele.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightBlock(block);
-      });
+    ele.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightBlock(block);
+    });
   }
 
   function clickhandler(e) {
