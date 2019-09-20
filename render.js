@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 18:24:09
+ * @LastEditTime: 2019-09-20 18:27:19
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -30,13 +30,13 @@
   init()
 
   function init() {
-    nav_init()
-    render(config.index)
-    toTop()
+    await nav_init();
+    render(config.index);
+    toTop();
   }
 
   //导航栏内容初始化
-  function nav_init() {
+  async function nav_init() {
     utils.Ajax('config.json', res => {
       config = JSON.parse(res);
       config.navData.forEach(item => {
@@ -58,7 +58,6 @@
   function hightlight_init(ele) {
     hljs.initHighlightingOnLoad();
       ele.querySelectorAll('pre code').forEach((block) => {
-        console.log(12)
         hljs.highlightBlock(block);
       });
   }
