@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:06:21
+ * @LastEditTime: 2019-09-20 16:14:56
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -28,8 +28,8 @@
     return renderer;
   }
   init()
+
   function init() {
-    hightlight_init()
     nav_init()
     toTop()
   }
@@ -52,14 +52,13 @@
     //导航栏点击事件
     nav.addEventListener('click', clickhandler)
   }
-
-  function hightlight_init() {
+  
+  //文本中代码高亮
+  function hightlight_init(ele) {
     hljs.initHighlightingOnLoad();
-    document.addEventListener('DOMContentLoaded', (event) => {
-      document.querySelectorAll('pre code').forEach((block) => {
+      ele.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightBlock(block);
       });
-    });
   }
 
   function clickhandler(e) {
@@ -89,9 +88,16 @@
     utils.Ajax(`${url}.md`, res => {
       if (!res) return;
       let content = document.querySelector('.content');
-      content.innerHTML = marked(res, {
+      let temp = document.createDocumentFragment()
+      let string = marked(res, {
         render: marked_render()
-      });
+      })
+      console.log(sting)
+      temp.append(string)
+      console.log('qian',temp)
+      hightlight_init(temp)
+      console.log('后',temp)
+      content.append(temp)
     })
   }
   //去顶部按钮处理
