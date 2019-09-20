@@ -1,5 +1,6 @@
 {
     "navData":["html","css","js","typescript","jquery","vue","react","flutter"],
     "title_end_tag": "title",
-    "index": "api/react"
+    "index": "docs/react",
+    "docs":"docs"
 }

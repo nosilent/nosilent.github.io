@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 20:58:17
+ * @LastEditTime: 2019-09-20 21:35:40
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -41,7 +41,7 @@
         config.navData.forEach(item => {
           let a = document.createElement('a');
           a.classList.add('nav-link');
-          a.setAttribute('href', `#api/${item}`);
+          a.setAttribute('href', `#${config.docs}/${item}`);
           a.textContent = item;
           frame.appendChild(a);
         })
@@ -49,7 +49,7 @@
         active.classList.add('active');
         //导航栏内容初始化
         nav.append(frame);
-      }).then(res=>{
+      }).then(res => {
         //初始内容渲染
         render(config.index)
       })
@@ -130,5 +130,4 @@
       })
     }
   }
-
 })()
