@@ -74,3 +74,80 @@
   img {
     max-width: 80% !important;
   }
+  
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #a6e22e;
+	text-shadow: 0 1px rgba(0,0,0,0.3);
+	font-family: Consolas, Monaco, 'Andale Mono', monospace;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border-radius: 0.3em;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #272822;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+}
+
+/* 标题序号处理 */
+.content h2 {
+  counter-increment: counter2;
+  counter-reset: counter3;
+}
+.content h2::before {
+  content: counter(counter2) " ";
+}
+.content h3 {
+  counter-increment: counter3;
+  counter-reset: counter4;
+}
+.content h3::before {
+  content: counter(counter2) "." counter(counter3) " ";
+}
+.content h4 {
+  counter-increment: counter4;
+  counter-reset: counter5;
+}
+.content h4::before {
+  content: counter(counter2) "." counter(counter3) "." counter(counter4) " ";
+}
+.content h5 {
+  counter-increment: counter5;
+  counter-reset: counter6;
+}
+.content h5::before {
+ content: counter(counter2) "." counter(counter3) "." counter(counter4) "." counter(counter5) " ";
+}
+.content h6 {
+  counter-increment: counter6;
+}
+.content h6::before {
+  content: counter(counter2) "." counter(counter3) "." counter(counter4) "." counter(counter5) "." counter(counter6) " ";
+}
+/* 列表序号处理 */
