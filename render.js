@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 20:01:59
+ * @LastEditTime: 2019-09-20 20:06:01
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -74,7 +74,7 @@
 
   function render(url) {
     //渲染对应目录
-    utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
+    utils.Ajax(`${url}-title.md`).then(res => {
       if (!res) return;
       let title = document.querySelector('.list-group');
       let data = marked(res);
