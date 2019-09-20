@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 19:54:27
+ * @LastEditTime: 2019-09-20 19:58:14
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -49,6 +49,8 @@
         active.classList.add('active');
         //导航栏内容初始化
         nav.append(frame);
+      }).then(res=>{
+        render(config.index)
       })
 
     //导航栏点击事件
