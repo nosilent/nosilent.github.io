@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:47:04
+ * @LastEditTime: 2019-09-20 16:50:05
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -87,16 +87,14 @@
     utils.Ajax(`${url}.md`, res => {
       if (!res) return;
       let content = document.querySelector('.content');
-      let fragment  = document.createDocumentFragment()
       let string = marked(res, {
         render: marked_render()
       })
       let parse = new DOMParser()
       let doc = parse.parseFromString(string,'text/html')
-      fragment.appendChild(doc)
-      hightlight_init(fragment)
-      console.log('后',fragment)
-      content.appendChild(fragment)
+      hightlight_init(doc)
+      console.log('后',doc)
+      content.innerHTML = doc
     })
   }
   //去顶部按钮处理
