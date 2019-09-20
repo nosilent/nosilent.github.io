@@ -2,17 +2,31 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 14:13:40
+ * @LastEditTime: 2019-09-20 15:11:06
  * @LastEditors: Please set LastEditors
  */
 ;
 (function () {
-  var converter = new showdown.Converter()
   let frame = document.createDocumentFragment();
   let nav = document.querySelector('div.navbar-nav');
   let btn_to_top = document.querySelector('.to_top')
   let active;
   let config;
+  
+  let marked_render = function() {
+    const renderer = new marked.Renderer();
+    renderer.heading = function (text, level) {
+      const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+      return `
+          <h${level}>
+            <a name="${escapedText}" class="anchor" href="#${escapedText}">
+              <span class="header-link"></span>
+            </a>
+            ${text}
+          </h${level}>`;
+    };
+    return renderer;
+  }
   init()
 
   function init() {
@@ -49,7 +63,7 @@
     utils.Ajax(`${url}-${config.title_end_tag}.md`, res => {
       if (!res) return;
       let title = document.querySelector('.list-group');
-      let data = converter.makeHtml(res);
+      let data = marked(res,{render:marked_render()});
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
         utils.removeTag(res, 'p', data => {
@@ -61,32 +75,34 @@
     utils.Ajax(`${url}.md`, res => {
       if (!res) return;
       let content = document.querySelector('.content');
-      content.innerHTML = converter.makeHtml(res);
+      content.innerHTML = marked(res,{render:marked_render()});
     })
   }
   //去顶部按钮处理
   function toTop() {
     let clientHeight = document.documentElement.clientHeight
     let scroll = document.documentElement.scrollTop
-    if(scroll>clientHeight/2){
+    if (scroll > clientHeight / 2) {
       btn_to_top.hidden = false
-    }else{
+    } else {
       btn_to_top.hidden = true
     }
-    window.addEventListener('scroll',scrollHandler)
-    function scrollHandler(){
+    window.addEventListener('scroll', scrollHandler)
+
+    function scrollHandler() {
       console.log('1')
-      if(document.documentElement.scrollTop>clientHeight){
+      if (document.documentElement.scrollTop > clientHeight) {
         btn_to_top.hidden = false;
       }
-      if(document.documentElement.scrollTop<clientHeight/2){
+      if (document.documentElement.scrollTop < clientHeight / 2) {
         btn_to_top.hidden = true;
       }
     }
-    btn_to_top.addEventListener('click',toTop_handler)
-    function toTop_handler(){
+    btn_to_top.addEventListener('click', toTop_handler)
+
+    function toTop_handler() {
       window.scrollTo({
-        top:0,
+        top: 0,
         behavior: 'smooth'
       })
     }
