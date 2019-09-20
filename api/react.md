@@ -2,10 +2,10 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 09:45:25
- * @LastEditTime: 2019-09-18 09:45:25
- * @LastEditors: your name
+ * @LastEditTime: 2019-09-20 17:22:50
+ * @LastEditors: Please set LastEditors
  -->
-#  `react` 、`react-dom`
+##  `react` 、`react-dom`
 
 ```javascript
 import React from 'react'
@@ -34,7 +34,7 @@ ReactDOM.render(<App/>,node)
 
 
 
-#  `styled-components` 
+##  `styled-components` 
 
 ​		**主要用于创建`css`只作用于当前组件的组件**
 
@@ -55,7 +55,7 @@ import { Div } from 'style.js'
 
 
 
-# `redux` 、`react-redux`
+## `redux` 、`react-redux`
 
 ​		**创建公共管理数据的仓库**
 
@@ -124,7 +124,7 @@ export default connect(mapState，mapDispatch)(App)
 
 
 
-#  redux-thunk 
+##  redux-thunk 
 
 ​		**使dispatch可以发送一个函数,发送异步action**
 
@@ -170,7 +170,7 @@ export default connect(mapState，mapDispatch)(App)
 
 
 
-#  `react-router-dom` 
+##  `react-router-dom` 
 
 ​		**用于创建路由**
 
