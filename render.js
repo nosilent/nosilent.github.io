@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 20:44:59
+ * @LastEditTime: 2019-09-20 20:49:52
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -49,10 +49,8 @@
         active.classList.add('active');
         //导航栏内容初始化
         nav.append(frame);
-        console.log(1)
       }).then(res=>{
-        console.log(4)
-        render('api/react')
+        render(config.index)
       })
 
     //导航栏点击事件
@@ -77,8 +75,7 @@
 
   function render(url) {
     //渲染对应目录
-    utils.Ajax(`${url}-title.md`).then(res => {
-      console.log(2)
+    utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
       if (!res) return;
       let title = document.querySelector('.list-group');
       let data = marked(res);
@@ -92,7 +89,6 @@
     //渲染对应内容
     utils.Ajax(`${url}.md`).then(res => {
       if (!res) return;
-      console.log(3)
       let content = document.querySelector('.content');
       content.innerHTML = marked(res, {
         render: marked_render()
