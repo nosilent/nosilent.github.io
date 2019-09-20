@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 15:22:31
+ * @LastEditTime: 2019-09-20 16:06:21
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -12,8 +12,8 @@
   let btn_to_top = document.querySelector('.to_top')
   let active;
   let config;
-  
-  let marked_render = function() {
+
+  let marked_render = function () {
     const renderer = new marked.Renderer();
     renderer.heading = function (text, level) {
       const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
@@ -28,9 +28,14 @@
     return renderer;
   }
   init()
-
   function init() {
-    //导航栏内容初始化
+    hightlight_init()
+    nav_init()
+    toTop()
+  }
+
+  //导航栏内容初始化
+  function nav_init() {
     utils.Ajax('config.json', res => {
       config = JSON.parse(res);
       config.navData.forEach(item => {
@@ -46,7 +51,15 @@
     })
     //导航栏点击事件
     nav.addEventListener('click', clickhandler)
-    toTop()
+  }
+
+  function hightlight_init() {
+    hljs.initHighlightingOnLoad();
+    document.addEventListener('DOMContentLoaded', (event) => {
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+      });
+    });
   }
 
   function clickhandler(e) {
@@ -65,7 +78,7 @@
       let title = document.querySelector('.list-group');
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
-      console.log('data',data)
+      console.log('data', data)
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
         utils.removeTag(res, 'p', data => {
           title.innerHTML = data;
@@ -76,7 +89,9 @@
     utils.Ajax(`${url}.md`, res => {
       if (!res) return;
       let content = document.querySelector('.content');
-      content.innerHTML = marked(res,{render:marked_render()});
+      content.innerHTML = marked(res, {
+        render: marked_render()
+      });
     })
   }
   //去顶部按钮处理
