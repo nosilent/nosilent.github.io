@@ -2,13 +2,12 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-20 20:37:10
+ * @LastEditTime: 2019-09-20 21:00:13
  * @LastEditors: Please set LastEditors
  */
 var utils = {
   Ajax: function (url) {
     return new Promise((resolve, reject) => {
-      console.log(5)
       let xhr = new XMLHttpRequest();
       xhr.open('get', url);
       xhr.send();
