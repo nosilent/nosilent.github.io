@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 20:37:20
+ * @LastEditTime: 2019-09-20 20:44:59
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -52,7 +52,7 @@
         console.log(1)
       }).then(res=>{
         console.log(4)
-        render('#api/react')
+        render('api/react')
       })
 
     //导航栏点击事件
