@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 21:35:40
+ * @LastEditTime: 2019-09-20 21:41:12
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -42,10 +42,12 @@
           let a = document.createElement('a');
           a.classList.add('nav-link');
           a.setAttribute('href', `#${config.docs}/${item}`);
+          if(a.getAttribute('href').slice(1)==config.index){
+            active = a
+          }
           a.textContent = item;
           frame.appendChild(a);
         })
-        active = frame.firstChild;
         active.classList.add('active');
         //导航栏内容初始化
         nav.append(frame);
