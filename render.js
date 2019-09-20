@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 20:49:52
+ * @LastEditTime: 2019-09-20 20:58:17
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -50,6 +50,7 @@
         //导航栏内容初始化
         nav.append(frame);
       }).then(res=>{
+        //初始内容渲染
         render(config.index)
       })
 
@@ -73,6 +74,11 @@
     render(url)
   }
 
+  /**
+   * @description: 渲染相应的导航内容
+   * @param {type} 
+   * @return: 
+   */
   function render(url) {
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
