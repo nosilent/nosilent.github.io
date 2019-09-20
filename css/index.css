@@ -110,7 +110,7 @@
 .content h6::before {
   content: counter(counter2) "." counter(counter3) "." counter(counter4) "." counter(counter5) "." counter(counter6) " ";
 }
-pre code {
+pre {
   border: 1px solid #17a2b8;
-  border-radius: 5px;
+  border-radius: 0.5rem;
 }
