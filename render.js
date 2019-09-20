@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:29:24
+ * @LastEditTime: 2019-09-20 16:31:45
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -97,7 +97,7 @@
       console.log('qian',fragment)
       hightlight_init(fragment)
       console.dir('后',fragment)
-      content.appendChild (fragment)
+      content.appendChild(fragment)
     })
   }
   //去顶部按钮处理
