@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 18:31:08
+ * @LastEditTime: 2019-09-20 18:41:46
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -30,14 +30,12 @@
   init()
 
   function init() {
-    nav_init();
-    render(config.index);
+    content_init();
     toTop();
   }
 
-  //导航栏内容初始化
-  async function nav_init() {
-    await utils.Ajax('config.json', res => {
+  function content_init() {
+    utils.Ajax('config.json', res => {
       config = JSON.parse(res);
       config.navData.forEach(item => {
         let a = document.createElement('a');
@@ -48,7 +46,12 @@
       })
       active = frame.firstChild;
       active.classList.add('active');
+
+      //导航栏内容初始化
       nav.append(frame);
+
+      //内容初始化
+      render(config.index);
     })
     //导航栏点击事件
     nav.addEventListener('click', clickhandler)
@@ -67,7 +70,6 @@
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
-    console.log(url);
     render(url)
   }
 
