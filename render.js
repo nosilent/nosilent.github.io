@@ -2,14 +2,14 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:56:36
+ * @LastEditTime: 2019-09-20 18:24:09
  * @LastEditors: Please set LastEditors
  */
 ;
 (function () {
   let frame = document.createDocumentFragment();
   let nav = document.querySelector('div.navbar-nav');
-  let btn_to_top = document.querySelector('.to_top')
+  let btn_to_top = document.querySelector('.to_top');
   let active;
   let config;
 
@@ -31,6 +31,7 @@
 
   function init() {
     nav_init()
+    render(config.index)
     toTop()
   }
 
