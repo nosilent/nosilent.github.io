@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-19 21:42:53
+ * @LastEditTime: 2019-09-20 14:13:40
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -75,6 +75,7 @@
     }
     window.addEventListener('scroll',scrollHandler)
     function scrollHandler(){
+      console.log('1')
       if(document.documentElement.scrollTop>clientHeight){
         btn_to_top.hidden = false;
       }
@@ -84,7 +85,10 @@
     }
     btn_to_top.addEventListener('click',toTop_handler)
     function toTop_handler(){
-      window.scrollTo(0,0)
+      window.scrollTo({
+        top:0,
+        behavior: 'smooth'
+      })
     }
   }
 

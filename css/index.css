@@ -67,6 +67,6 @@
   @media (max-width:576px){
     .to_top {
       right: 1rem;
-      bottom: 3rem;
+      top: 9rem;
     }
   }
