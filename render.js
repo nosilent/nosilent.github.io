@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:37:38
+ * @LastEditTime: 2019-09-20 16:47:04
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -91,9 +91,9 @@
       let string = marked(res, {
         render: marked_render()
       })
-      console.log(string)
-      fragment.append(string)
-      console.log('qian',fragment)
+      let parse = new DOMParser()
+      let doc = parse.parseFromString(string,'text/html')
+      fragment.appendChild(doc)
       hightlight_init(fragment)
       console.log('后',fragment)
       content.appendChild(fragment)
