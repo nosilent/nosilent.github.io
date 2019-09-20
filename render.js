@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 20:10:13
+ * @LastEditTime: 2019-09-20 20:13:28
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -27,14 +27,11 @@
     };
     return renderer;
   }
-  document.onload = function(){
-    init()
-  }
+  init()
 
   function init() {
     content_init();
     toTop();
-    render('react')
   }
 
   function content_init() {
@@ -52,6 +49,8 @@
         active.classList.add('active');
         //导航栏内容初始化
         nav.append(frame);
+      }).then(res=>{
+        render('react')
       })
 
     //导航栏点击事件
