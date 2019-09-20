@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 20:13:28
+ * @LastEditTime: 2019-09-20 20:16:02
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -50,7 +50,7 @@
         //导航栏内容初始化
         nav.append(frame);
       }).then(res=>{
-        render('react')
+        render('#api/react')
       })
 
     //导航栏点击事件
