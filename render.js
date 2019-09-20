@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:14:56
+ * @LastEditTime: 2019-09-20 16:16:37
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -92,7 +92,7 @@
       let string = marked(res, {
         render: marked_render()
       })
-      console.log(sting)
+      console.log(string)
       temp.append(string)
       console.log('qian',temp)
       hightlight_init(temp)
