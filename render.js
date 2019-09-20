@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 16:16:37
+ * @LastEditTime: 2019-09-20 16:24:32
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -88,15 +88,15 @@
     utils.Ajax(`${url}.md`, res => {
       if (!res) return;
       let content = document.querySelector('.content');
-      let temp = document.createDocumentFragment()
+      let fragment  = document.createDocumentFragment()
       let string = marked(res, {
         render: marked_render()
       })
       console.log(string)
-      temp.append(string)
-      console.log('qian',temp)
+      fragment.innerHTML = string
+      console.log('qian',fragment)
       hightlight_init(temp)
-      console.log('后',temp)
+      console.log('后',fragment)
       content.append(temp)
     })
   }
@@ -112,7 +112,6 @@
     window.addEventListener('scroll', scrollHandler)
 
     function scrollHandler() {
-      console.log('1')
       if (document.documentElement.scrollTop > clientHeight) {
         btn_to_top.hidden = false;
       }
