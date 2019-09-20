@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 19:37:07
+ * @LastEditTime: 2019-09-20 19:45:44
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -35,7 +35,7 @@
   }
 
   function content_init() {
-    utils.Ajax('config.json', res => {
+    utils.Ajax('config.json').then(res => {
       config = JSON.parse(res);
       config.navData.forEach(item => {
         let a = document.createElement('a');
@@ -71,7 +71,7 @@
 
   function render(url) {
     //渲染对应目录
-    utils.Ajax(`${url}-${config.title_end_tag}.md`, res => {
+    utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
       if (!res) return;
       let title = document.querySelector('.list-group');
       let data = marked(res);
@@ -83,7 +83,7 @@
       })
     })
     //渲染对应内容
-    utils.Ajax(`${url}.md`, res => {
+    utils.Ajax(`${url}.md`).then(res => {
       if (!res) return;
       let content = document.querySelector('.content');
       content.innerHTML = marked(res, {

@@ -2,19 +2,21 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-20 19:37:32
+ * @LastEditTime: 2019-09-20 19:49:19
  * @LastEditors: Please set LastEditors
  */
 var utils = {
-  Ajax: function (url, callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('get', url);
-    xhr.send();
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        callback(xhr.responseText)
-      }
-    };
+  Ajax: function (url) {
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open('get', url);
+      xhr.send();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          resolve(xhr.responseText)
+        } 
+      };
+    })
   },
   addProp: function (target, tag, prop, fn) {
     let regExp = new RegExp(tag, 'g')
