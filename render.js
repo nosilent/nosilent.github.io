@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-20 20:06:01
+ * @LastEditTime: 2019-09-20 20:10:13
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -27,7 +27,9 @@
     };
     return renderer;
   }
-  init()
+  document.onload = function(){
+    init()
+  }
 
   function init() {
     content_init();
