@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-20 19:07:03
+ * @LastEditTime: 2019-09-20 19:15:16
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -14,8 +14,6 @@ var utils = {
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
           resole(callback(xhr.responseText))
-        } else {
-          reject('err')
         }
       };
     })
