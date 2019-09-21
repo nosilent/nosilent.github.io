@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 11:18:01
+ * @LastEditTime: 2019-09-21 11:32:20
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -35,7 +35,7 @@
     content_init();
     toTop();
   }
-
+//初次内容渲染
   function content_init() {
     utils.Ajax('config.json')
       .then(res => {
@@ -75,9 +75,10 @@
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
-    let nav = document.querySelector('#nav')
-    if(nav.classlist.contains('show')){
-      nav.classlist.remove('show')
+    let nav = document.querySelector('#nav');
+    if(nav.classList.contains('show')){
+      console.log('dcasd')
+      nav.classList.remove('show')
     }
     render(url)
   }
