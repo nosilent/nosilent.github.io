@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 21:07:00
+ * @LastEditTime: 2019-09-21 21:09:10
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -67,10 +67,10 @@
       //暂停/播放
       function play() {
         if (audio.paused === true) {
-          btn_play.style.backgroundImage = url('images/play.svg');
+          btn_play.style.backgroundImage = 'url("images/play.svg")';
           audio.play()
         } else {
-          btn_play.style.backgroundImage = url('images/stop.svg');
+          btn_play.style.backgroundImage = 'url("images/stop.svg")';
           audio.pause()
         }
       }
@@ -90,7 +90,7 @@
           index = 0;
         }
         audio.src = `music/${config.music_list[index]}`;
-        btn_play.style.backgroundImage = url('images/play.svg');
+        btn_play.style.backgroundImage = 'url("images/play.svg")';
         audio.play();
       }
     }
