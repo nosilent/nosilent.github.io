@@ -2,5 +2,6 @@
     "navData":["html","css","js","typescript","jquery","vue","react","flutter"],
     "title_end_tag": "title",
     "index": "docs/react",
-    "docs":"docs"
+    "docs":"docs",
+    "music_list":[]
 }
