@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 10:42:35
+ * @LastEditTime: 2019-09-21 10:53:53
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -87,10 +87,7 @@
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
       if (!res) return;
-      console.log('res', res)
       let data = marked(res);
-      console.log('data', data)
-      Time(data)
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
         utils.removeTag(res, 'p', data => {
@@ -101,18 +98,23 @@
     //渲染对应内容
     utils.Ajax(`${url}.md`).then(res => {
       if (!res) return;
-      content.innerHTML = marked(res, {
+      let data = marked(res, {
         render: marked_render()
       })
-      hightlight_init(content)
+      let time = LastEditTime(data);
+      content.innerHTML = data;
+      content.insertBefore(time,content.firstChild);
+      console.log(time)
+      hightlight_init(content);
     }).then(res => {
       toTop_handler()
     })
   }
   //文档修改时间信息
-  function Time(data){
-    let regExp = /\@LastEditTime\:\s*(\S+)/
-    console.log('time',data.match(regExp))
+  function LastEditTime(data){
+    let regExp = /\@LastEditTime\:\s*(\S+)/;
+    let time = data.match(regExp)[1];
+    return `<p style="position:absolute;top:3rem">更新时间: ${time}</p>`
   }
   //去顶部按钮处理
   function toTop() {
