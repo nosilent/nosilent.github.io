@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 18:27:36
+ * @LastEditTime: 2019-09-21 18:30:45
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -72,19 +72,21 @@
       }
       //上一曲
       function pre() {
-        index++;
-        if (index >= config.music_list.length) {
-          index = 0;
-        }
-        audio.src = `music/${config.music_list[index]}`
-      }
-      //下一曲
-      function next() {
         index--;
         if (index < 0) {
           index = config.music_list.length;
         }
-        audio.src = `music/${config.music_list[index]}`
+        audio.src = `music/${config.music_list[index]}`;
+        audio.play();
+      }
+      //下一曲
+      function next() {
+        index++;
+        if (index > config.music_list.length) {
+          index = 0;
+        }
+        audio.src = `music/${config.music_list[index]}`;
+        audio.play();
       }
     }
     music.addEventListener('click', music_handler)
