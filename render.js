@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 10:35:45
+ * @LastEditTime: 2019-09-21 10:42:35
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -111,7 +111,7 @@
   }
   //文档修改时间信息
   function Time(data){
-    let regExp = /^<!--.*\@LastEditTime\:\s(\S+)\s.*-->/
+    let regExp = /\@LastEditTime\:\s*(\S+)/
     console.log('time',data.match(regExp))
   }
   //去顶部按钮处理
