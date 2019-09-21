@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 10:53:53
+ * @LastEditTime: 2019-09-21 10:59:44
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -114,7 +114,8 @@
   function LastEditTime(data){
     let regExp = /\@LastEditTime\:\s*(\S+)/;
     let time = data.match(regExp)[1];
-    return `<p style="position:absolute;top:3rem">更新时间: ${time}</p>`
+    let editTime = document.querySelector('.edit_time')
+    editTime.innerHTML = `更新时间: ${time}`
   }
   //去顶部按钮处理
   function toTop() {
