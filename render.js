@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 18:22:48
+ * @LastEditTime: 2019-09-21 18:24:14
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -36,17 +36,19 @@
   function init() {
     content_init();
     toTop();
+    music();
   }
 
   function random(num) {
-    return Math.floor(Math.random() * num)
+    return Math.floor(Math.random() * num);
   }
 
   function music() {
     let audio = document.querySelector('.music audio')
     let music = document.querySelector('.music');
-    let index = random(music_list.length)
+    let index = random(config.music_list.length)
     audio.src = `music/${config.music_list[index]}`
+
     function music_handler(e) {
       switch (e.target.innerHTML) {
         case 'play':
@@ -63,16 +65,16 @@
       }
       //暂停/播放
       function play() {
-          if (audio.paused === true) {
-            audio.play()
-          } else {
-            audio.pause()
-          }
+        if (audio.paused === true) {
+          audio.play()
+        } else {
+          audio.pause()
+        }
       }
       //上一曲
       function pre() {
         index++;
-        if(index>=config.music_list.length){
+        if (index >= config.music_list.length) {
           index = 0;
         }
         audio.src = `music/${config.music_list[index]}`
@@ -80,7 +82,7 @@
       //下一曲
       function next() {
         index--;
-        if(index<0){
+        if (index < 0) {
           index = config.music_list.length;
         }
         audio.src = `music/${config.music_list[index]}`
@@ -109,10 +111,7 @@
       }).then(res => {
         //初始内容渲染
         render(config.index)
-      }).then(res=>{
-        music()
       })
-
     //导航栏点击事件
     nav.addEventListener('click', clickhandler);
   }
