@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 11:32:20
+ * @LastEditTime: 2019-09-21 11:38:24
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -12,6 +12,7 @@
   let btn_to_top = document.querySelector('.to_top');
   let content = document.querySelector('.content');
   let title = document.querySelector('.list-group');
+  let nav = document.querySelector('#nav');
   let active;
   let config;
 
@@ -75,9 +76,7 @@
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
-    let nav = document.querySelector('#nav');
     if(nav.classList.contains('show')){
-      console.log('dcasd')
       nav.classList.remove('show')
     }
     render(url)
@@ -111,8 +110,6 @@
       //内容
       content.innerHTML = data;
       hightlight_init(content);
-    }).then(res => {
-      toTop_handler()
     })
   }
   //文档修改时间信息

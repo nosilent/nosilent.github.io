@@ -1,128 +1,172 @@
 .coutom-container {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .coutom-container {
+    max-width: 540px;
   }
-  
-  @media (min-width: 576px) {
-    .coutom-container {
-      max-width: 540px;
-    }
+}
+
+@media (min-width: 768px) {
+  .coutom-container {
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
-  
-  @media (min-width: 768px) {
-    .coutom-container {
-      max-width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-    }
+}
+
+@media (min-width: 992px) {
+  .coutom-container {
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
-  
-  @media (min-width: 992px) {
-    .coutom-container {
-        max-width: 100%;
-        margin-right: 0;
-        margin-left: 0;
-    }
+}
+
+@media (min-width: 1200px) {
+  .coutom-container {
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
-  
-  @media (min-width: 1200px) {
-    .coutom-container {
-        max-width: 100%;
-        margin-right: 0;
-        margin-left: 0;
-    }
-  }
-  
-  .coutom-container-fluid {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .custom-row {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-  }
-  .fixed {
-      position: fixed;
-      top:3.5rem;
-  }
+}
+
+.coutom-container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.custom-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.fixed {
+  position: fixed;
+  top: 3.5rem;
+}
+
+.to_top {
+  position: fixed;
+  opacity: 0.6;
+  bottom: 6rem;
+  right: 4rem;
+  text-align: center;
+}
+
+@media (max-width:576px) {
   .to_top {
-    position: fixed;
-    opacity: 0.6;
+    right: 1rem;
     bottom: 6rem;
-    right: 4rem;
-    text-align: center;
   }
-  @media (max-width:576px){
-    .to_top {
-      right: 1rem;
-      bottom: 6rem;
-    }
-  }
-  .to_top img {
-    height: 32px;
-    width: 32px;
-  }
-  img {
-    max-width: 90% !important;
-  }
-  
+}
+
+.to_top img {
+  height: 32px;
+  width: 32px;
+}
+
+img {
+  max-width: 90% !important;
+}
+
 /* 标题序号处理 */
 .content h2 {
   counter-increment: counter2;
   counter-reset: counter3;
 }
+
 .content h2::before {
   content: counter(counter2) " ";
   color: inherit;
 }
+
 .content h3 {
   counter-increment: counter3;
   counter-reset: counter4;
 }
+
 .content h3::before {
-  content: counter(counter2) "." counter(counter3) " ";
+  content: counter(counter2) "."counter(counter3) " ";
   color: inherit;
 }
+
 .content h4 {
   counter-increment: counter4;
   counter-reset: counter5;
 }
+
 .content h4::before {
-  content: counter(counter2) "." counter(counter3) "." counter(counter4) " ";
+  content: counter(counter2) "."counter(counter3) "."counter(counter4) " ";
   color: inherit;
 }
+
 .content h5 {
   counter-increment: counter5;
   counter-reset: counter6;
 }
+
 .content h5::before {
- content: counter(counter2) "." counter(counter3) "." counter(counter4) "." counter(counter5) " ";
- color: inherit;
+  content: counter(counter2) "."counter(counter3) "."counter(counter4) "."counter(counter5) " ";
+  color: inherit;
 }
+
 .content h6 {
   counter-increment: counter6;
 }
+
 .content h6::before {
-  content: counter(counter2) "." counter(counter3) "." counter(counter4) "." counter(counter5) "." counter(counter6) " ";
+  content: counter(counter2) "."counter(counter3) "."counter(counter4) "."counter(counter5) "."counter(counter6) " ";
   color: inherit;
 }
+
 pre {
   border: 1px solid #17a2b8;
   border-radius: 0.25rem;
   padding: 0.5rem;
-  background: rgba(0,0,0,0.1)
+  background: rgba(0, 0, 0, 0.1)
 }
+
 .edit_time {
   position: absolute;
-  top: 0.5rem;
-  text-indent: 2rem;
+  top: 0.25rem;
+}
+
+.music {
+  width: 4rem;
+  height: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.music span{
+  cursor: pointer;
+  height: 1rem;
+  width: 1rem;
+}
+.music span:first-of-type {
+  background: url("../images/pre.svg") no-repeat center;
+}
+.music span:nth-of-type(2){
+  background: url("../images/play.svg") no-repeat center;
+}
+.music span:last-of-type {
+  background: url("../images/pre.svg") no-repeat center;
+  transform: scaleX(-1)
 }
