@@ -166,7 +166,7 @@ pre {
   background-size: cover;
 }
 .music span:nth-of-type(2){
-  background: url("../images/play.svg") no-repeat center;
+  background: url("../images/stop.svg") no-repeat center;
   background-size: cover;
 }
 .music span:last-of-type {

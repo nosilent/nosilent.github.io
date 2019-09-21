@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 18:30:45
+ * @LastEditTime: 2019-09-21 21:01:01
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -13,7 +13,6 @@
   let content = document.querySelector('.content');
   let title = document.querySelector('.list-group');
   let nav_container = document.querySelector('#nav');
-  let list = ["天空之城.mp3", "梦中的婚礼.mp3", "高山流水.mp3", "约定.mp3"];
   let active;
   let config;
 
@@ -43,10 +42,13 @@
   }
 
   function music() {
-    let audio = document.querySelector('.music audio')
     let music = document.querySelector('.music');
+    let audio = music.querySelector('audio');
+    let btn_play = music.querySelectorAll('span')[1];
     let index = random(config.music_list.length)
     audio.src = `music/${config.music_list[index]}`
+
+    music.addEventListener('click', music_handler)
 
     function music_handler(e) {
       switch (e.target.innerHTML) {
@@ -65,8 +67,10 @@
       //暂停/播放
       function play() {
         if (audio.paused === true) {
+          btn_play.style.backgroundImage = 'images/play.svg'
           audio.play()
         } else {
+          btn_play.style.backgroundImage = 'images/stop.svg'
           audio.pause()
         }
       }
@@ -86,10 +90,10 @@
           index = 0;
         }
         audio.src = `music/${config.music_list[index]}`;
+        btn_play.style.backgroundImage = 'images/play.svg'
         audio.play();
       }
     }
-    music.addEventListener('click', music_handler)
   }
   //初次内容渲染
   function content_init() {
