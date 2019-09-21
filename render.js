@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 21:09:10
+ * @LastEditTime: 2019-09-21 21:11:57
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -78,7 +78,7 @@
       function pre() {
         index--;
         if (index < 0) {
-          index = config.music_list.length;
+          index = config.music_list.length - 1;
         }
         audio.src = `music/${config.music_list[index]}`;
         audio.play();
