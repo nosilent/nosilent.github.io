@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 18:19:37
+ * @LastEditTime: 2019-09-21 18:22:48
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -36,7 +36,6 @@
   function init() {
     content_init();
     toTop();
-    music();
   }
 
   function random(num) {
@@ -110,6 +109,8 @@
       }).then(res => {
         //初始内容渲染
         render(config.index)
+      }).then(res=>{
+        music()
       })
 
     //导航栏点击事件
