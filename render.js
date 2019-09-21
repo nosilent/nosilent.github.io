@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 10:07:24
+ * @LastEditTime: 2019-09-21 10:09:55
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -89,7 +89,7 @@
       if (!res) return;
       console.log('res', res)
       let data = marked(res);
-      console.log('res', res)
+      console.log('data', data)
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
         utils.removeTag(res, 'p', data => {
