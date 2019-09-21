@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 16:57:39
+ * @LastEditTime: 2019-09-21 16:59:55
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -35,6 +35,7 @@
   function init() {
     content_init();
     toTop();
+    music();
   }
   function music(){
     let audio = document.querySelector('.music audio')
