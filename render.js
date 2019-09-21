@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 18:11:14
+ * @LastEditTime: 2019-09-21 18:19:37
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -46,9 +46,9 @@
   function music() {
     let audio = document.querySelector('.music audio')
     let music = document.querySelector('.music');
-
+    let index = random(music_list.length)
+    audio.src = `music/${config.music_list[index]}`
     function music_handler(e) {
-      console.log(e.target.innerHTML)
       switch (e.target.innerHTML) {
         case 'play':
           play()
@@ -64,28 +64,28 @@
       }
       //暂停/播放
       function play() {
-        console.log(audio.src)
-        if (audio.src === '') {
-          audio.src = `./music/${config.music_list[random(4)]}`;
-          audio.play();
-        } else {
           if (audio.paused === true) {
             audio.play()
           } else {
-            audio.paused = false;
             audio.pause()
           }
-        }
       }
       //上一曲
       function pre() {
-
+        index++;
+        if(index>=config.music_list.length){
+          index = 0;
+        }
+        audio.src = `music/${config.music_list[index]}`
       }
       //下一曲
       function next() {
-
+        index--;
+        if(index<0){
+          index = config.music_list.length;
+        }
+        audio.src = `music/${config.music_list[index]}`
       }
-      console.dir(audio)
     }
     music.addEventListener('click', music_handler)
   }
