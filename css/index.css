@@ -123,5 +123,6 @@ pre {
 }
 .edit_time {
   position: absolute;
-  top: 0;
+  top: 0.5rem;
+  text-indent: 2rem;
 }
