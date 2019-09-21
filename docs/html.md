@@ -1,9 +1,15 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-20 15:35:47
+ * @LastEditTime: 2019-09-20 15:35:47
+ * @LastEditors: your name
+ -->
 ## html
 
 ### http和https、tcp/ip
 
 #### http和https
-
 http:超文本传输协议
 
 https:是以安全为目标的Http通道，是Http的安全版。Https的安全基础是SSL。（SSL协议可分为两层：SSL记录协议、SSL握手协议）

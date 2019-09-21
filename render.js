@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 11:09:26
+ * @LastEditTime: 2019-09-21 11:18:01
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -75,6 +75,10 @@
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
+    let nav = document.querySelector('#nav')
+    if(nav.classlist.contains('show')){
+      nav.classlist.remove('show')
+    }
     render(url)
   }
 
@@ -114,8 +118,8 @@
   function LastEditTime(data){
     let regExp = /\@LastEditTime\:\s*(\S+)/;
     let time = data.match(regExp)[1]||'--';
-    let editTime = document.querySelector('.edit_time')
-    editTime.innerHTML = `更新时间: ${time}`
+    let editTime = document.querySelector('.edit_time');
+    editTime.innerHTML = `更新时间 : ${time}`;
   }
   //去顶部按钮处理
   function toTop() {
