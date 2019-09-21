@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 10:09:55
+ * @LastEditTime: 2019-09-21 10:35:45
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -90,6 +90,7 @@
       console.log('res', res)
       let data = marked(res);
       console.log('data', data)
+      Time(data)
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
         utils.removeTag(res, 'p', data => {
@@ -107,6 +108,11 @@
     }).then(res => {
       toTop_handler()
     })
+  }
+  //文档修改时间信息
+  function Time(data){
+    let regExp = /^<!--.*\@LastEditTime\:\s(\S+)\s.*-->/
+    console.log('time',data.match(regExp))
   }
   //去顶部按钮处理
   function toTop() {
