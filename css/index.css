@@ -82,6 +82,7 @@
 }
 .content h2::before {
   content: counter(counter2) " ";
+  color: inherit;
 }
 .content h3 {
   counter-increment: counter3;
@@ -89,6 +90,7 @@
 }
 .content h3::before {
   content: counter(counter2) "." counter(counter3) " ";
+  color: inherit;
 }
 .content h4 {
   counter-increment: counter4;
@@ -96,6 +98,7 @@
 }
 .content h4::before {
   content: counter(counter2) "." counter(counter3) "." counter(counter4) " ";
+  color: inherit;
 }
 .content h5 {
   counter-increment: counter5;
@@ -103,15 +106,18 @@
 }
 .content h5::before {
  content: counter(counter2) "." counter(counter3) "." counter(counter4) "." counter(counter5) " ";
+ color: inherit;
 }
 .content h6 {
   counter-increment: counter6;
 }
 .content h6::before {
   content: counter(counter2) "." counter(counter3) "." counter(counter4) "." counter(counter5) "." counter(counter6) " ";
+  color: inherit;
 }
 pre {
   border: 1px solid #17a2b8;
   border-radius: 0.25rem;
   padding: 0.5rem;
+  background: rgba(0,0,0,0.5)
 }
