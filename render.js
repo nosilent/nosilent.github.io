@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 09:55:04
+ * @LastEditTime: 2019-09-21 10:07:24
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -10,6 +10,8 @@
   let frame = document.createDocumentFragment();
   let nav = document.querySelector('div.navbar-nav');
   let btn_to_top = document.querySelector('.to_top');
+  let content = document.querySelector('.content');
+  let title = document.querySelector('.list-group');
   let active;
   let config;
 
@@ -42,7 +44,7 @@
           let a = document.createElement('a');
           a.classList.add('nav-link');
           a.setAttribute('href', `#${config.docs}/${item}`);
-          if(a.getAttribute('href').slice(1)==config.index){
+          if (a.getAttribute('href').slice(1) == config.index) {
             active = a
           }
           a.textContent = item;
@@ -85,9 +87,9 @@
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
       if (!res) return;
-      console.log('res',res)
-      let title = document.querySelector('.list-group');
+      console.log('res', res)
       let data = marked(res);
+      console.log('res', res)
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
         utils.removeTag(res, 'p', data => {
@@ -98,11 +100,12 @@
     //渲染对应内容
     utils.Ajax(`${url}.md`).then(res => {
       if (!res) return;
-      let content = document.querySelector('.content');
       content.innerHTML = marked(res, {
         render: marked_render()
       })
       hightlight_init(content)
+    }).then(res => {
+      toTop_handler()
     })
   }
   //去顶部按钮处理
@@ -125,12 +128,12 @@
       }
     }
     btn_to_top.addEventListener('click', toTop_handler)
+  }
 
-    function toTop_handler() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      })
-    }
+  function toTop_handler() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
 })()
