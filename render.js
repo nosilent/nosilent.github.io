@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 10:59:44
+ * @LastEditTime: 2019-09-21 11:09:26
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -101,10 +101,10 @@
       let data = marked(res, {
         render: marked_render()
       })
-      let time = LastEditTime(data);
+      //插入文档更新时间
+      LastEditTime(data)
+      //内容
       content.innerHTML = data;
-      content.insertBefore(time,content.firstChild);
-      console.log(time)
       hightlight_init(content);
     }).then(res => {
       toTop_handler()
@@ -113,7 +113,7 @@
   //文档修改时间信息
   function LastEditTime(data){
     let regExp = /\@LastEditTime\:\s*(\S+)/;
-    let time = data.match(regExp)[1];
+    let time = data.match(regExp)[1]||'--';
     let editTime = document.querySelector('.edit_time')
     editTime.innerHTML = `更新时间: ${time}`
   }
