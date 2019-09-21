@@ -144,8 +144,8 @@ pre {
 }
 
 .music {
-  width: 4rem;
-  height: 1.5rem;
+  width: 5rem;
+  height: 2rem;
   border: 1px solid #ccc;
   border-radius: 0.75rem;
   top: 50%;
@@ -157,16 +157,20 @@ pre {
 }
 .music span{
   cursor: pointer;
-  height: 1rem;
-  width: 1rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  font-size: 0;
 }
 .music span:first-of-type {
   background: url("../images/pre.svg") no-repeat center;
+  background-size: cover;
 }
 .music span:nth-of-type(2){
   background: url("../images/play.svg") no-repeat center;
+  background-size: cover;
 }
 .music span:last-of-type {
   background: url("../images/pre.svg") no-repeat center;
-  transform: scaleX(-1)
+  transform: scaleX(-1);
+  background-size: cover;
 }

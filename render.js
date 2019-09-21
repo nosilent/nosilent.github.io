@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 17:13:03
+ * @LastEditTime: 2019-09-21 18:11:14
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -13,6 +13,7 @@
   let content = document.querySelector('.content');
   let title = document.querySelector('.list-group');
   let nav_container = document.querySelector('#nav');
+  let list = ["天空之城.mp3", "梦中的婚礼.mp3", "高山流水.mp3", "约定.mp3"];
   let active;
   let config;
 
@@ -37,15 +38,58 @@
     toTop();
     music();
   }
-  function music(){
+
+  function random(num) {
+    return Math.floor(Math.random() * num)
+  }
+
+  function music() {
     let audio = document.querySelector('.music audio')
-    let play = document.querySelector('.play');
-    play.onclick =function(){
-      audio.play()
+    let music = document.querySelector('.music');
+
+    function music_handler(e) {
+      console.log(e.target.innerHTML)
+      switch (e.target.innerHTML) {
+        case 'play':
+          play()
+          break;
+        case 'pre':
+          pre()
+          break;
+        case 'next':
+          next()
+          break;
+        default:
+          alert('err')
+      }
+      //暂停/播放
+      function play() {
+        console.log(audio.src)
+        if (audio.src === '') {
+          audio.src = `./music/${config.music_list[random(4)]}`;
+          audio.play();
+        } else {
+          if (audio.paused === true) {
+            audio.play()
+          } else {
+            audio.paused = false;
+            audio.pause()
+          }
+        }
+      }
+      //上一曲
+      function pre() {
+
+      }
+      //下一曲
+      function next() {
+
+      }
       console.dir(audio)
     }
+    music.addEventListener('click', music_handler)
   }
-//初次内容渲染
+  //初次内容渲染
   function content_init() {
     utils.Ajax('config.json')
       .then(res => {
@@ -85,7 +129,7 @@
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
-    if(nav_container.classList.contains('show')){
+    if (nav_container.classList.contains('show')) {
       nav_container.classList.remove('show')
     }
     render(url)
@@ -122,9 +166,9 @@
     })
   }
   //文档修改时间信息
-  function LastEditTime(data){
+  function LastEditTime(data) {
     let regExp = /\@LastEditTime\:\s*(\S+)/;
-    let time = data.match(regExp)[1]||'--';
+    let time = data.match(regExp)[1] || '--';
     let editTime = document.querySelector('.edit_time');
     editTime.innerHTML = `更新时间 : ${time}`;
   }
