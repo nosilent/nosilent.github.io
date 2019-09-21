@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 11:38:24
+ * @LastEditTime: 2019-09-21 16:57:39
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -12,7 +12,7 @@
   let btn_to_top = document.querySelector('.to_top');
   let content = document.querySelector('.content');
   let title = document.querySelector('.list-group');
-  let nav = document.querySelector('#nav');
+  let nav_container = document.querySelector('#nav');
   let active;
   let config;
 
@@ -35,6 +35,14 @@
   function init() {
     content_init();
     toTop();
+  }
+  function music(){
+    let audio = document.querySelector('.music audio')
+    let play = document.querySelector('.play');
+    play.onclick =function(){
+      audio.play()
+      console.log(1,audio)
+    }
   }
 //初次内容渲染
   function content_init() {
@@ -76,8 +84,8 @@
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
-    if(nav.classList.contains('show')){
-      nav.classList.remove('show')
+    if(nav_container.classList.contains('show')){
+      nav_container.classList.remove('show')
     }
     render(url)
   }
