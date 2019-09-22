@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-22 16:10:27
+ * @LastEditTime: 2019-09-22 21:32:12
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -13,6 +13,7 @@
   let content = document.querySelector('.content');
   let title = document.querySelector('.list-group');
   let nav_container = document.querySelector('#nav');
+  let loading = document.querySelector('.loading');
   let active;
   let config;
 
@@ -141,10 +142,11 @@
    * @return: 
    */
   function render(url) {
+    loading.style.display = 'block'
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
       if (!res) return;
-      
+
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
@@ -165,19 +167,20 @@
       content.innerHTML = data;
       let highlight_Element = content.querySelectorAll('pre code')
       //代码高亮处理
-      highlight_Element.forEach(item=>{
+      highlight_Element.forEach(item => {
         Prism.highlightElement(item);
       })
-      
+    }).then(res => {
+      loading.style.display = 'none'
     })
   }
   //文档修改时间信息
   function LastEditTime(data) {
     let regExp = /\@Date\:\s+(\S+)\s*.+\n\s*\S*\s*\@LastEditTime\:\s*(\S+)/;
     let time = data.match(regExp);
-    if(time.length<3) return;
+    if (time.length < 3) return;
     let editTime = document.querySelector('.edit_time');
-    editTime.innerHTML = `更新时间 : ${time[2]} &nbsp;&nbsp;&nbsp;创建时间 : ${time[1]}`;
+    editTime.innerHTML = `更新时间 : ${time[2]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建时间 : ${time[1]}`;
   }
   //去顶部按钮处理
   function toTop() {

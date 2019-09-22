@@ -142,6 +142,7 @@ pre {
   position: absolute;
   top: 0.25rem;
 }
+
 .music {
   width: 5rem;
   height: 2rem;
@@ -154,22 +155,108 @@ pre {
   justify-content: space-around;
   align-items: center;
 }
-.music span{
+
+.music span {
   cursor: pointer;
   height: 1.5rem;
   width: 1.5rem;
   font-size: 0;
 }
+
 .music span:first-of-type {
   background: url("../images/pre.svg") no-repeat center;
   background-size: cover;
 }
-.music span:nth-of-type(2){
+
+.music span:nth-of-type(2) {
   background: url("../images/stop.svg") no-repeat center;
   background-size: cover;
 }
+
 .music span:last-of-type {
   background: url("../images/pre.svg") no-repeat center;
   transform: scaleX(-1);
   background-size: cover;
+}
+
+.loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 2rem;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  opacity: 0.5;
+  z-index: 9999;
+  animation: animation_loading 1s  infinite;
+}
+
+.loading span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -0.5rem;
+  margin-top: -0.5rem;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0.5rem;
+  transform-origin: center;
+  background: #000;
+}
+
+.loading span:nth-child(1) {
+  transform: rotate(-40deg) translateY(-1.5rem);
+  opacity: 0.5;
+}
+
+.loading span:nth-child(2) {
+  transform: translateY(-1.5rem);
+  opacity: 0.4;
+}
+
+.loading span:nth-child(3) {
+  transform: rotate(40deg) translateY(-1.5rem);
+  opacity: 0.3;
+}
+
+.loading span:nth-child(4) {
+  transform: rotate(80deg) translateY(-1.5rem);
+  opacity: 0.2;
+}
+
+.loading span:nth-child(5) {
+  transform: rotate(120deg) translateY(-1.5rem);
+  opacity: 0.2;
+}
+.loading span:nth-child(6) {
+  transform: rotate(160deg) translateY(-1.5rem);
+  opacity: 0.1;
+}
+.loading span:nth-child(7) {
+  transform: rotate(200deg) translateY(-1.5rem);
+  opacity: 0.1;
+}
+
+
+
+@keyframes animation_loading {
+  0% {}
+
+  25% {
+    transform: translate(-50%, -50%) rotate(-90deg)
+  }
+
+  50% {
+    transform: translate(-50%, -50%) rotate(-180deg)
+  }
+
+  75% {
+    transform: translate(-50%, -50%) rotate(-270deg)
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-360deg)
+  }
 }
