@@ -142,13 +142,12 @@ pre {
   position: absolute;
   top: 0.25rem;
 }
-
 .music {
   width: 5rem;
   height: 2rem;
   border: 1px solid #ccc;
   border-radius: 0.75rem;
-  top: 50%;
+  top: 1.75rem;
   transform: translateY(-50%);
   z-index: 1000;
   display: flex;
