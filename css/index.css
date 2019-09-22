@@ -174,8 +174,3 @@ pre {
   transform: scaleX(-1);
   background-size: cover;
 }
-.skeleton {
-  height: 30rem;
-  background: linear-gradient(to top,#ccc,#ccc) no-repeat;
-  background-size: 1rem;
-}
