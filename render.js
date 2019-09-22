@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-22 16:04:52
+ * @LastEditTime: 2019-09-22 16:08:04
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -177,7 +177,7 @@
     let time = data.match(regExp);
     if(time.length<3) return;
     let editTime = document.querySelector('.edit_time');
-    editTime.innerHTML = `更新时间 : ${time[2]}   创建时间 : ${tiem[1]}`;
+    editTime.innerHTML = `更新时间 : ${time[2]}   创建时间 : ${time[1]}`;
   }
   //去顶部按钮处理
   function toTop() {
