@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 09:36:58
- * @LastEditTime: 2019-09-21 20:59:31
+ * @LastEditTime: 2019-09-22 14:43:03
  * @LastEditors: Please set LastEditors
  -->
 <!DOCTYPE html>
@@ -47,6 +47,7 @@
       <div class="col col-md-10 offset-md-2 border-left pl-md-5 pt-3">
         <p class="edit_time text-muted small"></p>
         <div class="content mt-3">
+          <div class="skeleton"></div>
         </div>
       </div>
     </div>
@@ -58,9 +59,10 @@
   <script src="js/marked.min.js"></script>
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <script src="js/hightlight.js"></script>
   <script src="utils.js"></script>
   <script src="render.js"></script>
+  <script src="js/hightlight.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
   <noscript>
     浏览器不支持脚本
   </noscript>

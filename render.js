@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-21 21:14:46
+ * @LastEditTime: 2019-09-22 14:42:11
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -123,13 +123,6 @@
     nav.addEventListener('click', clickhandler);
   }
 
-  //文本中代码高亮
-  function hightlight_init(ele) {
-    hljs.initHighlightingOnLoad();
-    ele.querySelectorAll('pre code').forEach((block) => {
-      hljs.highlightBlock(block);
-    });
-  }
 
   function clickhandler(e) {
     active.classList.remove('active');
@@ -169,7 +162,6 @@
       LastEditTime(data)
       //内容
       content.innerHTML = data;
-      hightlight_init(content);
     })
   }
   //文档修改时间信息
