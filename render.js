@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-22 15:34:46
+ * @LastEditTime: 2019-09-22 15:57:10
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -144,6 +144,7 @@
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
       if (!res) return;
+      
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
@@ -158,6 +159,7 @@
       let data = marked(res, {
         render: marked_render()
       })
+      console.dir(data)
       //插入文档更新时间
       LastEditTime(data)
       //内容
@@ -172,7 +174,7 @@
   }
   //文档修改时间信息
   function LastEditTime(data) {
-    let regExp = /\@Date\:\s*(\S+)\s*.+\n\*\s+\@LastEditTime\:\s*(\S+)/;
+    let regExp = /\@Date\:\s+(\S+)\s*.+\n\*\s+\@LastEditTime\:\s*(\S+)/;
     let time = data.match(regExp);
     console.log(time)
     if(time.length<3) return;
