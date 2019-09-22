@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-22 14:42:11
+ * @LastEditTime: 2019-09-22 15:15:17
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -162,6 +162,7 @@
       LastEditTime(data)
       //内容
       content.innerHTML = data;
+      Prism.highlightElement(content)
     })
   }
   //文档修改时间信息
