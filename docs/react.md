@@ -2,9 +2,10 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 09:45:25
- * @LastEditTime: 2019-09-23 17:55:00
+ * @LastEditTime: 2019-09-23 18:24:42
  * @LastEditors: Please set LastEditors
  -->
+## 引入方式
 ### 文件引入
 
 使用`<script>`标签将文件引入到html中,babel.js主要用于编译jsx
