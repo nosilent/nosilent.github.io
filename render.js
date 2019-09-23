@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-22 21:32:12
+ * @LastEditTime: 2019-09-23 09:01:30
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -145,12 +145,14 @@
     loading.style.display = 'block'
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
-      if (!res) return;
-
+      if (!res){
+        title.hidden = true
+      }
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
         utils.removeTag(res, 'p', data => {
+          title.hidden = false
           title.innerHTML = data;
         })
       })

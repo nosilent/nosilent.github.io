@@ -85,7 +85,8 @@ img {
 .content h2 {
   counter-increment: counter2;
   counter-reset: counter3;
-  line-height: 2.5;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .content h2::before {
