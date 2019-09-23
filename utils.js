@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-23 10:53:18
+ * @LastEditTime: 2019-09-23 11:06:10
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -33,7 +33,7 @@ var utils = {
     fn(data)
   },
   keep_state: {
-    state = {},
+    state : {},
     keep: function (item, value) {
       this.state[item] = value
     },

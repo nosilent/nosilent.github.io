@@ -2,17 +2,22 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 11:01:34
+ * @LastEditTime: 2019-09-23 11:05:28
  * @LastEditors: Please set LastEditors
  */
 ;
 (function () {
   let frame = document.createDocumentFragment();
   let nav = document.querySelector('div.navbar-nav');
+  //去顶部按钮
   let btn_to_top = document.querySelector('.to_top');
+  //内容
   let content = document.querySelector('.content');
+  //内容标题栏
   let title = document.querySelector('.list-group');
+  //导航栏内容
   let nav_container = document.querySelector('#nav');
+  //加载loading
   let loading = document.querySelector('.loading');
   let active;
   let config;
