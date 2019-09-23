@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 16:39:34
+ * @LastEditTime: 2019-09-23 17:09:16
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -19,6 +19,8 @@
   let nav_container = document.querySelector('#nav');
   //加载loading
   let loading = document.querySelector('.loading');
+  //更新时间
+  let editTime = document.querySelector('.edit_time');
   let active;
   let config;
 
@@ -169,9 +171,11 @@
     utils.Ajax(`${url}.md`).then(res => {
       //请求内容出错
       if (res==='error'){
-        content.parentNode.hidden = true;
+        editTime.hidden = true;
+        content.innerHTML = '请求内容不存在';
         return ;
       } 
+      editTime.hidden = false;
       let data = marked(res, {
         render: marked_render()
       })
@@ -198,7 +202,6 @@
     let regExp = /\@Date\:\s+(\S+)\s*.+\n\s*\S*\s*\@LastEditTime\:\s*(\S+)/;
     let time = data.match(regExp);
     if (time.length < 3) return;
-    let editTime = document.querySelector('.edit_time');
     editTime.innerHTML = `更新时间 : ${time[2]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建时间 : ${time[1]}`;
   }
   //去顶部按钮处理
