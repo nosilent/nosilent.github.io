@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 10:56:50
+ * @LastEditTime: 2019-09-23 11:01:34
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -129,7 +129,7 @@
     active.classList.remove('active');
     let oldUrl = active.getAttribute('href').slice(1);
     //存储当前内容滚动的位置
-    utils.keep_state.keep(oldUrl,document.documentElement.scrollTop);
+    utils['keep_state'].keep(oldUrl,document.documentElement.scrollTop);
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
@@ -176,7 +176,7 @@
       content.parentNode.hidden = false;
       content.innerHTML = data;
       //获取前次对应内容滚动的高度
-      let state = utils.keep_state.get_scroll_state(url);
+      let state = utils['keep_state'].get_scroll_state(url);
       window.scrollTo({top:state});
       let highlight_Element = content.querySelectorAll('pre code');
       //代码高亮处理
