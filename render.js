@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 09:53:55
+ * @LastEditTime: 2019-09-23 09:57:57
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -149,7 +149,7 @@
         title.style.display = 'none';
         return ;
       }
-      title.style.display = 'block';
+      title.style.display = 'block !important';
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
