@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 09:41:47
+ * @LastEditTime: 2019-09-23 09:53:55
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -146,10 +146,10 @@
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
       if (res==='error'){
-        title.hidden = true;
-        return;
+        title.style.display = 'none';
+        return ;
       }
-      title.hidden = false;
+      title.style.display = 'block';
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
@@ -162,7 +162,7 @@
     utils.Ajax(`${url}.md`).then(res => {
       //请求内容出错
       if (res==='error'){
-        content.hidden = true;
+        content.parentNode.hidden = true;
         return ;
       } 
       let data = marked(res, {
@@ -171,7 +171,7 @@
       //插入文档更新时间
       LastEditTime(data)
       //内容
-      content.hidden = false;
+      content.parentNode.hidden = false;
       content.innerHTML = data;
       let highlight_Element = content.querySelectorAll('pre code')
       //代码高亮处理
