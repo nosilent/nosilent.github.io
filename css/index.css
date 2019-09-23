@@ -89,7 +89,7 @@ img {
   margin-bottom: 1rem;
 }
 .content h2:first-of-type {
-  margin-top:1rem;
+  margin-top:1.5rem;
 }
 .content h2::before {
   content: counter(counter2) " ";
@@ -144,7 +144,7 @@ pre {
 
 .edit_time {
   position: absolute;
-  top: 0.25rem;
+  top: 0.5rem;
 }
 
 .music {
