@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-23 09:31:15
+ * @LastEditTime: 2019-09-23 10:53:18
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -12,10 +12,10 @@ var utils = {
       xhr.open('get', url);
       xhr.send();
       xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 ) {
-          if(xhr.status === 200){
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
             resolve(xhr.responseText)
-          }else{
+          } else {
             resolve('error')
           }
         }
@@ -31,5 +31,17 @@ var utils = {
     let regExp1 = new RegExp(`(<${tag}>)|(<\/${tag}>)`, 'g');
     let data = target.replace(regExp1, '');
     fn(data)
+  },
+  keep_state: {
+    state = {},
+    keep: function (item, value) {
+      this.state[item] = value
+    },
+    get_scroll_state: function (item) {
+      if(this.state[item]){
+        return this.state[item]
+      }
+      return 0
+    }
   }
 }

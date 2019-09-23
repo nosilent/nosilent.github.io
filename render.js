@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 10:06:14
+ * @LastEditTime: 2019-09-23 10:56:50
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -106,7 +106,7 @@
           let a = document.createElement('a');
           a.classList.add('nav-link');
           a.setAttribute('href', `#${config.docs}/${item}`);
-          if (a.getAttribute('href').slice(1) == config.index) {
+          if (`${config.docs}/${item}` == config.index) {
             active = a
           }
           a.textContent = item;
@@ -127,6 +127,9 @@
 
   function clickhandler(e) {
     active.classList.remove('active');
+    let oldUrl = active.getAttribute('href').slice(1);
+    //存储当前内容滚动的位置
+    utils.keep_state.keep(oldUrl,document.documentElement.scrollTop);
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
@@ -172,7 +175,10 @@
       //内容
       content.parentNode.hidden = false;
       content.innerHTML = data;
-      let highlight_Element = content.querySelectorAll('pre code')
+      //获取前次对应内容滚动的高度
+      let state = utils.keep_state.get_scroll_state(url);
+      window.scrollTo({top:state});
+      let highlight_Element = content.querySelectorAll('pre code');
       //代码高亮处理
       highlight_Element.forEach(item => {
         Prism.highlightElement(item);
