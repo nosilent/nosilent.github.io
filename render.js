@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 09:07:54
+ * @LastEditTime: 2019-09-23 09:21:44
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -157,6 +157,8 @@
           title.innerHTML = data;
         })
       })
+    },rej=>{
+      console.log('rej',rej)
     })
     //渲染对应内容
     utils.Ajax(`${url}.md`).then(res => {
