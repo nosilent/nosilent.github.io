@@ -2,15 +2,15 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-23 17:15:00
- * @LastEditTime: 2019-09-23 17:49:38
+ * @LastEditTime: 2019-09-23 17:55:31
  * @LastEditors: Please set LastEditors
  -->
 ## css
 
 ### 样式定义的方法
 
-- 通过<link/>元素包含外部样式表
-- 使用<style/>元素第一嵌入式样式
+- 通过`<link/>`元素包含外部样式表
+- 使用`<style/>`元素第一嵌入式样式
 - 使用style属性定义特定元素样式
 
 ### 浏览器是怎样解析CSS选择器的
