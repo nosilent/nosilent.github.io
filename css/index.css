@@ -194,7 +194,7 @@ pre {
   transform-origin: center;
   opacity: 0.5;
   z-index: 9999;
-  animation: animation_loading 1s  infinite;
+  animation: animation_loading 1s forwards infinite;
 }
 
 .loading span {
