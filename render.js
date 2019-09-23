@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 11:42:10
+ * @LastEditTime: 2019-09-23 11:45:05
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -135,7 +135,7 @@
     console.log('p',document.documentElement.scrollTop,content.offsetTop)
     let oldUrl = active.getAttribute('href').slice(1);
     //存储当前内容滚动的位置
-    utils['keep_state'].keep(oldUrl,content.offsetTop);
+    utils['keep_state'].keep(oldUrl,document.documentElement.scrollTop);
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
@@ -184,7 +184,7 @@
       //获取前次对应内容滚动的高度
       let state = utils['keep_state'].get_scroll_state(url);
       console.log('state',state)
-      content.scrollTo({top:state});
+      document.documentElement.scrollTo({top:state});
       let highlight_Element = content.querySelectorAll('pre code');
       //代码高亮处理
       highlight_Element.forEach(item => {
