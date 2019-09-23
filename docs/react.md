@@ -2,196 +2,532 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 09:45:25
- * @LastEditTime: 2019-09-20 17:22:50
+ * @LastEditTime: 2019-09-23 17:50:19
  * @LastEditors: Please set LastEditors
  -->
-##  `react` 、`react-dom`
+### 文件引入
 
-```javascript
-import React from 'react'
-import ReactDOM from 'react-dom'
-//React创建jsx内容，ReactDom渲染数据
+使用<script>标签将文件引入到html中,babel.js主要用于编译jsx
 
-//创建组件，组件首字母必须大写
-//有状态组件，内部可以有自己的数据
-class App extends React.Component {
-    
-    render(){
-        // 返回内容，若不返回任何内容则返回null
-        return ...
-    }
-}
+```JSX
+<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+<!-- 生产环境中不建议使用 -->
+<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+<script type='text/babel'>
+class App extend React.Component {
+   	render(){
+				return (
+        <> ...</>
+        )
+    	}                   
+   }
+ReactDOM.render(
+    <App/>
+    document.getElementById('root')
+);
+</script>
 
-//无状态组件
-function App(){
-	// 返回内容，若不返回任何内容则返回null
-	return ...
-}
-
-//将组件渲染到node节点内
-ReactDOM.render(<App/>,node)
 ```
 
+### import引入
 
-
-##  `styled-components` 
-
-​		**主要用于创建`css`只作用于当前组件的组件**
-
-```js
-//style.js
-import styled from 'styled-components'
-
-//创建带有样式的组件
-export const Div = styled.div`
-	//与css、less、sass语法类似
-	//注意： background：url（），url中必须是变量，字符串也将解析成变量，达不到想要的结果
-	//使用 import 先引入资源再使用：import logo from '../../static/nav-logo.png'
-	//background：url（logo）
-`
-//在react中引入,
-import { Div } from 'style.js'
-```
-
-
-
-## `redux` 、`react-redux`
-
-​		**创建公共管理数据的仓库**
-
-```javascript
-import { createStore，combineReducers } from 'redux'
-// redux用于创建公共管理数据的仓库
-
-// reducer根据接收到的不同的action更新数据
-// 可以给state一个初始值
-const reducer = (state,action)=>{
-    switch(action.type){
-        case ...: 
-            return ...
-        case ...:
-            return ....
-        default:
-            return state
-    }
-}
-//action = {type: 'dddd',....}
-
-//combineReducers可以将多个reducer组合起来,再使用createStore创建仓库
-const reducer = combineReducers({
-    reducer1,reducer2,....
-})
-
-//createStore用于创建仓库
-const store = createStore(reducer)
-export default store
-
-//react-redux 用于使用仓库数据和连接仓库
-import { connect, Provider } from 'react-redux'
-
-function App(){
-    //Provider内的所有组件都能使用store中的数据
-    return <Provider store = { store }>
-    	....
-    </Provider>
-}
-
-//将仓库中想要的数据映射到组件中
-const mapState = (state)=>{
-	return {
-        //在组件中通过this.props.data获取
-        data: state.data
-    }
-}
-
-//发送action改变数据
-const mapDispatch = (dispatch)=>{
-	return {
-        //定义方法，在组件中通过this.props.func1获取
-        func1(){
-            dispatch(action1)
-        },
-        //通过this.props.func2获取
-        func2(){
-            dispatch(action2)
-        }
-    }
-}
-
-//将App组件连接到仓库
-export default connect(mapState，mapDispatch)(App)
-```
-
-
-
-##  redux-thunk 
-
-​		**使dispatch可以发送一个函数,发送异步action**
+在webpack环境下使用import引入
 
 ```jsx
-import thunk from 'redux-thunk'
-import { createStore, applyMiddleware, compose} from 'redux';
+import React from 'react'
+import ReactDOM from 'react-dom'
+class App extends React.Component {
+	render(){
+		<>...</>
+  }
+}
+ReactDOM.render(<App/>,document.querySelector(root))
+```
 
-const composeEnhancers =  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? 			window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose; 
-const enhancer = composeEnhancers(
-    //在这里使用后dispatch可以发送一个函数
-    applyMiddleware(thunk)
-  );
-const store = createStore(
-  reducer,enhancer
-)
-export default store
+## 创建jsx
 
+1. 使用 React.createElement
 
-//创建一个发送action的函数，可以发送异步请求，然后将请求数据dispatch
-const function func(){
-	return (dispatch)=>{
-		axios.get('/api/data.json').then(res=>{
-        	const action ={
-            	type: '....',
-            	data: res.data
-        	}
-			dispatch(action)
-        }
+   ```jsx
+   const element = React.createElement(
+     'h1', //标签名
+     {className: 'greeting'},  //属性
+     'Hello, world!'  //内容
+   );
+   ```
+
+2. 使用表达式
+
+   ```jsx
+   const element = (
+     <h1 className="greeting">
+       Hello, world!
+     </h1>
+   );
+   ```
+
+## 组件
+
+### 有状态组件（类组件）
+
+内部可以保存自己的数据，继承于React.Component
+
+#### 创建组件
+
+```jsx
+//1. 通过使用class 创建组件
+class App extends React.Component {
+  constructor(){
+    super()
+		this.state = {
+         name: 'dd'
     }
-} 
-    
-//在组件中  
-const mapDispatch = (dispatch)=>{
-	return {
-        func2(){
-            //在此处发送一个func()
-            dispatch(func())
-        }
-    }	    
+  }
+  render(){
+		return null   //不渲染任何内容则返回null
+  }
 }
-export default connect(mapState，mapDispatch)(App)
-```
-
-
-
-##  `react-router-dom` 
-
-​		**用于创建路由**
-
-```js
-import { Route, BrowserRouter } from 'react-router-dom'
-//在App组件中，创建路由
+//2. 通过function 创建组件
 function App(){
-   return (<BrowserRouter>
-          		<Route path='/' exact component={ Home }/>
-          		<Route path='/detail/:id' exact component={ Detail } />
-        	</BrowserRouter>)
+  return (<>...</>)
 }
-//其他组件中使用
-import { Link } from 'react-router-dom'
-function Sub(){
-   //只有在<BrowserRouter>中的组件，才能使用<Link>，否则会报错
-    return (
-    	<Link to='/detail'> 。。。<Link>
-    )
+// 3. 通过使用createReactClass()创建组件
+//需要在组件中定义 getDefaultProps() 函数
+//需要提供一个单独的 getInitialState 方法，让其返回初始 state
+//调用方法时，不需要像class创建组件那样绑定this
+var createReactClass = require('create-react-class')
+var App = createReactClass({
+  getDefaultProps: function() {
+    return {
+      name: 'Mary'
+    };
+  },
+  getInitialState: function() {
+    return {count: this.props.initialCount};
+  },
+  
+});
+```
+
+#### 更改数据
+
+使用this.setState
+
+```jsx
+class App extends React.Component {
+  constructor(){
+    super()
+		this.state = {
+         name: 'dd'
+    }
+  }
+  handler(){
+    //1. 传入一个对象
+		this.setState({name: 'cc' })
+    //2. 传入对象和回调函数
+    this.setState({name: 'cc'},()=>console.log(this.state.name))
+  	//3. 传入一个函数,参数state可以获取state中的所有数据，props可以获取this.props上的数据和方法
+    thissetState((state,props)=>({name:'cc'}))
+  }
+  render(){
+		return (<>
+  			<button onclick={e=>this.handler}/>                                        
+    </>)
+  }
 }
 ```
 
+### 无状态组件（函数组件）
 
+通过创建一个函数（函数首字母大写），返回内容
 
+```jsx
+function App(props){
+	return (<>
+                      </>)
+}
+```
+
+## props
+
+在组件标签上添加的属性和方法都会通过对象的方式添加组件内部的props或this.props
+
+```jsx
+<App name='app' age = '16'>children content</App>
+//在有状态组件中使用this.props获取标签上的属性和方法
+class App extends React.Component {
+	render(){
+		<> name:{this.props.name}
+       age:{this.props.age}
+         {this.props.children}       //children content  
+                    </>
+  }
+}
+//在无状态组件中使用参数props
+function App(props){
+	return (
+  	<>name:{props.name}
+       age:{props.age}
+				{props.children}  //children content
+		</>
+  )
+}
+```
+
+> this.props.children或者props.children可以方法组件标签之间的内容
+
+## 生命周期函数
+
+### 常用声明周期
+
+- constructor()
+- render（）
+- componentDidMount()
+- componentDidUpdate()
+- componentWillUnmount()
+
+### 组件挂载
+
+当组件实例被创建并插入 DOM 中时，其生命周期调用顺序如下：
+
+- constructor()
+- static getDerivedStateFromProps(props, state)：应返回一个对象来更新 state，如果返回 null 则不更新任何内容
+- render()
+- componentDidMount()
+
+### 组件更新
+
+组件的 props 或 state 发生变化时会触发更新，其生命周期调用顺序如下：
+
+- static getDerivedStateFromProps(props, state)：应返回一个对象来更新 state，如果返回 null 则不更新任何内容
+- shouldComponentUpdate(nextProps,nextState)：根据此函数的返回值，判断组件是否需要重新渲染
+- render()
+- getSnapshotBeforeUpdate(prevProps，prevState)：此函数的返回值会传递给componentDidUpdate
+- componentDidUpdate(prevProps，prevState，snapshot)
+
+### 组件卸载
+
+当组件从 DOM 中移除时会调用 `componentWillUnmount()`
+
+### 错误处理
+
+当渲染过程，生命周期，或子组件的构造函数中抛出错误时，会调用如下方法：
+
+- static getDerivedStateFromError(error)：将抛出的错误作为参数，并返回一个对象来更新 state
+
+  ```jsx
+  this.state = { hasError: false }
+  static getDerivedStateFromError(error) {
+      // 更新 state 使下一次渲染可以显降级 UI
+      return { hasError: true };
+    }
+  ```
+
+- componentDidCatch(`error`，`info` )
+
+## 事件处理
+
+在 JavaScript 中，class 的方法默认不会绑定`this`。定义的事件需要在constructor绑定this，或在使用或者定义时使用箭头函数，否则在调用事件时，this的值为undefined
+
+```jsx
+class App extends React.Component{
+  constructor(){
+       super()
+       this.state={
+				this.clickHandler = this.clickHandler.band(this)
+       }
+  }
+  clickHandler(){
+       
+  }
+	changeHandler(){
+	}
+	changeHandler2=()=>{
+
+  }
+	render(){
+		<>
+      <button onclick={this.clickHandler}/>    
+      <input onChange = {e=>this.changeHandler}/>
+      <input onChange = {this.changeHandler2}/>
+   </>
+  }
+}
+```
+
+## 条件渲染
+
+- if else
+- 三目运算？：
+- 与运算&&
+
+## 骨架替换
+
+1. 通过React.lazy(）异步加载一个组件
+
+2. 通过Suspense组件上的fallback属性渲染异步组件未加载前的内容
+
+   ```jsx
+   //React.lazy 接受一个函数，这个函数需要动态调用 import()
+   const OtherComponent = React.lazy(() => import('./OtherComponent'))
+   
+   //在App组件渲染完成后，OtherComponent组件还没有加载完成，则渲染fallback中的内容
+   class App extends React.Component {
+     render(){
+           return (
+           <>
+       			<Suspense fallback={<div>Loading...</div>}>
+           			<OtherComponent />
+   					</Suspense>
+           </>
+           )
+     }
+   }
+   ```
+
+## 上下文context
+
+使用 context, 可以避免通过中间元素传递 props，就能将值深入传递进组件树；Context 设计目的是为了共享那些对于一个组件树而言是“全局”的数据
+
+```jsx
+// 1. 创建context,React.createContext(值，操作该值的函数)
+const ThemeContext = React.createContext('light')
+class App extends React.Component {
+	render(){
+      //使用一个 Provider 来将当前的 theme 传递给以下的组件树
+      return (
+      <ThemeContext.Provider value="dark">
+        <Toolbar />
+      </ThemeContext.Provider>
+      )                
+  } 
+}
+//中间的组件再也不必指明往下传递 theme 了
+function Toolbar(props) {
+  return (
+    <div>
+      <ThemedButton />
+    </div>
+  );
+}
+//使用contextType获取context
+class ThemedButton extends React.Component {
+  // 指定 contextType 读取当前的 theme context。
+  // React 会往上找到最近的 theme Provider，然后使用它的值。
+  // 在这个例子中，当前的 theme 值为 “dark”。
+  static contextType = ThemeContext;
+  render() {
+    return <Button theme={this.context} />;
+    //也可以通过Consumer基于 context 值进行渲染渲染，不需要static contextType = ThemeContext;
+    return （
+             <ThemeContext.Consumer>
+         		{value=>(<Button theme={value} />) }
+        		</ThemeContext.Consumer>       
+    ）
+  }
+}
+```
+
+## refs
+
+### 创建ref
+
+使用 `React.createRef()` 创建，并通过 `ref` 属性附加到 React 元素
+
+```jsx
+class App extends React.Component {
+  constructor(){
+    super(props)
+    this.myRef = React.createRef()
+	}
+  render() {
+    return <div ref={this.myRef} />
+  }
+}
+```
+
+### 访问ref
+
+通过ref的`current` 属性访问当前绑定的元素
+
+```jsx
+this.myRef.current
+```
+
+> **不能在函数组件上使用 ref 属性**，因为它们没有实例, 可以**在函数组件内部使用 ref 属性**只要它指向一个 DOM 元素或 class 组件
+
+### 回调ref
+
+通过ref属性接受一个回调函数
+
+```jsx
+constructor(){
+	this.setTextInputRef = element => {
+      this.textInput = element;
+    };
+}
+
+render(){
+  <input
+          type="text"
+          ref={this.setTextInputRef}   //this.textInput.current绑定到input
+    			ref= {el=>this.el = el}	     //this.el.current绑定到input
+        />
+}
+```
+
+### refs转发
+
+Ref 转发是一项将 ref自动地通过组件传递到其一子组件的技巧,使用 `React.forwardRef()`接受一个函数，该函数以props和ref作为参数
+
+```jsx
+//1. 调用 React.createRef 创建了一个 React ref 并将其赋值给 ref 变量
+const ref = React.createRef();
+//2. 指定 ref 为 JSX 属性，将其向下传递给 <FancyButton ref={ref}>
+<FancyButton ref={ref}>Click me!</FancyButton>
+//3. React 传递 ref 给 fowardRef 内函数 (props, ref) => ...，作为其第二个参数
+//4. 向下转发该 ref 参数到 <button ref={ref}>，将其指定为 JSX 属性
+const FancyButton = React.forwardRef((props, ref) => (
+  <button ref={ref} className="FancyButton">
+    {props.children}
+  </button>
+));
+//5. 当 ref 挂载完成，ref.current 将指向 <button> DOM 节点
+```
+
+## portals
+
+与ReactDOM类似，可以将内容渲染到其他节点中。
+
+## 高阶组件
+
+**高阶组件是参数为组件，返回值为新组件的函数。**（创建一个函数，返回一个组件）
+
+```jsx
+function HOC(OtherComponent){
+	return class extends React.Component {
+          ...
+          render(){
+						return (<>
+                    <OtherComponent {...this.props}></OtherComponent>
+                </>)
+          }
+  }
+}
+```
+
+**HOC 不应该修改传入组件，而应该使用组合的方式，通过将组件包装在容器组件中实现功能
+
+**不要在 render 方法中使用 HOC
+
+**务必复制静态方法,使用 hoistNonReactStatic（co1,co2）将co2的静态方法复制到co1中
+
+## 路由
+
+## Hooks
+
+在不编写 class 的情况下使用 state 以及其他的 React 特性
+
+Hook 是一些可以在函数组件里“钩入” React state 及生命周期等特性的函数。
+
+Hook 不能在 class 组件中使用
+
+> 只能在**函数最外层**调用 Hook。不要在循环、条件判断或者子函数中调用
+>
+> 只能在 **React 的函数组件**中调用 Hook。不要在其他 JavaScript 函数中调用
+
+### useState
+
+在函数组件里调用它来给组件添加一些内部 state。React 会在重复渲染时保留这个 state。
+
+useState（）**定义**一个任意名称的变量和一个修改该变量的函数，传入**唯一参数**作为变量的初始值（任意类型值），**返回**当前定义的变量和修改该变量的函数
+
+```jsx
+import React, { useState } from 'react';
+function com1(){
+  const [data,setData] = useState(0)   //setData函数用于改变data
+  return (<>
+          	<p>{data}</p>
+            <button onClick={e=>setData(99)}>点击改变</button>
+          </>)
+}
+```
+
+声明多个state
+
+```jsx
+function example(){
+      // 声明多个 state 变量！、
+  //使用es6解构
+  const [fruit, setFruit] = useState('banana');
+  const [todos, setTodos] = useState([{ text: 'Learn Hooks' }]);
+    //不使用解构声明state
+  const ageState = useState(42);
+  const age = ageState[0];
+  const setAge = ageState[1]; 
+  return null
+}
+```
+
+### useEffect 
+
+*Effect Hook* 可以在函数组件中执行副作用操作
+
+跟 class 组件中的 `componentDidMount`、`componentDidUpdate` 和 `componentWillUnmount` 具有相同的用途
+
+useEffect()告诉 React 组件需要在**渲染后**执行某些操作，默认情况下，在第一次渲染之后*和*每次更新之后都会执行
+
+```jsx
+import React, { useState, useEffect } from 'react';
+function Example() {
+  const [count, setCount] = useState(0);
+  // 相当于 componentDidMount 和 componentDidUpdate:
+  useEffect(() => {
+    // 使用浏览器的 API 更新页面标题
+    document.title = `You clicked ${count} times`;
+  });
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
+
+使用useEffect（）返回一个函数时，该函数会在该组件卸载时执行
+
+```jsx
+useEffect(()=>{
+ 		.... //该部分内容组件每次更新后执行
+	return ()=>{...}  //返回函数在组件卸载时执行，在组件卸载前需要执行的操作可以放在该函数内
+})
+```
+
+> 在一个函数组件中使用多个useEffect时，React 将按照 effect 声明的顺序依次调用组件中的*每一个* effect。
+
+向useEffect（）中传入一个数组做个第二个参数，useEffect会根据数组中指定的数据发生改变才执行
+
+```jsx
+useEffect(() => {
+  document.title = `You clicked ${count} times`;
+}, [count]); // 仅在 count 更改时更新
+```
+
+### 自定义Hook
+
+### 其他Hook
+
+## redux
+
+## 服务端渲染
+
+## 其他插件
+
+- react-loadable
+- xlsx
+- react-app-rewired、customize-cra
+- antd、antd-mobile

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 17:09:16
+ * @LastEditTime: 2019-09-23 17:13:43
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -23,21 +23,6 @@
   let editTime = document.querySelector('.edit_time');
   let active;
   let config;
-
-  let marked_render = function () {
-    const renderer = new marked.Renderer();
-    renderer.heading = function (text, level) {
-      const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
-      return `
-          <h${level}>
-            <a name="${escapedText}" class="anchor" href="#${escapedText}">
-              <span class="header-link"></span>
-            </a>
-            ${text}
-          </h${level}>`;
-    };
-    return renderer;
-  }
   init()
 
   function init() {
@@ -176,11 +161,9 @@
         return ;
       } 
       editTime.hidden = false;
-      let data = marked(res, {
-        render: marked_render()
-      })
+      let data = marked(res);
       //插入文档更新时间
-      LastEditTime(data)
+      LastEditTime(data);
       //内容
       content.parentNode.hidden = false;
       content.innerHTML = data;
