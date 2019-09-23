@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 12:11:56
+ * @LastEditTime: 2019-09-23 12:25:39
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -181,10 +181,11 @@
       //内容
       content.parentNode.hidden = false;
       content.innerHTML = data;
+      
       //获取前次对应内容滚动的高度
       let state = utils['keep_state'].get_scroll_state(url);
       console.log(url,state)
-      document.documentElement.scrollTo({top:state});
+      window.scrollTo({top:state});
       let highlight_Element = content.querySelectorAll('pre code');
       //代码高亮处理
       highlight_Element.forEach(item => {
