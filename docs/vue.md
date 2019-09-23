@@ -2,8 +2,8 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-23 17:38:29
- * @LastEditTime: 2019-09-23 17:38:29
- * @LastEditors: your name
+ * @LastEditTime: 2019-09-23 18:00:56
+ * @LastEditors: Please set LastEditors
  -->
 ## 指令
 
@@ -319,11 +319,11 @@ Vue.component(
 
 > 具名插槽内容位置在组件中定义插槽时就确定了，不会因为填充内容先后不同而改变
 >
-> v-slot只能添加在一个 <template>
+> v-slot只能添加在一个 `<template>`
 
 ### 作用域插槽
 
-- 就是在组件中定义插槽时使用v-bind绑定一个变量，在<slot>标签内可以使用该变量；
+- 就是在组件中定义插槽时使用v-bind绑定一个变量，在`<slot>`标签内可以使用该变量；
 
   ```jsx
   <span>
@@ -395,7 +395,7 @@ Vue.component(
 
 ### 使用过渡
 
-通过使用<transtion/>组件将需要过渡的任意内容（包括组件）包裹起来,
+通过使用`<transtion/>`组件将需要过渡的任意内容（包括组件）包裹起来,
 
 ```jsx
 <transtion>
@@ -406,7 +406,7 @@ Vue.component(
 
 ### 定义过渡样式
 
-通过<transtion/>的name属性指定名称，过渡的css将以该名称开头，样式包括进入和离开两个阶段，每个阶段分为3步
+通过`<transtion/>`的name属性指定名称，过渡的css将以该名称开头，样式包括进入和离开两个阶段，每个阶段分为3步
 
 ```jsx
 <transtion name='cc'>...</transtion>
@@ -436,7 +436,7 @@ Vue.component(
 
 `leave-class` `leave-active-class` `leave-to-class`
 
-可以通过以上6个属性在<transtion/>标签上指定每个阶段的一个或多个过渡样式,
+可以通过以上6个属性在`<transtion/>`标签上指定每个阶段的一个或多个过渡样式,
 
 ```jsx
   <transition
@@ -513,7 +513,7 @@ methods: {
 
 ### 初始渲染过渡
 
-在<transtion/>标签添加appear属性，指定每个阶段的css样式或监听每个阶段的钩子函数
+在`<transtion/>`标签添加appear属性，指定每个阶段的css样式或监听每个阶段的钩子函数
 
 ```jsx
 //指定css样式
@@ -641,7 +641,7 @@ vm.conflicting() // => "from self"
 
 ### 全局混入
 
-全局混入使用Vue.mixin()定义，一旦使用全局混入，将影响**每一个**之后创建的 Vue 实例
+全局混入使用`Vue.mixin()`定义，一旦使用全局混入，将影响**每一个**之后创建的 Vue 实例
 
 ```jsx
 Vue.mixin({
