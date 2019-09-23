@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 09:59:40
+ * @LastEditTime: 2019-09-23 10:06:14
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -142,14 +142,13 @@
    * @return: 
    */
   function render(url) {
-    loading.style.display = 'block'
+    loading.hidden = false
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
       if (res==='error'){
-        title.style.display = 'none !important';
+        title.innerHTML = '';
         return ;
       }
-      title.style.display = 'block';
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
@@ -179,7 +178,7 @@
         Prism.highlightElement(item);
       })
     }).then(res => {
-      loading.style.display = 'none'
+      loading.hidden = true
     })
   }
   //文档修改时间信息
