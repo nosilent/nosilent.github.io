@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 11:55:59
+ * @LastEditTime: 2019-09-23 12:11:56
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -133,7 +133,7 @@
   function clickhandler(e) {
     active.classList.remove('active');
     let oldUrl = active.getAttribute('href').slice(1);
-    console.log('oldUrl:'+oldUrl,document.documentElement.scrollTop,content.offsetTop)
+    console.log('oldUrl:'+oldUrl,document.documentElement.scrollTop,window.pageYOffset)
     //存储当前内容滚动的位置
     utils['keep_state'].keep(oldUrl,document.documentElement.scrollTop);
     active = e.target;
