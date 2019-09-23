@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 09:01:30
+ * @LastEditTime: 2019-09-23 09:07:54
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -148,6 +148,7 @@
       if (!res){
         title.hidden = true
       }
+      console.log(res)
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
       utils.addProp(data, '<a', `class=\"${className}\"`, res => {
