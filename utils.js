@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-23 09:14:11
+ * @LastEditTime: 2019-09-23 09:17:44
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -14,12 +14,10 @@ var utils = {
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
           resolve(xhr.responseText)
-        } 
+        } else {
+          reject('error')
+        }
       };
-      xhr.onerror = function(err){
-        console.log('err',err)
-        reject(err)
-      }
     })
   },
   addProp: function (target, tag, prop, fn) {
