@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 14:34:22
+ * @LastEditTime: 2019-09-24 15:07:21
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -26,6 +26,7 @@
   init()
 
   function init() {
+    override_head();
     content_init();
     toTop();
   }
@@ -162,9 +163,7 @@
         return;
       }
       editTime.hidden = false;
-      let data = marked(res, {
-        render: override_head()
-      });
+      let data = marked(res);
       //插入文档更新时间
       LastEditTime(data);
       //内容
@@ -226,13 +225,10 @@
     renderer.heading = function (text, level, raw, slugger) {
       let anchor = slugger.slug(`h${level}`);
       return `
-      <h${level} id="${anchor}">
-      <a name="${escapedText}" class="anchor" href="#${escapedText}">
-        <span class="header-link"></span>
-      </a>
-      ${text}
-    </h${level}>`
+            <h${level} id="${anchor}">
+            ${text}
+            </h${level}>`
     }
-    return renderer
+    marked.Renderer = renderer
   }
 })()
