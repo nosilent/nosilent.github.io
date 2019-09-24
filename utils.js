@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-24 21:12:46
+ * @LastEditTime: 2019-09-24 21:18:18
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -47,6 +47,16 @@ var utils = {
   head_id_sort: {
     stack: [],
     tag: [],
+    seen:{},
+    slug(value){
+      if (this.seen.hasOwnProperty(value)) {
+        this.seen[value]++;
+        return `${value}-${this.seen[value]}`
+      } else {
+        this.seen[value] = 0
+        return value
+      }
+    },
     tag_top() {
       return this.tag[this.tag.length - 1]
     },
@@ -69,16 +79,4 @@ var utils = {
       return this.stack[this.length() - 1]
     }
   },
-  title_deep: {
-    state: {},
-    fn:value=>{
-      if (this.state.hasOwnProperty(value)) {
-        this.state[value]++;
-        return `${value}-${this.state[value]}`
-      } else {
-        this.state[value] = 0
-        return value
-      }
-    }
-  }
 }
