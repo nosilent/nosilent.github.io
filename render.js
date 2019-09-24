@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 21:27:46
+ * @LastEditTime: 2019-09-24 21:41:46
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -265,7 +265,7 @@
       }
     }
     renderer.heading = function (text, level, raw, slugger) {
-      let anchor = compare(level, Slug.fn)
+      let anchor = compare(level, utils.head_id_sort.slug.call(utils.head_id_sort))
       return `
             <h${level} id="${anchor}">
             ${text}
