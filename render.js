@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 22:06:29
+ * @LastEditTime: 2019-09-24 22:16:31
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -21,6 +21,8 @@
   let loading = document.querySelector('.loading');
   //更新时间
   let editTime = document.querySelector('.edit_time');
+  let className = 'list-group-item-action list-group-item';
+  let title_content = '';
   let active;
   let config;
   init()
@@ -138,21 +140,6 @@
    */
   function render(url) {
     loading.style.display = 'block';
-    //渲染对应目录
-    utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
-      if (res === 'error') {
-        title.innerHTML = '';
-        return;
-      }
-      let data = marked(res);
-      let className = 'list-group-item-action list-group-item';
-      utils.addProp(data, '<a', `class=\"${className}\"`, res => {
-        utils.removeTag(res, 'p', data => {
-          title.innerHTML = data;
-        })
-      })
-    })
-
     //渲染对应内容
     utils.Ajax(`${url}.md`).then(res => {
       //请求内容出错
@@ -162,6 +149,7 @@
         return;
       }
       editTime.hidden = false;
+      title_content = '';
       let data = marked(res, {
         renderer: override_head()
       });
@@ -182,6 +170,8 @@
         Prism.highlightElement(item);
       })
     }).then(res => {
+      //目录渲染
+      title.innerHTML = title_content;
       loading.style.display = 'none'
     })
   }
@@ -267,6 +257,8 @@
     renderer.heading = function (text, level, raw, slugger) {
       // let anchor = compare(level, utils.head_id_sort.slug.bind(utils.head_id_sort))
       let anchor = slugger.slug(`h${level}`);
+      //添加目录内容
+      title_content += `<a href="#{anchor}" class="${className}">${text}</>`
       return `
             <h${level} id="${anchor}">
             ${text}
