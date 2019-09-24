@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 15:29:37
+ * @LastEditTime: 2019-09-24 16:35:06
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -223,8 +223,33 @@
   //标题处理
   function override_head() {
     let renderer = new marked.Renderer()
+    function compare(level){
+      if (!utils.head_id_sort.length) {
+        utils.head_id_sort.push(level)
+        utils.head_id_sort.tag_push(`h${level}`)
+        return slugger.slug(`h${level}`);
+      }else{
+        if(utils.head_id_sort.top()<level){
+          utils.head_id_sort.push(level);
+          let pre = utils.head_id_sort.tag_top()
+          utils.head_id_sort.tag_push(`${pre}-h${level}`)
+          return slugger.slug(`${pre}-h${level}`);
+        }else if(utils.head_id_sort.top() === level ){
+          let pre = utils.head_id_sort.tag_top()
+          return slugger.slug(`${pre}`);
+        }else {
+          utils.head_id_sort.pop();
+          utils.head_id_sort.tag_pop()
+          level = utils.head_id_sort.top()
+          if(!utils.head_id_sort.length){
+            return;
+          }
+          compare(level)
+        }
+      }
+    }
     renderer.heading = function (text, level, raw, slugger) {
-      let anchor = slugger.slug(`h${level}`);
+      let anchor = compare(level)
       return `
             <h${level} id="${anchor}">
             ${text}

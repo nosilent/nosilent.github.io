@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-23 18:21:11
+ * @LastEditTime: 2019-09-24 16:22:37
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -42,6 +42,29 @@ var utils = {
         return this.state[item]
       }
       return 0
+    }
+  },
+  head_id_sort:{
+    stack:[],
+    tag:[],
+    tag_top: function(){
+      return this.tag[this.tag.length-1]
+    },
+    tag_push:function(value){
+      this.tag.push(value)
+    },
+    pop:function(){
+      this.tag.pop()
+    },
+    length: this.stack.length,
+    push:function(value){
+      this.stack.push(value)
+    },
+    pop:function(){
+      this.stack.pop()
+    },
+    top:function(){
+      return this.stack[this.length-1]
     }
   }
 }
