@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 16:35:06
+ * @LastEditTime: 2019-09-24 16:37:48
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -224,7 +224,7 @@
   function override_head() {
     let renderer = new marked.Renderer()
     function compare(level){
-      if (!utils.head_id_sort.length) {
+      if (!utils.head_id_sort.length()) {
         utils.head_id_sort.push(level)
         utils.head_id_sort.tag_push(`h${level}`)
         return slugger.slug(`h${level}`);
@@ -241,7 +241,7 @@
           utils.head_id_sort.pop();
           utils.head_id_sort.tag_pop()
           level = utils.head_id_sort.top()
-          if(!utils.head_id_sort.length){
+          if(!utils.head_id_sort.length()){
             return;
           }
           compare(level)
