@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 15:19:47
+ * @LastEditTime: 2019-09-24 15:29:37
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -26,7 +26,6 @@
   init()
 
   function init() {
-    override_head();
     content_init();
     toTop();
   }
@@ -163,7 +162,9 @@
         return;
       }
       editTime.hidden = false;
-      let data = marked(res);
+      let data = marked(res, {
+        renderer: override_head()
+      });
       //插入文档更新时间
       LastEditTime(data);
       //内容
@@ -221,12 +222,14 @@
   }
   //标题处理
   function override_head() {
-    marked.Renderer.heading = function (text, level, raw, slugger) {
+    let renderer = new marked.Renderer()
+    renderer.heading = function (text, level, raw, slugger) {
       let anchor = slugger.slug(`h${level}`);
       return `
             <h${level} id="${anchor}">
             ${text}
             </h${level}>`
     }
+    return renderer
   }
 })()
