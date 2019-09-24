@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 17:49:38
+ * @LastEditTime: 2019-09-24 18:06:48
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -236,8 +236,9 @@
           utils.head_id_sort.tag_push(`${pre}-h${level}`)
           return slugger.slug(`${pre}-h${level}`);
         }else if(top === level ){
-          let pre = utils.head_id_sort.tag_top()
-          return slugger.slug(`${pre}`);
+          let pre = utils.head_id_sort.tag_top();
+          let anchor = slugger.slug(`${pre}`);
+          return anchor;
         }else {
           utils.head_id_sort.pop();
           utils.head_id_sort.tag_pop()
