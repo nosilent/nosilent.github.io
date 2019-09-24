@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-24 16:46:18
+ * @LastEditTime: 2019-09-24 17:03:02
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -34,10 +34,10 @@ var utils = {
   },
   keep_state: {
     state : {},
-    keep: function (item, value) {
+    keep: (item, value)=> {
       this.state[item] = value
     },
-    get_scroll_state: function (item) {
+    get_scroll_state:item=> {
       if(this.state[item]){
         return this.state[item]
       }
@@ -47,25 +47,25 @@ var utils = {
   head_id_sort:{
     stack:[],
     tag:[],
-    tag_top: function(){
+    tag_top: ()=>{
       return this.tag[this.tag.length-1]
     },
-    tag_push:function(value){
+    tag_push:value=>{
       this.tag.push(value)
     },
-    tag_pop:function(){
+    tag_pop:()=>{
       this.tag.pop()
     },
-    length: function(){
+    length: ()=>{
       return this.stack.length;
     },
-    push:function(value){
+    push:value=>{
       this.stack.push(value)
     },
-    pop:function(){
+    pop:()=>{
       this.stack.pop()
     },
-    top:function(){
+    top:()=>{
       return this.stack[this.length-1]
     }
   }
