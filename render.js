@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 16:57:00
+ * @LastEditTime: 2019-09-24 17:49:38
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -245,7 +245,7 @@
           if(!utils.head_id_sort.length()){
             return 'h1';
           }
-          compare(level)
+          compare(level,slugger)
         }
       }
     }
