@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 22:19:08
+ * @LastEditTime: 2019-09-24 22:29:24
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -93,6 +93,7 @@
   }
   //初次内容渲染
   function content_init() {
+    title.style.MaxHeight = document.documentElement.clientHeight + 'px';
     utils.Ajax('config.json')
       .then(res => {
         config = JSON.parse(res);
@@ -258,7 +259,9 @@
       // let anchor = compare(level, utils.head_id_sort.slug.bind(utils.head_id_sort))
       let anchor = slugger.slug(`h${level}`);
       //添加目录内容
-      title_content += `<a href="#${anchor}" class="${className}">${text}</>`
+      if(level<=3){
+        title_content += `<a href="#${anchor}" class="${className}">${text}</>`
+      }
       return `
             <h${level} id="${anchor}">
             ${text}
