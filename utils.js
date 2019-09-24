@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-24 20:42:22
+ * @LastEditTime: 2019-09-24 20:46:29
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -72,11 +72,11 @@ var utils = {
   title_deep:{
     state:{},
     fn(value){
-      if(state[value]!==undefined){
-        state[value]++;
-        return `${value}-${state[value]}`
+      if(this.state[value]!==undefined){
+        this.state[value]++;
+        return `${value}-${this.state[value]}`
       }else{
-        state[value] = 0
+        this.state[value] = 0
         return value
       }
     }
