@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 21:23:36
+ * @LastEditTime: 2019-09-24 21:27:46
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -224,11 +224,11 @@
   class Slug {
     static obj = {}
     static fn(value) {
-      if (this.obj.hasOwnProperty(value)) {
-        this.obj[value]++;
-        return `${value}-${this.obj[value]}`
+      if (Slug.obj.hasOwnProperty(value)) {
+        Slug.obj[value]++;
+        return `${value}-${Slug.obj[value]}`
       } else {
-        this.obj[value] = 0
+        Slug.obj[value] = 0
         return value
       }
     }
