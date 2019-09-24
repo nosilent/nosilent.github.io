@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 18:06:48
+ * @LastEditTime: 2019-09-24 20:44:25
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -223,21 +223,25 @@
   //标题处理
   function override_head() {
     let renderer = new marked.Renderer()
-    function compare(level,slugger){
+    function slug(value){
+      obj={}
+      
+    }
+    function compare(level,fn){
       if (!utils.head_id_sort.length()) {
         utils.head_id_sort.push(level)
         utils.head_id_sort.tag_push(`h${level}`)
-        return slugger.slug(`h${level}`);
+        return fn(`h${level}`);
       }else{
         let top = utils.head_id_sort.top()
         if(top<level){
           utils.head_id_sort.push(level);
           let pre = utils.head_id_sort.tag_top()
           utils.head_id_sort.tag_push(`${pre}-h${level}`)
-          return slugger.slug(`${pre}-h${level}`);
+          return fn(`${pre}-h${level}`);
         }else if(top === level ){
           let pre = utils.head_id_sort.tag_top();
-          let anchor = slugger.slug(`${pre}`);
+          let anchor = fn(`${pre}`);
           return anchor;
         }else {
           utils.head_id_sort.pop();
@@ -246,12 +250,12 @@
           if(!utils.head_id_sort.length()){
             return 'h1';
           }
-          compare(level,slugger)
+          compare(level,fn)
         }
       }
     }
     renderer.heading = function (text, level, raw, slugger) {
-      let anchor = compare(level,slugger)
+      let anchor = compare(level,utils.title_deep.fn)
       return `
             <h${level} id="${anchor}">
             ${text}

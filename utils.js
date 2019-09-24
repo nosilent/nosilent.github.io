@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-24 17:32:18
+ * @LastEditTime: 2019-09-24 20:42:22
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -67,6 +67,18 @@ var utils = {
     },
     top(){
       return this.stack[this.length() - 1]
+    }
+  },
+  title_deep:{
+    state:{},
+    fn(value){
+      if(state[value]!==undefined){
+        state[value]++;
+        return `${value}-${state[value]}`
+      }else{
+        state[value] = 0
+        return value
+      }
     }
   }
 }
