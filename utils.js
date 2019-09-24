@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-24 17:13:07
+ * @LastEditTime: 2019-09-24 17:15:46
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -59,7 +59,7 @@ var utils = {
     length() {
       return this.stack.length;
     },
-    pushvalue(){
+    push(value){
       this.stack.push(value)
     },
     pop() {
