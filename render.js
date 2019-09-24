@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 15:13:16
+ * @LastEditTime: 2019-09-24 15:19:47
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -221,7 +221,7 @@
   }
   //标题处理
   function override_head() {
-    marked.renderer.heading = function (text, level, raw, slugger) {
+    marked.Renderer.heading = function (text, level, raw, slugger) {
       let anchor = slugger.slug(`h${level}`);
       return `
             <h${level} id="${anchor}">
