@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 22:16:31
+ * @LastEditTime: 2019-09-24 22:19:08
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -258,7 +258,7 @@
       // let anchor = compare(level, utils.head_id_sort.slug.bind(utils.head_id_sort))
       let anchor = slugger.slug(`h${level}`);
       //添加目录内容
-      title_content += `<a href="#{anchor}" class="${className}">${text}</>`
+      title_content += `<a href="#${anchor}" class="${className}">${text}</>`
       return `
             <h${level} id="${anchor}">
             ${text}
