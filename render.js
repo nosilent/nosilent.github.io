@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-23 18:18:07
+ * @LastEditTime: 2019-09-24 14:24:54
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -121,7 +121,7 @@
     active.classList.remove('active');
     let oldUrl = active.getAttribute('href').slice(1);
     //存储当前内容滚动的位置
-    utils['keep_state'].keep(oldUrl,document.documentElement.scrollTop);
+    utils['keep_state'].keep(oldUrl, document.documentElement.scrollTop);
     active = e.target;
     active.classList.add('active');
     let url = active.getAttribute('href').slice(1);
@@ -140,9 +140,9 @@
     loading.style.display = 'block';
     //渲染对应目录
     utils.Ajax(`${url}-${config.title_end_tag}.md`).then(res => {
-      if (res==='error'){
+      if (res === 'error') {
         title.innerHTML = '';
-        return ;
+        return;
       }
       let data = marked(res);
       let className = 'list-group-item-action list-group-item';
@@ -152,25 +152,30 @@
         })
       })
     })
+
     //渲染对应内容
     utils.Ajax(`${url}.md`).then(res => {
       //请求内容出错
-      if (res==='error'){
+      if (res === 'error') {
         editTime.hidden = true;
         content.innerHTML = '请求内容不存在';
-        return ;
-      } 
+        return;
+      }
       editTime.hidden = false;
-      let data = marked(res);
+      let data = marked(res, {
+        render: override_head()
+      });
       //插入文档更新时间
       LastEditTime(data);
       //内容
       content.parentNode.hidden = false;
       content.innerHTML = data;
-      
+
       //获取前次对应内容滚动的高度
       let state = utils['keep_state'].get_scroll_state(url);
-      window.scrollTo({top:state});
+      window.scrollTo({
+        top: state
+      });
       let highlight_Element = content.querySelectorAll('pre code');
       //代码高亮处理
       highlight_Element.forEach(item => {
@@ -214,5 +219,17 @@
       top: 0,
       behavior: 'smooth'
     })
+  }
+  //标题处理
+  function override_head() {
+    const renderer = new marked.Renderer();
+    renderer.heading = function (text, level, raw, slugger) {
+      let anchor = slugger.slug(`h${level}`);
+      return `
+            <h${level} id="${anchor}">
+              ${text}
+            </h${level}>`
+    }
+    return render
   }
 })()

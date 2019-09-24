@@ -5,11 +5,9 @@
  * @LastEditTime: 2019-09-20 15:35:47
  * @LastEditors: your name
  -->
-## html
 
-### http和https、tcp/ip
+## http和https
 
-#### http和https
 http:超文本传输协议
 
 https:是以安全为目标的Http通道，是Http的安全版。Https的安全基础是SSL。（SSL协议可分为两层：SSL记录协议、SSL握手协议）
@@ -32,7 +30,7 @@ https:是以安全为目标的Http通道，是Http的安全版。Https的安全�
 3. SSL证书通常需要绑定IP，不能在同一IP上绑定多个域名，IPv4资源不可能支撑这个消耗。
 4. Https协议的加密范围也比较有限。
 
-### tcp/ip
+## tcp/ip
 
 分为四层：**链路层**，**网络层**，**传输层**，**应用层**
 
@@ -49,16 +47,16 @@ TCP/IP四次挥手终止连接：
 3. 在服务器向客户端的数据发送结束后，其应用进程就通知TCP释放连接。服务器发出的连接释放报文段必须将终止比特置为1，并使其序号w等于前面已经传送过的数据的最后一个字节的序号加 1，还必须重复上次已发送过的ACK=u+1；
 4. 客户端对服务器的连接释放报文段发出确认，将ACK置为1，ACK=w+1, seq=u+1。这样才把从服务器到客户端的反方向连接释放掉，客户端的TCP再向其应用进程报告，整个连接已经全部释放。
 
-### 页面渲染过程
+## 页面渲染过程
 
 ![img](https://img1.mukewang.com/5c2d835d00012d2514230720.jpg)
 
-### h5新特性
+## h5新特性
 
 - 新标签： `header` `footer` `nav` `article`  `aside` `video` `radio`
 - api: `canvas` `localStorage` `sessionStorage` `drag` `drop`
 
-### doctype作用
+## doctype作用
 
 告诉浏览器用什么标准解析文档，三种Doctype（严格、松散、框架）
 
@@ -66,13 +64,13 @@ TCP/IP四次挥手终止连接：
 
 **混杂模式：**又称为怪异模式或者兼容模式，是指浏览器按照自己的方式来解析代码，使用一种比较宽松的向后兼容的方式来显示页面。
 
-### 行内元素、块元素、空元素
+## 行内元素、块元素、空元素
 
 - 行内元素： `a` `span` `img` `input` `select `
 - 块元素： `div` `p` `ul` `ol` `li` `dl` `dt` `dd` `h1` ... `h6` 
 - 空元素： `br` `hr` `img` `input` `link` `meta`
 
-### readonly和disabled区别
+## readonly和disabled区别
 
 - **readonly**属性只是将元素设置为只读，可以获取焦点、失去焦点。而**disabled**属性直接阻止对元素的一切操作。
 - **disabled**属性可以让表单元素的值无法被提交。**readonly**属性则不影响提交问题。
@@ -80,7 +78,7 @@ TCP/IP四次挥手终止连接：
 - disabled可以通过js修改状态，readonly不能通过js修改状态
 - 都可以通过js修改相关表单元素的value
 
-### 浏览器内核
+## 浏览器内核
 
 主要由**`渲染引擎`**和**`js引擎`**组成
 
@@ -93,13 +91,35 @@ js引擎： 解析和执行javascript来实现网页的动态效果。
 - Presto内核：Opera7及以上。      [Opera内核原为：Presto，现为：Blink;]。
 - Webkit内核：Safari,Chrome等。   [ Chrome的：Blink（WebKit的分支）]。
 
-### cookies、sessionStorage、localStorage区别
+## cookies、sessionStorage、localStorage区别
 
-`cookie`：是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。数据大小不能超过4k。
+`cookie`：必须运行在服务器下。数据大小不能超过4k。默认是临时存储，浏览器关闭后自动销毁，长时间存储需要设置一个过期时间。在页面每次http请求时会携带cookie，在客户端与服务器之间来回传递。
 
-sessionStorage: 数据之保持到浏览器关闭，数据可以跨越页面刷新而存在，数据大小2.5mb或5mb。
+```js
+//必须在服务器开始的状态下才能操作cookie
+document.cookie = 'age = 5'
+//cookie是以域名存放,一个域名下最多存放50条
+document.cookie = 'age = 5;expires=过期时间'
+```
 
-localStorage: 数据保持到通过js删除或用户清除浏览器缓存，符合同源策略才内访问数据，数据大小2.5mb或5mb。
+`sessionStorage`: 数据之保持到`浏览器关闭`，数据可以跨越页面刷新而存在，数据大小2.5mb或5mb。
+
+`localStorage`: 数据保持到通过js删除或用户清除浏览器缓存，符合同源策略才内访问数据，数据大小2.5mb或5mb。
+
+```js
+//设置值
+localStorage.age = 5
+localStorage.setItem('age',5)
+//获取值
+console.log(localStorage)
+console.log(localStorage.age)
+console.log(localStorage.getItem('age'))
+//删除值
+localStorage.removeItem('age')  //删除指定
+localStorage.clear() //删除所有
+```
+
+
 
 **注意**： 对Storage对象进行`任何修改`都会在文档上触发`storage`事件。
 
@@ -112,7 +132,7 @@ storage事件对象属性：
 - newValue新值或null 
 - oldValue被修改的值 
 
-### 富文本编辑器
+## 富文本编辑器
 
 原理：使用标签的`contenteditable`属性
 
@@ -120,7 +140,7 @@ storage事件对象属性：
 
 编辑器： wangEditor
 
-### 常见状态码
+## 常见状态码
 
 - 200 ：表示从客户端发来的请求在服务器端被正常处理了
 - 204：表示请求已成功处理，但是没有内容返回（就应该没有内容返回的状况） 
@@ -138,3 +158,9 @@ storage事件对象属性：
 - 404：表明服务器上无法找到请求的资源
 - 500：表示服务器执行请求的时候出错了 
 - 503：表示服务器超负载或正停机维护，无法处理请求 
+
+## xss
+
+跨站脚本攻击，将页面输入内容提交到服务器，服务器再将内容返回到页面，若内容中存在`<script>标签内容或`<a href="javascript:">..<a>`内容，则会自动执行或点击执行一个脚本，可以将用户的cookie信息发送到指定服务器。
+
+处理：判断提交内容是否含有script或javascript字符串（转化大小写后判断）,如果有则替换该内容，再发送服务器
