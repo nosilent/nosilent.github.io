@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-24 21:06:13
+ * @LastEditTime: 2019-09-24 21:07:27
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -71,7 +71,7 @@ var utils = {
   },
   title_deep: {
     state: {},
-    fn: function () {
+    fn: function (value) {
       console.log(this)
       if (this.state.hasOwnProperty(value)) {
         this.state[value]++;
