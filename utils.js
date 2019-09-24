@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-19 16:32:46
- * @LastEditTime: 2019-09-24 17:15:46
+ * @LastEditTime: 2019-09-24 17:18:23
  * @LastEditors: Please set LastEditors
  */
 var utils = {
@@ -34,10 +34,10 @@ var utils = {
   },
   keep_state: {
     state: {},
-    keep: (item, value) => {
+    keep(item, value){
       this.state[item] = value
     },
-    get_scroll_state: item => {
+    get_scroll_state(item){
       if (this.state[item]) {
         return this.state[item]
       }
