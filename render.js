@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 14:24:54
+ * @LastEditTime: 2019-09-24 14:34:22
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -226,10 +226,13 @@
     renderer.heading = function (text, level, raw, slugger) {
       let anchor = slugger.slug(`h${level}`);
       return `
-            <h${level} id="${anchor}">
-              ${text}
-            </h${level}>`
+      <h${level} id="${anchor}">
+      <a name="${escapedText}" class="anchor" href="#${escapedText}">
+        <span class="header-link"></span>
+      </a>
+      ${text}
+    </h${level}>`
     }
-    return render
+    return renderer
   }
 })()
