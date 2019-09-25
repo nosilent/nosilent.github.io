@@ -2,31 +2,30 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-25 09:45:35
+ * @LastEditTime: 2019-09-25 10:53:31
  * @LastEditors: Please set LastEditors
  */
-;
-(function () {
+;(function () {
   let frame = document.createDocumentFragment();
-  let nav = document.querySelector('div.navbar-nav');
+  let nav = document.querySelector("div.navbar-nav");
   //去顶部按钮
-  let btn_to_top = document.querySelector('.to_top');
+  let btn_to_top = document.querySelector(".to_top");
   //内容
-  let content = document.querySelector('.content');
+  let content = document.querySelector(".content");
   //内容标题栏
-  let title = document.querySelector('.list-group');
+  let title = document.querySelector(".list-group");
   //导航栏内容
-  let nav_container = document.querySelector('#nav');
+  let nav_container = document.querySelector("#nav");
   //加载loading
-  let loading = document.querySelector('.loading');
+  let loading = document.querySelector(".loading");
   //更新时间
-  let editTime = document.querySelector('.edit_time');
-  let footer = document.querySelector('footer');
-  let className = 'list-group-item-action list-group-item py-1';
-  let title_content = '';
+  let editTime = document.querySelector(".edit_time");
+  let footer = document.querySelector("footer");
+  let className = "list-group-item-action list-group-item py-1";
+  let title_content = "";
   let active;
   let config;
-  init()
+  init();
 
   function init() {
     content_init();
@@ -38,36 +37,36 @@
   }
 
   function music() {
-    let music = document.querySelector('.music');
-    let audio = music.querySelector('audio');
-    let btn_play = music.querySelectorAll('span')[1];
-    let index = random(config.music_list.length)
-    audio.src = `music/${config.music_list[index]}`
+    let music = document.querySelector(".music");
+    let audio = music.querySelector("audio");
+    let btn_play = music.querySelectorAll("span")[1];
+    let index = random(config.music_list.length);
+    audio.src = `music/${config.music_list[index]}`;
 
-    music.addEventListener('click', music_handler)
+    music.addEventListener("click", music_handler);
 
     function music_handler(e) {
       switch (e.target.innerHTML) {
-        case 'play':
-          play()
+        case "play":
+          play();
           break;
-        case 'pre':
-          pre()
+        case "pre":
+          pre();
           break;
-        case 'next':
-          next()
+        case "next":
+          next();
           break;
         default:
-          alert('err')
+          alert("err");
       }
       //暂停/播放
       function play() {
         if (audio.paused === true) {
           btn_play.style.backgroundImage = 'url("images/play.svg")';
-          audio.play()
+          audio.play();
         } else {
           btn_play.style.backgroundImage = 'url("images/stop.svg")';
-          audio.pause()
+          audio.pause();
         }
       }
       //上一曲
@@ -94,110 +93,116 @@
   }
   //初次内容渲染
   function content_init() {
-    utils.Ajax('config.json')
+    utils
+      .Ajax("config.json")
       .then(res => {
         config = JSON.parse(res);
         Object.keys(config.navData).forEach(item => {
-          if(config.navData[item].show){
-            let a = document.createElement('a');
-            a.classList.add('nav-link');
-            a.setAttribute('href', `#${config.docs}/${item}`);
+          if (config.navData[item].show) {
+            let a = document.createElement("a");
+            a.classList.add("nav-link");
+            a.setAttribute("href", `#${config.docs}/${item}`);
             if (`${config.docs}/${item}` == config.index) {
-              active = a
+              active = a;
             }
             a.textContent = item;
             frame.appendChild(a);
           }
-        })
-        active.classList.add('active');
+        });
+        active.classList.add("active");
         //导航栏内容初始化
         nav.append(frame);
-      }).then(res => {
-        //初始内容渲染
-        render(config.index)
-        music()
       })
+      .then(res => {
+        //初始内容渲染
+        render(config.index);
+        music();
+      });
     //导航栏点击事件
-    nav.addEventListener('click', clickhandler);
+    nav.addEventListener("click", clickhandler);
   }
 
-
   function clickhandler(e) {
-    active.classList.remove('active');
-    let oldUrl = active.getAttribute('href').slice(1);
+    active.classList.remove("active");
+    let oldUrl = active.getAttribute("href").slice(1);
     //存储当前内容滚动的位置
-    utils['keep_state'].keep(oldUrl, document.documentElement.scrollTop);
+    utils["keep_state"].keep(oldUrl, document.documentElement.scrollTop);
     active = e.target;
-    active.classList.add('active');
-    let url = active.getAttribute('href').slice(1);
-    if (nav_container.classList.contains('show')) {
-      nav_container.classList.remove('show')
+    active.classList.add("active");
+    let url = active.getAttribute("href").slice(1);
+    if (nav_container.classList.contains("show")) {
+      nav_container.classList.remove("show");
     }
-    render(url)
+    render(url);
   }
 
   /**
    * @description: 渲染相应的导航内容
-   * @param {type} 
-   * @return: 
+   * @param {type}
+   * @return:
    */
   function render(url) {
-    loading.style.display = 'block';
-    footer.hidden = true
+    loading.style.display = "block";
+    footer.hidden = true;
     //渲染对应内容
-    utils.Ajax(`${url}.md`).then(res => {
-      //请求内容出错
-      if (res === 'error') {
-        editTime.hidden = true;
-        footer.hidden = true;
-        content.innerHTML = '请求内容不存在';
-        return;
-      }
-      editTime.hidden = false;
-      title_content = '';
-      let data = marked(res, {
-        renderer: override_head()
-      });
-      //插入文档更新时间
-      LastEditTime(data);
-      //内容
-      content.parentNode.hidden = false;
-      content.innerHTML = data;
+    utils
+      .Ajax(`${url}.md`)
+      .then(res => {
+        //请求内容出错
+        if (res === "error") {
+          editTime.hidden = true;
+          footer.hidden = true;
+          content.innerHTML = "请求内容不存在";
+          return;
+        }
+        editTime.hidden = false;
+        title_content = "";
+        let data = marked(res, {
+          renderer: override_head()
+        });
+        //插入文档更新时间
+        LastEditTime(data);
+        //内容
+        content.parentNode.hidden = false;
+        content.innerHTML = data;
 
-      //获取前次对应内容滚动的高度
-      let state = utils['keep_state'].get_scroll_state(url);
-      window.scrollTo({
-        top: state
-      });
-      let highlight_Element = content.querySelectorAll('pre code');
-      //代码高亮处理
-      highlight_Element.forEach(item => {
-        Prism.highlightElement(item);
+        //获取前次对应内容滚动的高度
+        let state = utils["keep_state"].get_scroll_state(url);
+        window.scrollTo({
+          top: state
+        });
+        let highlight_Element = content.querySelectorAll("pre code");
+        //代码高亮处理
+        highlight_Element.forEach(item => {
+          Prism.highlightElement(item);
+        });
       })
-    }).then(res => {
-      //目录渲染
-      title.innerHTML = title_content;
-      loading.style.display = 'none';
-      footer.hidden = false;
-    })
+      .then(res => {
+        //目录渲染
+        title.innerHTML = title_content;
+        loading.style.display = "none";
+        footer.hidden = false;
+      });
   }
   //文档修改时间信息
   function LastEditTime(data) {
     let regExp = /\@Date\:\s+(\S+)\s*.+\n\s*\S*\s*\@LastEditTime\:\s*(\S+)/;
     let time = data.match(regExp);
     if (time.length < 3) return;
-    editTime.innerHTML = `更新时间 : ${time[2]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建时间 : ${time[1]}`;
+    editTime.innerHTML = `更新时间 : ${
+      time[2]
+    }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建时间 : ${time[1]}`;
   }
   //去顶部按钮处理
   function toTop() {
-    let clientHeight = document.documentElement.clientHeight
-    let scroll = document.documentElement.scrollTop
+    let clientHeight = document.documentElement.clientHeight;
+    let scroll = document.documentElement.scrollTop;
     if (scroll > clientHeight / 2) {
-      btn_to_top.hidden = false
+      btn_to_top.hidden = false;
     } else {
-      btn_to_top.hidden = true
+      btn_to_top.hidden = true;
     }
-    window.addEventListener('scroll', scrollHandler)
+    window.addEventListener("scroll", scrollHandler);
 
     function scrollHandler() {
       if (document.documentElement.scrollTop > clientHeight) {
@@ -207,17 +212,17 @@
         btn_to_top.hidden = true;
       }
     }
-    btn_to_top.addEventListener('click', toTop_handler)
+    btn_to_top.addEventListener("click", toTop_handler);
   }
 
   function toTop_handler() {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
-    })
+      behavior: "smooth"
+    });
   }
 
-//标题id累加
+  //标题id累加
   // class Slug {
   //   static obj = {}
   //   static fn(value) {
@@ -232,7 +237,7 @@
   // }
   //标题处理
   function override_head() {
-    let renderer = new marked.Renderer()
+    let renderer = new marked.Renderer();
     // function compare(level, fn) {
     //   if (!utils.head_id_sort.length()) {
     //     utils.head_id_sort.push(level)
@@ -264,18 +269,18 @@
       // let anchor = compare(level, utils.head_id_sort.slug.bind(utils.head_id_sort))
       let anchor = slugger.slug(`h${level}`);
       //添加目录内容
-      if(level<=3){
-        if(level==3){
-          title_content += `<a href="#${anchor}" class="${className} pl-4">${text}</>`
-        }else{
-          title_content += `<a href="#${anchor}" class="${className} pl-2">${text}</>`
+      if (level <= 3) {
+        if (level == 3) {
+          title_content += `<a href="#${anchor}" class="${className} pl-4">${text}</>`;
+        } else {
+          title_content += `<a href="#${anchor}" class="${className} pl-2">${text}</>`;
         }
       }
       return `
             <h${level} id="${anchor}">
             ${text}
-            </h${level}>`
-    }
-    return renderer
+            </h${level}>`;
+    };
+    return renderer;
   }
-})()
+})();
