@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-25 09:02:14
+ * @LastEditTime: 2019-09-25 09:30:13
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -21,6 +21,7 @@
   let loading = document.querySelector('.loading');
   //更新时间
   let editTime = document.querySelector('.edit_time');
+  let footer = document.querySelector('footer');
   let className = 'list-group-item-action list-group-item py-1';
   let title_content = '';
   let active;
@@ -140,6 +141,7 @@
    */
   function render(url) {
     loading.style.display = 'block';
+    footer.hidden = true
     //渲染对应内容
     utils.Ajax(`${url}.md`).then(res => {
       //请求内容出错
@@ -172,7 +174,8 @@
     }).then(res => {
       //目录渲染
       title.innerHTML = title_content;
-      loading.style.display = 'none'
+      loading.style.display = 'none';
+      footer.hidden = false;
     })
   }
   //文档修改时间信息
