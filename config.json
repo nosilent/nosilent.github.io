@@ -1,7 +1,17 @@
 {
-    "navData":["html","css","js","bootstrap","typescript","jquery","vue","react","flutter"],
+    "navData": {
+        "html": {"show":true},
+        "css": {"show":true},
+        "js": {"show":true},
+        "bootstrap": {"show":true},
+        "typescript": {"show":false},
+        "jquery": {"show":true},
+        "vue": {"show":true},
+        "react": {"show":true},
+        "flutter": {"show":true}
+    },
     "title_end_tag": "title",
     "index": "docs/react",
-    "docs":"docs",
-    "music_list":["天空之城.mp3","梦中的婚礼.mp3","高山流水.mp3","约定.mp3"]
+    "docs": "docs",
+    "music_list": ["天空之城.mp3", "梦中的婚礼.mp3", "高山流水.mp3", "约定.mp3"]
 }

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-25 09:30:13
+ * @LastEditTime: 2019-09-25 09:41:53
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -97,7 +97,8 @@
     utils.Ajax('config.json')
       .then(res => {
         config = JSON.parse(res);
-        config.navData.forEach(item => {
+        Object.keys(config.navData).forEach(item => {
+          if(config.navData[item].show===false) continue;
           let a = document.createElement('a');
           a.classList.add('nav-link');
           a.setAttribute('href', `#${config.docs}/${item}`);
