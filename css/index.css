@@ -55,6 +55,7 @@
 .fixed {
   position: fixed;
   top: 3.5rem;
+  overflow-y: auto; 
 }
 
 .to_top {

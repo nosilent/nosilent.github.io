@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-24 22:29:24
+ * @LastEditTime: 2019-09-25 08:55:47
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -21,7 +21,7 @@
   let loading = document.querySelector('.loading');
   //更新时间
   let editTime = document.querySelector('.edit_time');
-  let className = 'list-group-item-action list-group-item';
+  let className = 'list-group-item-action list-group-item py-1';
   let title_content = '';
   let active;
   let config;
@@ -93,7 +93,6 @@
   }
   //初次内容渲染
   function content_init() {
-    title.style.MaxHeight = document.documentElement.clientHeight + 'px';
     utils.Ajax('config.json')
       .then(res => {
         config = JSON.parse(res);
@@ -260,7 +259,11 @@
       let anchor = slugger.slug(`h${level}`);
       //添加目录内容
       if(level<=3){
-        title_content += `<a href="#${anchor}" class="${className}">${text}</>`
+        if(level==3){
+          title_content += `<a href="#${anchor}" class="${className} pl-3">${text}</>`
+        }else{
+          title_content += `<a href="#${anchor}" class="${className} pl-2">${text}</>`
+        }
       }
       return `
             <h${level} id="${anchor}">
