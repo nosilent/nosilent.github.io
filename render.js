@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-25 08:59:50
+ * @LastEditTime: 2019-09-25 09:02:14
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -262,7 +262,7 @@
         if(level==3){
           title_content += `<a href="#${anchor}" class="${className} pl-4">${text}</>`
         }else{
-          title_content += `<a href="#${anchor}" class="${className} pl-3">${text}</>`
+          title_content += `<a href="#${anchor}" class="${className} pl-2">${text}</>`
         }
       }
       return `
