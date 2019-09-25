@@ -1,3 +1,6 @@
+ul,ol,li {
+  padding-left: 1rem;
+}
 .coutom-container {
   width: 100%;
   padding-right: 15px;
