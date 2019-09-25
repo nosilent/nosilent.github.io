@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-25 09:41:53
+ * @LastEditTime: 2019-09-25 09:45:35
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -98,15 +98,16 @@
       .then(res => {
         config = JSON.parse(res);
         Object.keys(config.navData).forEach(item => {
-          if(config.navData[item].show===false) continue;
-          let a = document.createElement('a');
-          a.classList.add('nav-link');
-          a.setAttribute('href', `#${config.docs}/${item}`);
-          if (`${config.docs}/${item}` == config.index) {
-            active = a
+          if(config.navData[item].show){
+            let a = document.createElement('a');
+            a.classList.add('nav-link');
+            a.setAttribute('href', `#${config.docs}/${item}`);
+            if (`${config.docs}/${item}` == config.index) {
+              active = a
+            }
+            a.textContent = item;
+            frame.appendChild(a);
           }
-          a.textContent = item;
-          frame.appendChild(a);
         })
         active.classList.add('active');
         //导航栏内容初始化
@@ -148,6 +149,7 @@
       //请求内容出错
       if (res === 'error') {
         editTime.hidden = true;
+        footer.hidden = true;
         content.innerHTML = '请求内容不存在';
         return;
       }
