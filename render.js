@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-25 08:55:47
+ * @LastEditTime: 2019-09-25 08:59:50
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -260,9 +260,9 @@
       //添加目录内容
       if(level<=3){
         if(level==3){
-          title_content += `<a href="#${anchor}" class="${className} pl-3">${text}</>`
+          title_content += `<a href="#${anchor}" class="${className} pl-4">${text}</>`
         }else{
-          title_content += `<a href="#${anchor}" class="${className} pl-2">${text}</>`
+          title_content += `<a href="#${anchor}" class="${className} pl-3">${text}</>`
         }
       }
       return `
