@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-26 10:19:12
+ * @LastEditTime: 2019-09-26 10:26:07
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -285,12 +285,12 @@
     };
     renderer.table = function (header, body) {
       if (body) body = '<tbody>' + body + '</tbody>';
-      return `<table class="${table_class}">\n`
+      return `<div class="col"><table class="${table_class}">\n`
       + '<thead>\n'
       + header
       + '</thead>\n'
       + body
-      + '</table>\n';
+      + '</table></div>';
     }
     renderer.tablecell = function(content, flags){
       var type = flags.header ? 'th' : 'td';
