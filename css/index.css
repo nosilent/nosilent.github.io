@@ -78,7 +78,7 @@ ul ul,ul ol,ol ul {
 }
 
 img {
-  max-width: 90% !important;
+  max-width: 100%;
 }
 
 /* 标题序号处理 */
