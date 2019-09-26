@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-26 09:56:51
+ * @LastEditTime: 2019-09-26 10:19:12
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -23,7 +23,7 @@
   let editTime = document.querySelector(".edit_time");
   let footer = document.querySelector("footer");
   let className = "list-group-item-action list-group-item py-1";
-  let table_class = "table table-striped table-sm table-responsive table-bordered";
+  let table_class = "table table-striped table-sm  table-bordered";
   let title_content = "";
   let active;
   let config;
