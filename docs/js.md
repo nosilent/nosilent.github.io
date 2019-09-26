@@ -229,12 +229,12 @@ var obj = new Number(value)
 alert(typeof obj)  // 'object'
 ```
 
-### Number类型方法
+## Number类型方法
 
 - toFixed(): 按照指定的小数位返回数值的字符串表示
 - toExponential()：返回以指数表示法表示的数值字符串形式
 
-### String类型方法
+## String类型方法
 
 - charAt() : 返回给定位置的单个字符
 
@@ -642,6 +642,179 @@ console.log( Array.from(myMap) )  //[["key1", "value1"], ["key2", "value2"]]
 ```
 
 ### promise
+
+#### 构造函数
+
+使用构造函数创建promise，构造函数接受一个参数（初始化promise执行函数），该初始化执行函数接受两个参数（完成处理函数，拒绝处理函数）
+
+```js
+let promise = new Promise((res,rej)=>{ ... })
+```
+
+#### 状态
+
+`pending`：进行中状态，操作尚未完成或已返回一个promise变为此状态。
+
+`fulfilled`：已完成状态，执行成功会变为此状态。
+
+`rejected`：已拒绝状态，由于程序出错或其他原因导致promise异步操作**未能成功完成**。
+
+#### then
+
+每个promise都有一个`then()`方法，该方法接受两个可选参数（完成处理函数，拒绝处理函数）。
+
+```js
+let promise = new Promise((res,rej)=>{ ... })
+promise.then(res=>{...},rej=>{...})
+```
+
+*如果一个对象实现了then()方法，则称该对象为thenable对象*
+
+#### catch
+
+promise的`catch()`方法相当于执行`then()`中的失败调用函数
+
+#### resolve
+
+promise的`resolve()`只接受一个参数并返回一个完成态的promise，该promise拒绝处理函数永远不会执行
+
+```js
+let promise = Promise.resolve(42)
+promise.then(res=>{
+	console.log(res)  //42
+})
+```
+
+#### reject
+
+promise的`reject()`方法用于创建一个拒绝态的promise
+
+```js
+let promise = Promise.reject(42)
+promise.catch(value=>{
+	console.log(value)  //42
+})
+```
+
+**如果向promise.reject()或promise.resolve()中传入一个promise，该promise会直接被返回**
+
+#### 非promise的thenable对象
+
+拥有`then()`方法并且接受resolve和reject这两个参数的普通对象就是非promise的thenable对象。
+
+向promise.resolve()或promise.reject()中传入一个非Promise的thanable对象，在执行时会直接调用thanable对象的then()方法，返回一个新的promise。
+
+#### 拒绝处理
+
+在node中，处理promise拒绝时会触发process对象上的两个事件：
+
+- unhandledRejection:在事件循环中，当promise被拒绝，并没有提供拒绝处理程序时，触发该事件
+- rejectionHandled:在事件循环后，当promise被拒绝，若拒绝处理程序被调用，触发该事件
+
+```js
+let rej
+process.on('unhandledRjection',(reason,promise)=>{
+   console.log(reason.message)  //'explosion'
+   console.log(rej === promise)  //true
+})
+rej = Promise.reject(new Error('explosion'))
+```
+
+在浏览器中同样可以使用这两个事件监听promise被拒绝
+
+#### promise链返回值
+
+promise链可以给下游的promise传递数据，在完成处理程序中指定一个返回值，则可以沿着这条链继续传递数据
+
+```js
+let p = new Promise((res,rej)=>{
+		res(42)
+})
+p.then(value=>{
+	console.log(value)  //42
+  return value + 1
+}).then(value=>{
+  console.log(value)  //43
+})
+```
+
+#### 响应多个promise
+
+`Promise.all()`方法接受一个参数（含有多个promise的可迭代对象）并返回一个Promise，只有当可迭代对象中所有promise都被完成后返回的promise才被完成，这些promise解决值按照传入的顺序存储。
+
+```js
+let p1 = new Promise((res,rej)=>{
+  res(42)
+})
+let p2 = new Promise((res,rej)=>{
+  res(43)
+})
+let p3 = new Promise((res,rej)=>{
+  res(44)
+})
+let p4 = Promise.all([p1,p2,p3])
+p4.then(res=>{
+  console.log(res)  //[42,43,44]
+})
+```
+
+该方法中的promise只要有一个被拒绝，那个返回的promise不会等所有Promise都完成就**立即被拒绝**。
+
+```js
+let p1 = new Promise((res,rej)=>{
+  res(42)
+})
+let p2 = new Promise((res,rej)=>{
+  rej(43)
+})
+let p3 = new Promise((res,rej)=>{
+  res(44)
+})
+let p4 = Promise.all([p1,p2,p3])
+p4.catch(res=>{
+  console.log(Array.isArray(res))  //false
+  console.log(res)  //43
+})
+```
+
+`Promise.race`()方法接受一个参数（含有多个promise的可迭代对象）并返回一个Promise，只要有一个promise被解决返回的promise就被解决，无须等到所有Promise都被完成。如果先解决的是已完成的Promise,则返回已完成的promise，若先完成的是已拒绝的promise，则返回已拒绝promise
+
+```js
+let p1 = Promise.resolve(42)
+let p2 = new Promise((res,rej)=>{
+  res(43)
+})
+let p3 = new Promise((res,rej)=>{
+  res(44)
+})
+let p4 = Promise.race([p1,p2,p3])
+p4.then(res=>{
+  console.log(res)  //42
+})
+```
+
+#### promise继承
+
+可以通过子类继承promise，在子类中扩展其他功能。
+
+```js
+class MyPromise extends Promise{
+	success(res,rej){
+		return this.then(res,rej)
+  }
+  failure(rej){
+    return this.catch(rej)
+  }
+}
+let promise = new MyPromise((res,rej)=>{
+		res(42)
+})
+promise.success(value=>{
+	console.log(value)
+})
+```
+
+
 
 ### proxy和reflection
 
@@ -1111,13 +1284,11 @@ InterceptorManager.prototype.eject = function eject(id) {
     this.handlers[id] = null;
   }
 };
-
 ```
-
-
 
 ### jquery.ajax
 
-## 请求类型get、post、put、delete....
+## 请求类型
 
 ## 设计模式
+
