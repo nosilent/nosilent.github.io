@@ -161,7 +161,7 @@ button元素或a链接添加 .btn .btn-xx(xx: primary secondary success danger w
 - .table-sm: 减少了表格中td的上下padding，用于table元素
 - .table-dark: 表格背景为黑色，用于table元素
 - .table-xx:  ( xx : active primary secondary success danger warning info light dark) ,用于tr或td
-- .table-responsive{-sm|-md|-lg|-xl}: 超出宽度范围，表格水平方向出现滚动条，用于table父元素
+- .table-responsive{-sm|-md|-lg|-xl}: 超出宽度范围，表格水平方向出现滚动条，用于table元素
 - .thead-light | dark： 表头背景为黑色或白色，用于thead元素
 
 ## 表单

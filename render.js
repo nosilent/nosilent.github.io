@@ -2,10 +2,11 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-25 10:53:31
+ * @LastEditTime: 2019-09-26 09:24:48
  * @LastEditors: Please set LastEditors
  */
-;(function () {
+;
+(function () {
   let frame = document.createDocumentFragment();
   let nav = document.querySelector("div.navbar-nav");
   //去顶部按钮
@@ -22,6 +23,7 @@
   let editTime = document.querySelector(".edit_time");
   let footer = document.querySelector("footer");
   let className = "list-group-item-action list-group-item py-1";
+  let table_class = "table table-striped table-sm table-responsive";
   let title_content = "";
   let active;
   let config;
@@ -281,6 +283,15 @@
             ${text}
             </h${level}>`;
     };
+    renderer.table = function (header, body) {
+      if (body) body = '<tbody>' + body + '</tbody>';
+      return `<table class="${table_class}">
+         '<thead>'
+         ${header}
+         '</thead>'
+         ${body}
+         '</table>`;
+    }
     return renderer;
   }
 })();
