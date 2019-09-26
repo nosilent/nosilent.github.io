@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-26 09:32:51
+ * @LastEditTime: 2019-09-26 09:56:51
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -23,7 +23,7 @@
   let editTime = document.querySelector(".edit_time");
   let footer = document.querySelector("footer");
   let className = "list-group-item-action list-group-item py-1";
-  let table_class = "table table-striped table-sm table-responsive";
+  let table_class = "table table-striped table-sm table-responsive table-bordered";
   let title_content = "";
   let active;
   let config;
@@ -290,7 +290,17 @@
       + header
       + '</thead>\n'
       + body
-      + '</table>\n';;
+      + '</table>\n';
+    }
+    renderer.tablecell = function(content, flags){
+      var type = flags.header ? 'th' : 'td';
+      var tag;
+      if(type==='th'){
+        tag = `<${type} scope="col">`;
+      }else{
+        tag = `<${type}>`
+      }
+      return tag + content + '</' + type + '>\n';
     }
     return renderer;
   }

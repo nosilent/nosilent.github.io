@@ -157,6 +157,7 @@ button元素或a链接添加 .btn .btn-xx(xx: primary secondary success danger w
 - .table: 用于table元素
 - .table-striped： 表格各行变色， 用于table元素
 - .table-bordered： 添加表格表框，用于table元素
+- .table-borderless:  清除所有边框，用于table元素
 - .table-hover：鼠标移入过渡效果，用于table元素
 - .table-sm: 减少了表格中td的上下padding，用于table元素
 - .table-dark: 表格背景为黑色，用于table元素
