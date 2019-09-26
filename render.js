@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-18 16:54:51
- * @LastEditTime: 2019-09-26 10:38:53
+ * @LastEditTime: 2019-09-26 11:14:25
  * @LastEditors: Please set LastEditors
  */
 ;
@@ -44,7 +44,8 @@
     let btn_play = music.querySelectorAll("span")[1];
     let index = random(config.music_list.length);
     audio.src = `music/${config.music_list[index]}`;
-
+    audio.addEventListener('ended',end_handler)
+    
     music.addEventListener("click", music_handler);
 
     function music_handler(e) {
@@ -91,6 +92,14 @@
         btn_play.style.backgroundImage = 'url("images/play.svg")';
         audio.play();
       }
+    }
+    function end_handler(){
+      index++;
+      if(index>=config.music_list.length){
+        index = 0
+      }
+      audio.src = `music/${config.music_list[index]}`
+      audio.play()
     }
   }
   //初次内容渲染
