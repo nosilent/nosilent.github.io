@@ -10,7 +10,6 @@ ul ul,ul ol,ol ul {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-  word-break: break-all;
 }
 
 @media (min-width: 576px) {
@@ -80,7 +79,9 @@ ul ul,ul ol,ol ul {
 img {
   max-width: 100%;
 }
-
+.content {
+  overflow: hidden;
+}
 /* 标题序号处理 */
 .content h2 {
   counter-increment: counter2;
