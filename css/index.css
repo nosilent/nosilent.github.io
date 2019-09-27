@@ -63,6 +63,9 @@ ul ul,ul ol,ol ul {
   right: 4rem;
   text-align: center;
 }
+.to_top img {
+  cursor: pointer
+}
 
 @media (max-width:576px) {
   .to_top {
