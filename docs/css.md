@@ -118,8 +118,6 @@ css属性：`overflow：hidden`；`transition：all 1000ms ease`；
 
 **原理**：通过媒体查询检测不同的设备屏幕尺寸做处理。
 
-**兼容低版本的IE**: `<meta name="’viewport’" content="”width=device-width," initial-scale="1." maximum-scale="1,user-scalable=no”"/>`
-
 ## 视差滚动效果
 
 视差滚动（Parallax Scrolling）通过在网页向下滚动的时候，控制背景的移动速度比前景的移动速度慢来创建出令人惊叹的3D效果。
