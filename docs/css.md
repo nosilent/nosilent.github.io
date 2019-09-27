@@ -68,6 +68,10 @@ CSS选择器的解析是从右向左解析的。
 
 
 
+## a链接伪类顺序
+
+`:link/:visited`->`:hover`->`:active`
+
 ## 可继承的样式和不可继承的样式
 
 - 可继承的样式： font-size font-family color, 

@@ -34,7 +34,7 @@
   - Symbol
 - 复杂数据类型(引用类型)： Object
 
-检测方法： 
+类型检测方法： 
 
 - typeof: 用于检测基本数据类型
 - toString():用于检测复杂数据类型
@@ -50,7 +50,7 @@ Object.prototype.toString.apply(new String) //[object String]
 
 ## null、undefined、NaN
 
-null：指空值，指曾赋过值，但是目前没有值
+null：指空值，
 
 undefined：指从未赋值
 
@@ -300,22 +300,15 @@ alert(typeof obj)  // 'object'
 
 ## 正则
 
-## json
-
 ## 作用域和作用域链
 
-在某个函数被调用时，会创建一个执行环境及相应的作用域链。然后使用arguments和其他命名参数值来初始化函数的活动对象。
+作用域：访问数据的范围，控制着变量与函数的可见性和生命周期，分为全局作用域和局部作用域
 
-在作用域链中，外部函数的活动对象始终处于第二位，外部函数的外部函数活动对象处于第三位直到作用域链终点的全局执行环境。**作用域链的本质是一个指向变量对象的指针列表**，它只引用但不实际包含变量对象
-
-作用域链用来指定执行环境有权访问的所有变量和函数的**访问顺序**
+作用域链：当代码执行时，会创建一个变量对象的作用域链，保证对执行环境有权访问的所有变量和函数的**访问顺序**。若当前作用域没有该数据则向上级作用域查找该数据，一直到全局作用域。
 
 ## 闭包
 
-闭包：
-
-- 指一个函数有权访问另一函数作用域中的变量。
-- 当函数可以记住并访问所在的词法作用域，即使*函数是在当前词法作用域之外执行*（返回一个函数），这时就产生了闭包。
+闭包：一个函数能访问当前作用域数据，即使该函数在当前作用域外执行（返回一个函数）。
 
 创建闭包常见方式： 在一个函数内部创建另一个函数
 
@@ -374,8 +367,6 @@ Bar.prototype = new Foo();
   var a = 2;
   foo(); // 2
   ```
-
-  
 
 - 隐式绑定：当函数引用有上下文对象时，隐式绑定规则会把函数调用中的 this 绑定到这个上下文对象
 
@@ -443,6 +434,8 @@ Bar.prototype = new Foo();
 注意：把 null 或者 undefined 作为 this 的绑定对象传入 call 、 apply 或者 bind ，这些值在调用时会被忽略，实际应用的是默认绑定规则
 
 ## call、applay、bind
+
+
 
 - bind()：创建一个新函数，在bind()背调用时，新函数的this被传入的第一个参数指定，其余参数作为新函数的参数
 - call()：
@@ -982,24 +975,30 @@ import  xx from 'xx'|require(xx)，模块执行的顺序是先加载node自带�
 
 标准事件模型顺序：事件捕获>事件处理>事件冒泡
 
-#### 事件类型
+### 鼠标事件
 
-1. 鼠标事件：
-   - click:鼠标点击
-   - dblclick:双击
-   - mousemove:鼠标移动
-   - mouseover:鼠标移入（针对e.target）
-   - mouseout: 鼠标移出（针对e.target）
-   - mouseenter:鼠标进入（针对e.currentTarget侦听）
-   - mouseleave:鼠标离开（针对e.currentTarget侦听）
-   - mousedown:按下鼠标（鼠标三键）
-   - mouseup:释放鼠标（鼠标三键）
-   - contextmenu: 右键点击呼出菜单
-   - wheel: 滚轮向任意方向滚动
-   - select: 文本被选中
-2. 键盘事件：
+- click:鼠标点击
+- dblclick:双击
+- mousemove:鼠标移动
+- mouseover:鼠标移入（针对e.target）
+- mouseout: 鼠标移出（针对e.target）
+- mouseenter:鼠标进入（针对e.currentTarget侦听）
+- mouseleave:鼠标离开（针对e.currentTarget侦听）
+- mousedown:按下鼠标（鼠标三键）
+- mouseup:释放鼠标（鼠标三键）
+- contextmenu: 右键点击呼出菜单
+- wheel: 滚轮向任意方向滚动
+- select: 文本被选中
+
+### 键盘事件
+
+### 媒体事件
 
 ## 事件委托
+
+利用事件冒泡，在dom树尽量高的层次添加一个处理程序。
+
+优点：提高了页面加载速度，减少了dom引用，减少了内存占用。
 
 ## 懒（延迟）加载
 
@@ -1147,7 +1146,42 @@ function throttle(method, time){
 }
 ```
 
+## 同源策略
+
+协议相同，域名相同，端口相同
+
 ## 跨域
+
+### 图片ping
+
+是与服务器进行简单单向的跨域通信方式，主要利用`src`属性
+
+```js
+let img = new Image()
+img.src = '...'
+img.onload= function(){....}
+```
+
+缺点：只能发送get请求，无法访问服务器的响应文本。
+
+### jsonp
+
+通过动态创建`<script>`标签，为`src`属性指定一个跨域`url`，在url中指定一个回调函数，后台将数据传入回调函数执行。
+
+```js
+let script = document.createElement('script')
+script.src = '..../?callback = handle'
+function handle(data){
+  console.log(data)
+}
+document.body.insertBefore(script,document.body.firstChild)
+```
+
+
+
+优点：能够直接访问响应文本，支持在浏览器与服务器之间双向通信。
+
+缺点：不能保证从其他域加载代码的安全性，不能确定请求是否失败。
 
 ## ajax
 
@@ -1222,15 +1256,7 @@ fetch(source[, data])
 
 source:一个url字符串或一个Request对象
 
-data:一个配置项对象，包括所有对请求的设置
-
-| data    | 说明                                           |
-| ------- | ---------------------------------------------- |
-| method  | 请求使用的方法,如get,put                       |
-| headers | 请求的头信息                                   |
-| body    | 请求的 body 信息,get和head方法不能包含body信息 |
-|         |                                                |
-|         |                                                |
+data:一个配置项对象，包括所有对请求的设置。
 
 ```js
 fetch(url, {
@@ -1253,7 +1279,7 @@ fetch(url, {
 
 ### axios
 
-拦截器
+- 拦截器
 
 Axios构造函数中有`interceptors`属性,
 
@@ -1292,3 +1318,10 @@ InterceptorManager.prototype.eject = function eject(id) {
 
 ## 设计模式
 
+## 问题
+
+### 手机端 click 事件300ms 延迟
+
+原因：手机端事件 touchstart –> touchmove –> touchend or touchcancel –> click，因为在touch事件触发之后，浏览器要判断用户是否会做出双击屏幕的操作，所以会等待300ms来判断，再做出是否触发click事件的处理，所以就会有300ms的延迟
+
+解决：使用touch事件来代替click事件
