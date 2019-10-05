@@ -102,7 +102,7 @@ document.cookie = 'age = 5'
 document.cookie = 'age = 5;expires=过期时间'
 ```
 
-`sessionStorage`: 数据之保持到`浏览器关闭`，数据可以跨越页面刷新而存在，数据大小2.5mb或5mb。
+`sessionStorage`: 数据只保持到`窗口或标签页被永久关闭`，数据可以跨越页面刷新而存在，数据大小2.5mb或5mb。
 
 `localStorage`: 数据保持到通过js删除或用户清除浏览器缓存，符合同源策略才内访问数据，数据大小2.5mb或5mb。
 
