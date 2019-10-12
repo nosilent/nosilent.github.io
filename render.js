@@ -112,11 +112,11 @@
           if (config.navData[item].show) {
             let a = document.createElement("a");
             a.classList.add("nav-link");
-            a.setAttribute("href", `#${config.docs}/${item}`);
-            if (`${config.docs}/${item}` == config.index) {
+            a.setAttribute("href", `#${config.navData[item].src}`);
+            if (item == config.index) {
               active = a;
             }
-            a.textContent = item;
+            a.textContent = config.navData[item].text;
             frame.appendChild(a);
           }
         });

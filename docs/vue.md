@@ -1143,6 +1143,23 @@ store.commit({
     }
   ```
 
+- 操作state在对象上添加一个不存在的属性时，以赋值的形式添加则该属性不具有响应式状态，应该这样操作
+
+```js
+mutations:{
+	//1. 使用Vue.set(obj,prop,value),
+    //为state中的info对象添加一个不存在的age属性
+    info_change(state,value){
+        Vue.set(state.info,'age',value)
+    }，
+    //2. 整体替换该对象
+    //为state中data对象添加一个不存在的info属性
+    data_change(state,value){
+		state.data = {...state.data,info:value}
+    }
+}
+```
+
 - 在组件中提交mutation使用this.$store.commit('xxx')，或者使用 `mapMutations` 辅助函数将组件中的 methods 映射为 `store.commit` 调用
 
   ```js

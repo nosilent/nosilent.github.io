@@ -1,17 +1,19 @@
 {
     "navData": {
-        "html": {"show":true},
-        "css": {"show":true},
-        "js": {"show":true},
-        "bootstrap": {"show":true},
-        "typescript": {"show":false},
-        "jquery": {"show":true},
-        "vue": {"show":true},
-        "react": {"show":true},
-        "flutter": {"show":true}
+        "html": {"show":true,"text":"html","src":"docs/html"},
+        "css": {"show":true,"text":"css","src":"docs/css"},
+        "js": {"show":true,"text":"javacript","src":"docs/js"},
+        "bootstrap": {"show":true,"text":"bootstrap","src":"docs/bootstrap"},
+        "typescript": {"show":false,"text":"typescript","src":"docs/typescript"},
+        "jquery": {"show":true,"text":"jquery","src":"docs/jquery"},
+        "vue": {"show":true,"text":"vue","src":"docs/vue"},
+        "react": {"show":true,"text":"react","src":"docs/react"},
+        "flutter": {"show":true,"text":"flutter","src":"docs/flutter"},
+        "版本控制": {"show":true,"text":"版本控制","src":"docs/git_svn"},
+        "小程序": {"show":true,"text":"小程序","src":"docs/wxApp"}
     },
     "title_end_tag": "title",
-    "index": "docs/react",
+    "index": "react",
     "docs": "docs",
     "music_list": ["天空之城.mp3", "梦中的婚礼.mp3", "高山流水.mp3", "约定.mp3","夜的钢琴曲五.mp3","Big Big World.mp3","Pour Elise.mp3"]
 }
