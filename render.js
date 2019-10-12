@@ -199,7 +199,10 @@
   function LastEditTime(data) {
     let regExp = /\@Date\:\s+(\S+)\s*.+\n\s*\S*\s*\@LastEditTime\:\s*(\S+)/;
     let time = data.match(regExp)||[];
-    if (time.length < 3) return;
+    if (time.length < 3) {
+      editTime.innerHTML = '';
+      return ;
+    };
     editTime.innerHTML = `更新时间 : ${
       time[2]
     }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建时间 : ${time[1]}`;
