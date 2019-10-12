@@ -56,7 +56,7 @@
 }
 ```
 
-<img src="wxApp.assets/1570781653397.png" alt="1570781653397" style="zoom:80%;" />
+<img src="./wxApp.assets/1570781653397.png" alt="1570781653397" style="zoom:80%;" />
 
 ##### tabBar
 
@@ -84,7 +84,7 @@
 }
 ```
 
-![1570783219725](wxApp.assets/1570783219725.png)
+![1570783219725](./wxApp.assets/1570783219725.png)
 
 ##### networkTimeout
 
@@ -268,7 +268,7 @@
 }
 ```
 
-![1570786076968](wxApp.assets/1570786076968.png)
+![1570786076968](./wxApp.assets/1570786076968.png)
 
 ##### sitemapLocation
 
