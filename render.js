@@ -126,7 +126,7 @@
       })
       .then(res => {
         //初始内容渲染
-        render(config.index);
+        render(`${config.docs}/${config.index}`);
         music();
       });
     //导航栏点击事件
@@ -198,7 +198,7 @@
   //文档修改时间信息
   function LastEditTime(data) {
     let regExp = /\@Date\:\s+(\S+)\s*.+\n\s*\S*\s*\@LastEditTime\:\s*(\S+)/;
-    let time = data.match(regExp);
+    let time = data.match(regExp)||[];
     if (time.length < 3) return;
     editTime.innerHTML = `更新时间 : ${
       time[2]
