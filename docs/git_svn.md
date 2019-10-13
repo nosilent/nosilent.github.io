@@ -2,12 +2,8 @@
 
 - checkout：获取仓库数据
 
-![1563786219637](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1563786219637.png)
-
 - commit：提交数据
 - update：更新数据
-
-![1563786332737](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1563786332737.png)
 
 ### 在linux下搭建svn服务器
 

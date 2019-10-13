@@ -524,6 +524,48 @@ useEffect(() => {
 
 ## redux
 
+### reducer
+
+一个函数，用于存储数据
+
+```jsx
+const reducer = (state={},action)=>{
+		switch(action.type){
+      case "1":
+        return state.count;
+      case "2":
+        return {...state,count:1};
+      default:
+        return state
+    }
+} 
+```
+
+### store
+
+```jsx
+import { createStore } from 'redux';
+let store = createStore(reducer);
+//获取数据
+store.getState();
+//更新数据
+store.dispatch(action)
+//监听数据变化，每次dispatch后都会执行
+store.subscribe(()=>console.log(store.getState()))
+```
+
+### action
+
+```jsx
+let action = {
+	type: 'count',
+  value: 'ddd'
+}
+store.dispatch(action)
+```
+
+
+
 ## 服务端渲染
 
 ## 其他插件

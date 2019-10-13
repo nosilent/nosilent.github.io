@@ -1,12 +1,18 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-10-11 14:58:27
+ * @LastEditTime: 2019-10-12 11:40:34
+ * @LastEditors: Please set LastEditors
+ -->
 
 
-## 页面构成
 
-### JSON 配置
+## JSON 配置
 
 在项目的根目录有一个 `app.json` 和 `project.config.json`，此外在 `pages/logs` 目录下还有一个 `logs.json`
 
-#### 配置 app.json
+### 配置 app.json
 
 `app.json` 是当前小程序的全局配置，包括了小程序的所有页面路径、界面表现、网络超时时间、底部 tab 等。
 
@@ -23,10 +29,11 @@
 	"navigateToMiniProgramAppIdList":{},
   "permission":{},
   "usingComponents":{},
+  
 }
 ```
 
-##### pages
+#### pages
 
 用于指定小程序由哪些页面组成，每一项都对应一个页面的 路径（含文件名） 信息。文件名不需要写文件后缀，框架会自动去寻找对于位置的 `.json`, `.js`, `.wxml`, `.wxss` 四个文件进行处理。
 
@@ -36,7 +43,7 @@
 }
 ```
 
-##### window
+#### window
 
 用于设置小程序的状态栏、导航条、标题、窗口背景色
 
@@ -56,9 +63,9 @@
 }
 ```
 
-<img src="./wxApp.assets/1570781653397.png" alt="1570781653397" style="zoom:80%;" />
+<img src="wxApp.assets/1570781653397.png" alt="1570781653397" style="zoom:80%;" />
 
-##### tabBar
+#### tabBar
 
 通过 tabBar 配置项指定窗口的底部或顶部tab 栏切换页面
 
@@ -86,7 +93,7 @@
 
 ![1570783219725](./wxApp.assets/1570783219725.png)
 
-##### networkTimeout
+#### networkTimeout
 
 各类网络请求的超时时间，单位均为毫秒
 
@@ -101,18 +108,18 @@
 }
 ```
 
-##### debug
+#### debug
 
 在开发者工具中开启 `debug` 模式
 
-##### functionalPages
+#### functionalPages
 
 插件所有者小程序需要设置这一项来启用插件功能页
 
 ```json
 {
   "functionalPages": {
-    "independent": true
+    "independent": true,
   }
 }
 //兼容写法
@@ -123,7 +130,7 @@
 
 `"independent": true` 会使得插件功能页的代码独立于其他代码，这意味着插件功能页可以被独立下载、加载，具有更好的性能表现
 
-##### subpackages
+#### subpackages
 
 启用分包加载时，声明项目分包结构
 
@@ -141,20 +148,20 @@
 }
 ```
 
-###### 打包原则
+##### 打包原则
 
 - 声明 `subpackages` 后，将按 `subpackages` 配置路径进行打包，`subpackages` 配置路径外的目录将被打包到 app（主包） 中
 - app（主包）也可以有自己的 pages（即最外层的 pages 字段）
 - `subpackage` 的根目录不能是另外一个 `subpackage` 内的子目录
 - `tabBar` 页面必须在 app（主包）内
 
-###### 引用原则
+##### 引用原则
 
 - `packageA` 无法 require `packageB` JS 文件，但可以 require `app`、自己 package 内的 JS 文件
 - `packageA` 无法 import `packageB` 的 template，但可以 require `app`、自己 package 内的 template
 - `packageA` 无法使用 `packageB` 的资源，但可以使用 `app`、自己 package 内的资源
 
-###### 独立分包
+##### 独立分包
 
 从独立分包中页面进入小程序时，不需要下载主包。当用户进入普通分包或主包内页面时，主包才会被下载。
 
@@ -166,11 +173,11 @@
 - `App` 只能在主包内定义，独立分包中不能定义 `App`，会造成无法预期的行为；
 - 独立分包中暂时不支持使用插件。
 
-##### workers
+#### workers
 
 使用 Worker处理多线程任务时，设置 `Worker` 代码放置的目录
 
-##### requiredBackgroundModes
+#### requiredBackgroundModes
 
 申明需要后台运行的能力，类型为数组，目前支持：`audio`: 后台音乐播放，`location`: 后台定位
 
@@ -180,7 +187,7 @@
 }
 ```
 
-##### plugins
+#### plugins
 
 声明小程序需要使用的插件
 
@@ -189,7 +196,7 @@
   "plugins": {
     "myPlugin": {
       "version": "1.0.0",
-      "provider": "wxidxxxxxxxxxxxxxxxx"
+      "provider": "wxidxxxxxxxxxxxxxxxx",
     }
   }
 }
@@ -197,7 +204,7 @@
 
 `plugins` 定义段中可以包含多个插件声明，每个插件声明以一个使用者自定义的插件引用名作为标识，并指明插件的 appid 和需要使用的版本号
 
-##### preloadRule
+#### preloadRule
 
 在进入小程序某个页面时，由框架自动预下载可能需要的分包，提升进入后续分包页面时的启动速度
 
@@ -209,7 +216,8 @@
       "packages": ["important"] //进入页面后预下载分包的 root 或 name。__APP__ 表示主包
     },
     "sub1/index": {
-      "packages": ["hello", "sub3"]
+      "packages": ["hello", "sub3"],
+      "network": "all"
     }
   }
 }
@@ -219,7 +227,7 @@
 
 同一个分包中的页面享有共同的预下载大小限额 2M，限额会在工具中打包时校验
 
-##### resizable
+#### resizable
 
 在 iPad 上运行的小程序可以设置支持屏幕旋转,在 iPad 上不能单独配置某个页面是否支持屏幕旋转。
 
@@ -229,7 +237,7 @@
 }
 ```
 
-##### navigateToMiniProgramAppIdList
+#### navigateToMiniProgramAppIdList
 
 当小程序需要使用 `wx.navigateToMiniProgram` 接口跳转到其他小程序时，需要先在配置文件中声明需要跳转的小程序 `appId `列表，最多允许填写 10 个
 
@@ -241,11 +249,11 @@
 }
 ```
 
-##### usingComponents
+#### usingComponents
 
 在此处声明的自定义组件视为全局自定义组件，在小程序内的页面或自定义组件中可以直接使用而无需再声明
 
-##### permission
+#### permission
 
 小程序接口权限相关设置
 
@@ -270,7 +278,7 @@
 
 ![1570786076968](./wxApp.assets/1570786076968.png)
 
-##### sitemapLocation
+#### sitemapLocation
 
 指明 `sitemap.json `的位置；默认为 'sitemap.json' 即在 app.json 同级目录下名字的 `sitemap.json` 文件
 
@@ -292,13 +300,13 @@
 }
 ```
 
-### WXML
+## WXML
 
 是框架设计的一套标签语言，结合基础组件、事件系统，可以构建出页面的结构，
 
-#### 数据绑定
+### 数据绑定
 
-##### 简单绑定
+#### 简单绑定
 
 数据绑定使用 Mustache 语法（双大括号）将变量包起来
 
@@ -313,7 +321,7 @@ Page({
 })
 ```
 
-##### 组件属性(需要在双引号之内)
+#### 组件属性(需要在双引号之内)
 
 ```jsx
 <view id="item-{{id}}"> </view>
@@ -324,13 +332,13 @@ Page({
 })
 ```
 
-##### 关键字(需要在双引号之内)
+#### 关键字(需要在双引号之内)
 
 ```jsx
 <checkbox checked="{{false}}"> </checkbox>
 ```
 
-##### 运算
+#### 运算
 
 可以在 `{{}}` 内进行简单的运算
 
@@ -352,7 +360,7 @@ Page({
 })
 ```
 
-##### 组合
+#### 组合
 
 可以在 Mustache 内直接进行组合，构成新的对象或者数组,也可以用扩展运算符 `...` 来将一个对象展开,
 
@@ -376,7 +384,7 @@ Page({
 })
 ```
 
-#### 列表渲染
+### 列表渲染
 
 在组件上使用 `wx:for` 控制属性绑定一个数组，即可使用数组中各项的数据重复渲染该组件,默认数组的当前项的下标变量名默认为 `index`，数组当前项的变量名默认为 `item`
 
@@ -420,7 +428,7 @@ Page({
 
 
 
-#### 条件渲染
+### 条件渲染
 
 ```jsx
 <!--wxml-->
@@ -437,7 +445,7 @@ Page({
 
 `wx:if` 有更高的切换消耗而 `hidden` 有更高的初始渲染消耗
 
-#### 模板
+### 模板
 
 在模板中定义代码片段，然后在不同的地方调用，
 
@@ -468,27 +476,64 @@ Page({
 
 模板拥有自己的作用域，只能使用 data 传入的数据以及模板定义文件中定义的 `<wxs />` 模块
 
-### WXSS 样式
+### 引用
+
+ 两种文件引用方式import和include 
+
+#### import
+
+ import 可以在该文件中使用目标文件定义的 `<template>`,  import 不具有递归的特性 , 不会 import 目标文件中 import 的 template 
+
+```jsx
+<!-- item.wxml -->
+<template name="item">
+  <text>{{text}}</text>
+</template>
+<!-- index.wxml -->
+<import src="item.wxml"/>
+<template is="item" data="{{text: 'forbar'}}"/>
+```
+
+#### include
+
+ include 可以将目标文件中除了 `<template/>  <wxs/> ` 外的整个代码引入，相当于是拷贝到 include 位置 
+
+```jsx
+<!-- index.wxml -->
+<include src="header.wxml"/>
+<view> body </view>
+<include src="footer.wxml"/>
+<!-- footer.wxml -->
+<view> footer </view>
+<!-- header.wxml -->
+<view> header </view>
+```
+
+### 标签共同属性
+
+ 所有wxml 标签都支持的属性称之为共同属性 ：id，class， style ， hidden ， `data-*` (自定义属性)， `bind*/catch* `（事件绑定）
+
+## WXSS 样式
 
 `WXSS` 具有 `CSS` 大部分的特性，也做了一些扩充和修改。
 
 新增了尺寸单位，提供了全局的样式和局部样式，`WXSS` 仅支持部分 `CSS` 选择器
 
-#### 尺寸单位
+### 尺寸单位
 
-`rpx（responsive pixel）`: 可以根据屏幕宽度进行自适应。规定屏幕宽为`750rpx`。
+`rpx（responsive pixel）`: 可以根据屏幕宽度进行自适应。规定屏幕宽为`750rpx`。 小程序编译后，rpx会做一次px换算 
 
 在 iPhone6 上，屏幕宽度为375px，共有750个物理像素，则750rpx = 375px = 750物理像素，1rpx = 0.5px = 1物理像素
 
-#### 样式导入
+### 样式引入
 
-使用`@import`语句可以导入外联样式表，`@import`后跟需要导入的外联样式表的相对路径，用`;`表示语句结束。
+使用`@import`语句可以引入外联样式表，`@import`后跟需要导入的外联样式表的相对路径，用`;`表示语句结束。
 
 ```css
 @import "common.wxss";
 ```
 
-##### 内联样式
+#### 内联样式
 
 框架组件上支持使用 style、class 属性来控制组件的样式
 
@@ -504,21 +549,21 @@ Page({
 <view class="normal_view" />
 ```
 
-##### 选择器
+#### 选择器
 
 支持的选择器有：
 
 类选择器 `.class`,id选择器 `#id`,组件名选择器`view`,多个组件名选择器 `view,view`,伪元素`::before ::after`
 
-##### 全局样式与局部样式
+#### 全局样式与局部样式
 
 在 `app.wxss` 中的样式为全局样式，作用于每一个页面
 
 在 page 的 `wxss` 文件中定义的样式为局部样式，只作用在对应的页面，并会覆盖 `app.wxss `中相同的选择器
 
-### js逻辑交互
+## js逻辑交互
 
-#### 事件绑定
+### 事件绑定
 
 事件绑定的写法同组件的属性，以 key、value 的形式。
 
@@ -538,11 +583,11 @@ value 是一个字符串，需要在对应的 Page 中定义同名的函数
 </view>
 ```
 
-##### 事件冒泡
+#### 事件冒泡
 
 `bind`事件绑定不会阻止冒泡事件向上冒泡，`catch`事件绑定可以阻止冒泡事件向上冒泡
 
-##### 事件捕获
+#### 事件捕获
 
 捕获阶段位于冒泡阶段之前，且在捕获阶段中，事件到达节点的顺序与冒泡阶段恰好相反
 
@@ -557,11 +602,11 @@ value 是一个字符串，需要在对应的 Page 中定义同名的函数
 </view>
 ```
 
-#### 事件对象
+### 事件对象
 
 无特殊说明，当组件触发事件时，逻辑层绑定该事件的处理函数会收到一个事件对象
 
-##### 基础事件对象属性
+#### 基础事件对象属性
 
 `type`: 事件类型，字符串类型
 
@@ -593,7 +638,7 @@ value 是一个字符串，需要在对应的 Page 中定义同名的函数
 </view>
 ```
 
-##### 自定义事件对象属性
+#### 自定义事件对象属性
 
 在基础事件对象属性上增加了`detail`属性(Object类型)，表示自定义事件所携带的数据
 
@@ -601,7 +646,7 @@ value 是一个字符串，需要在对应的 Page 中定义同名的函数
 
 点击事件的`detail` 带有的 x, y 同 pageX, pageY 代表距离文档左上角的距离
 
-##### 触摸事件对象属性
+#### 触摸事件对象属性
 
 在基础事件对象属性上增加了`touches`属性（一个数组）和`changedTouches`属性（一个数组）
 
@@ -641,7 +686,7 @@ value 是一个字符串，需要在对应的 Page 中定义同名的函数
 }
 ```
 
-#### 事件分类
+### 事件分类
 
 事件分为冒泡事件和非冒泡事件，
 
@@ -666,13 +711,69 @@ value 是一个字符串，需要在对应的 Page 中定义同名的函数
 
 **除上表之外的其他组件自定义事件如无特殊声明都是非冒泡事件**
 
-#### 使用WXS函数响应事件
+### wxs
+
+ WXS 代码可以编写在 wxml 文件中的 `<wxs> ` 标签内，或以 `.wxs` 为后缀名的文件内 ,类似于在`html`中使用`<script/>`,
+
+#### 模块
+
+ 每一个 `.wxs` 文件和 ` <wxs> ` 标签都是一个单独的模块 ， 一个模块要想对外暴露其内部的私有变量与函数，只能通过 `module.exports` 实现 , 在`.wxs`模块中引用其他 `wxs` 文件模块，可以使用 `require` 函数 .
+
+```jsx
+<!--wxml-->
+<wxs module="m1">
+var msg = "hello world";
+module.exports.message = msg;
+</wxs>
+<view> {{m1.message}} </view>
+```
+
+#### `<wxs>` 标签
+
+标签属性：
+
+ `module` : 当前 `<wxs>` 标签的模块名。必填字段 
+
+ `src`:  引用 .wxs 文件的相对路径。仅当本标签为**单闭合标签**或**标签的内容为空**时有效 . 只能引用 `.wxs` 文件模块，且必须使用相对路径 
+
+#### 变量
+
+- WXS 中的变量均为值的引用 
+- 没有声明的变量直接赋值使用，会被定义为全局变量 
+-  如果只声明变量而不赋值，则默认值为 `undefined` 
+
+#### 数据类型
+
+- `number` ： 数值
+- `string` ：字符串
+- `boolean`：布尔值
+- `object`：对象
+- `function`：函数
+- `array` : 数组
+- `date`：日期
+- `regexp`：正则
+
+[参考]( https://developers.weixin.qq.com/miniprogram/dev/reference/wxs/06datatype.html )
+
+#### 基础类库
+
+- console
+- Math
+- Json
+- Number
+- Date
+- Global
+
+[参考]( https://developers.weixin.qq.com/miniprogram/dev/reference/wxs/07basiclibrary.html )
+
+### 使用WXS函数响应事件
 
 WXS函数接受2个参数，第一个是event事件对象,第二个参数是`ownerInstance`,表示触发事件的组件所在的组件的 `ComponentDescriptor` 实例
 
 - 在组件中绑定和注册事件处理的WXS函数
 
 ```jsx
+//.wxml
 <wxs module="wxs" src="./test.wxs"></wxs>
 <view id="tapTest" data-hi="WeChat" bindtap="{{wxs.tapName}}"> Click me! </view>
 //绑定的WXS函数必须用{{}}括起来
@@ -702,15 +803,137 @@ var wxsFunction = function(event, ownerInstance) {
 
 `ComponentDescriptor` 实例方法
 
-| 方法                           | 参数                           | 描述                             |
-| ------------------------------ | ------------------------------ | -------------------------------- |
-| selectComponent                | selector对象                   | 返回组件的 实例                  |
-| selectAllComponents            | selector对象数组               | 返回组件的 实例数组              |
-| setStyle                       | Object/string                  | 设置组件样式，支持`rpx`          |
-| addClass/removeClass/ hasClass | string                         | 设置组件的 class                 |
-| getDataset                     | 无                             | 返回当前组件/页面的 dataset 对象 |
-| callMethod                     | (funcName:string, args:object) | 调用当前组件/页面定义的函数      |
-| requestAnimationFrame          | Function                       | 与原生js一样，用于设置动画       |
-| getState                       | 无                             | 存储局部变量后续使用，饭一个对象 |
-| triggerEvent                   | (eventName, detail)            | 和组件的triggerEvent一致         |
+| 方法                           | 参数                           | 描述                                       |
+| ------------------------------ | ------------------------------ | ------------------------------------------ |
+| selectComponent                | selector对象                   | 返回组件的 实例                            |
+| selectAllComponents            | selector对象数组               | 返回组件的 实例数组                        |
+| setStyle                       | Object/string                  | 设置组件样式，支持`rpx`                    |
+| addClass/removeClass/ hasClass | string                         | 设置组件的 class                           |
+| getDataset                     | 无                             | 返回当前组件/页面的 dataset 对象           |
+| callMethod                     | (funcName:string, args:object) | 调用当前组件/页面定义的函数                |
+| requestAnimationFrame          | Function                       | 与原生js一样，用于设置动画                 |
+| getState                       | 无                             | 存储局部变量后续使用，饭一个对象           |
+| triggerEvent                   | (eventName, detail)            | 和组件的triggerEvent一致，用法类似于emit() |
+
+### 模块化
+
+ 小程序中可以将任何一个`JavaScript` 文件作为一个模块，通过`module.exports` 或者 `exports` 对外暴露接口 
+
+```jsx
+// moduleA.js
+module.exports = function( value ){
+  return value * 2;
+}
+// 在B.js中引用模块A
+var multiplyBy2 = require('./moduleA')
+var result = multiplyBy2(4)
+```
+
+### 作用域
+
+ 在文件中声明的变量和函数只在该文件中有效，不同的文件中可以声明相同名字的变量和函数，不会互相影响 。
+
+ 当需要使用全局变量的时，通过使用全局函数 `getApp()` 获取全局的实例，并设置相关属性值，来达到设置全局变量的目的 
+
+```jsx
+// a.js
+// 获取全局变量
+var global = getApp()
+global.globalValue = 'globalValue'
+// b.js
+// 访问全局变量
+var global = getApp()
+console.log(global.globalValue)  // 输出 globalValue
+```
+
+ 当需要保证全局的数据可以在任何文件中安全的被使用到，那么可以在 `App()` 中进行设置 
+
+```jsx
+// app.js
+App({
+  globalData: 1
+})
+// a.js
+// 获取 global 变量
+var app = getApp()
+// 修改 global 变量
+app.globalData++  // 执行后 globalData 数值为 2
+// b.js
+// 如果先执行了 a.js 这里的输出应该是 2
+console.log(getApp().globalData)
+```
+
+## 程序和页面
+
+### 程序构造器App()
+
+ App() 构造器用来注册一个程序 ，必须写在项目根目录的app.js里 。  App构造器接受一个Object参数 。[参考]( https://developers.weixin.qq.com/ebook?action=get_post_info&docid=0004eec99acc808b00861a5bd5280a )
+
+```jsx
+App({
+  onLaunch: function(options) {},  //当小程序初始化完成时触发
+  onShow: function(options) {}, //当小程序启动，或从后台进入前台显示，会触发
+  onHide: function() {},  //当小程序从前台进入后台时触发
+  onError: function(msg) {},  //当小程序发生脚本错误，或者 API 调用失败时触发
+  ...      //可以添加任意的函数或数据到 Object 参数中，在App实例回调用 this 可以访问
+})
+```
+
+App实例是单例对象，在其他JS脚本中可以使用宿主环境提供的 getApp() 来获取程序实例 
+
+```jsx
+// other.js
+var appInstance = getApp()
+```
+
+### 页面
+
+#### 文件构成和路径
+
+ 一个页面是分三部分组成：界面、配置和逻辑。 
+
+ 界面由WXML文件和WXSS文件来负责描述，配置由JSON文件进行描述，页面逻辑则是由JS脚本文件负责。 
+
+ 页面路径需要在小程序代码根目录app.json中的pages字段声明，否则这个页面不会被注册到宿主环境中。 
+
+#### 页面构造器Page()
+
+ Page() 构造器用来注册一个小程序页面，Page()在页面脚本`.js`中调用 , Page构造器接受一个Object参数 。
+
+ 其中data属性是当前页面WXML模板中可以用来做数据绑定的初始数据 。
+
+```jsx
+Page({
+  data: { text: "This is page data." },  //页面的初始数据
+  onLoad: function(options) { },   //生命周期函数--监听页面加载
+  onReady: function() { },  //生命周期函数--监听页面初次渲染完成
+  onShow: function() { },  //生命周期函数--监听页面显示
+  onHide: function() { },  //生命周期函数--监听页面隐藏
+  onUnload: function() { },  //生命周期函数--监听页面卸载
+  onPullDownRefresh: function() { },  //页面用户行为,监听用户下拉动作
+  onReachBottom: function() { },  //页面用户行为,页面上拉触底事件的处理函数
+  onShareAppMessage: function () { }, //页面用户行为,定义该函数，右上角菜单才会显示“转发”按钮
+  onPageScroll: function() { }//页面用户行为,页面滚动触发事件的处理函数
+  ...      //其他,可以添加任意的函数或数据，在Page实例的其他函数中用 this 可以访问
+})
+```
+
+#### 页面数据
+
+ 在Page实例下的方法调用`this.setData()`修改data中的数据 , setData传递数据实际是一个异步的过程 , setData的第二个参数是一个callback回调，在这次setData对界面渲染完毕后触发 
+
+```jsx
+// page.js
+Page({
+  onLoad: function(){
+    this.setData({
+      text: 'change data'
+    }, function(){
+      // 在这次setData对界面渲染完毕后触发
+    })
+  }
+})
+```
+
+### 页面跳转和路由
 
