@@ -937,3 +937,389 @@ Page({
 
 ### 页面跳转和路由
 
+| api             | 说明                                                         |
+| --------------- | ------------------------------------------------------------ |
+| wx.navigateTo   | 保留当前页面，跳转到应用内的某个页面。但是不能跳到 tabbar 页面。 |
+| wx.redirectTo   | 页面重定向，关闭当前页面，跳转到应用内的某个页面。但是不允许跳转到 tabbar 页面 |
+| wx.navigateBack | 页面返回，关闭当前页面，返回上一页面或多级页面。             |
+| wx.switchTab    | 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面             |
+| wx.reLaunch     | 关闭所有页面，打开到应用内的某个页面                         |
+
+`redirectTo`、`switchTab`、`reLaunch`都有4个参数： `url `  `success`  ` fail`  ` complete `
+
+`navigateTo`有5个参数： `url`  ` success`   `fail`   `complete`  ` events `
+
+```jsx
+wx.navigateTo({
+  url: 'test?id=1',
+  events: { //页面间通信接口，用于监听被打开页面发送到当前页面的数据
+    // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+    someEvent: function(data) {
+      console.log(data)
+    }
+    ...
+  },
+  success: function(res) {  //接口调用成功的回调函数
+    // 通过eventChannel向被打开页面传送数据
+    res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
+  },
+  fail(){},   //接口调用失败的回调函数
+  complete(){}   //接口调用结束的回调函数（调用成功、失败都会执行）
+})
+```
+
+`navigateBack`有4个参数： ` delta`  `success`   `fail `  `complete` 
+
+```jsx
+wx.navigateBack({
+  delta: 2   //默认值1，返回的页面数，如果 delta 大于现有页面数，则返回到首页。
+})
+```
+
+#### EventChannel
+
+| api  | 参数                            | 说明                                                         |
+| ---- | ------------------------------- | ------------------------------------------------------------ |
+| emit | (string eventName, any args)    | 触发一个事件                                                 |
+| off  | (string eventName, function fn) | 取消监听一个事件。给出第二个参数时，只取消给出的监听函数，否则取消所有监听函数 |
+| on   | (string eventName, function fn) | 持续监听一个事件                                             |
+| once | (string eventName, function fn) | 监听一个事件一次，触发后失效                                 |
+
+在页面跳转的`success`函数的参数中可以使用EventChannel
+
+```jsx
+wx.navigateTo({
+  url: 'test?id=1',
+  success: function(res) {  //接口调用成功的回调函数
+    // 通过eventChannel向被打开页面传送数据
+   res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
+})
+```
+
+### 页面节点获取
+
+要获取节点，首先需要使用`wx.createSelectorQuery`创建一个 `SelectorQuery` 实例。[参考]( https://developers.weixin.qq.com/miniprogram/dev/api/wxml/NodesRef.context.html )
+
+```jsx
+const query = wx.createSelectorQuery()
+```
+
+ 在自定义组件或包含自定义组件的页面中，应使用 `this.createSelectorQuery()` 来代替 .
+
+#### 实例方法
+
+#####  select(string selector)
+
+  在当前页面下选择第一个匹配选择器 `selector` 的节点。返回一个 `NodesRef` 对象实例，可以用于获取节点信息 
+
+```jsx
+query.select(...)
+```
+
+ 支持下列语法 ：
+
+- ID选择器：#the-id
+- class选择器（可以连续指定多个）：.a-class.another-class
+- 子元素选择器：.the-parent > .the-child
+- 后代选择器：.the-ancestor .the-descendant
+- 跨自定义组件的后代选择器：.the-ancestor >>> .the-descendant
+- 多选择器的并集：#a-node, .some-other-nodes
+
+##### selectAll(string selector)
+
+ 当前页面下选择匹配选择器 selector 的所有节点 
+
+```jsx
+query.selectAll(...)
+```
+
+##### selectViewport()
+
+ 选择显示区域。可用于获取显示区域的尺寸、滚动位置等信息 。无参数
+
+```jsx
+query.selectViewport()
+```
+
+##### in(Component component)
+
+ 将选择器的选取范围更改为自定义组件 `component` 内 
+
+##### exec(function callback)
+
+ 执行所有的请求。请求结果按请求次序构成数组，在callback的第一个参数中返回 
+
+#### 节点信息获取方法
+
+在选取节点后执行的操作
+
+##### boundingClientRect(function callback)
+
+ 添加节点的布局位置的查询请求。相对于显示区域，以像素为单位 
+
+```jsx
+query.select('.img').boundingClientRect(res=>{
+  console.log(res)
+}).exec()
+```
+
+##### context(function callback)
+
+ 添加节点的 Context 对象查询请求。 
+
+##### fields(Object fields, function callback)
+
+ 获取节点的相关信息。需要获取的字段在fields中指定 
+
+```jsx
+wx.createSelectorQuery().select('#the-id').fields({
+  id:true, //返回节点 id
+  dataset: true, //返回节点 dataset
+  size: true, //返回节点尺寸
+  rect: true, //返回节点布局位置(left right top bottom）
+  scrollOffset: true, //返回节点的 scrollLeft scrollTop，节点必须是 scroll-view或者viewport
+  properties: ['scrollX', 'scrollY'], //返回节点对应属性名的当前属性值
+  computedStyle: ['margin', 'backgroundColor'], //指定样式名列表，返回节点对应样式名的当前值
+  context: true, //返回节点对应的 Context 对象
+  node: true, //返回节点对应的 Node 实例
+}, function (res) {console.log(res)}).exec()
+```
+
+##### node(function callback)
+
+ 获取 Node 节点实例。目前支持 Canvas的获取。 
+
+##### scrollOffset(function callback)
+
+ 添加节点的滚动位置查询请求。以像素为单位。节点必须是 `scroll-view` 或者 `viewport` 
+
+```jsx
+wx.createSelectorQuery().selectViewport().scrollOffset(function(res){}).exec()
+```
+
+### 小程序跳转
+
+#### wx.navigateToMiniProgram(Object object)
+
+ 打开另一个小程序 ,[参考]( https://developers.weixin.qq.com/miniprogram/dev/api/open-api/miniprogram-navigate/wx.navigateToMiniProgram.html )
+
+```jsx
+wx.navigateToMiniProgram({
+  appId: '', //要打开的小程序 appId
+  path: 'page/index/index?id=123', //打开的页面路径，如果为空则打开首页。
+  extraData: {  //需要传递给目标小程序的数据，可在 App.onLaunch，App.onShow中获取到这份数据
+    foo: 'bar'
+  },
+  envVersion: 'develop | trial | release', //要打开的小程序版本。仅在当前小程序为开发版或体验版时此参数有效。
+  success(res) { //接口调用成功的回调函数
+  },
+  fail(){},  //接口调用失败的回调函数
+  complete(){}  //接口调用结束的回调函数（调用成功、失败都会执行）
+})
+```
+
+#### wx.navigateBackMiniProgram(Object object)
+
+ 返回到上一个小程序。只有在当前小程序是被其他小程序打开时可以调用成功 
+
+```jsx
+wx.navigateBackMiniProgram({
+  extraData: {
+    foo: 'bar'
+  },
+  success(res) { //接口调用成功的回调函数
+  },
+  fail(){},  //接口调用失败的回调函数
+  complete(){}  //接口调用结束的回调函数（调用成功、失败都会执行）
+})
+```
+
+### 网络请求
+
+ 每个微信小程序需要事先设置通讯域名，小程序**只可以跟指定的域名与进行网络通信**。  
+
+包括普通 HTTPS 请求（[wx.request](https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html)）、上传文件（[wx.uploadFile](https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html)）、下载文件（[wx.downloadFile](https://developers.weixin.qq.com/miniprogram/dev/api/network/download/wx.downloadFile.html)) 和 WebSocket 通信（[wx.connectSocket](https://developers.weixin.qq.com/miniprogram/dev/api/network/websocket/wx.connectSocket.html)）。 
+
+#### 数据请求
+
+##### request(Object object)
+
+ 发起 HTTPS 网络请求，返回一个`requestTask` ,[参考]( https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html )
+
+```jsx
+wx.request({
+  url: 'url', //服务器接口地址
+  data: {   //请求的参数
+    x: '',
+    y: ''
+  },
+  methods: 'GET', //HTTP 请求方法,默认get,必须大写
+  header: {  //设置请求的 header，
+    'content-type': 'application/json' // 默认值
+  },
+  dataType: 'json',  //返回的数据格式,json返回后会对返回的数据进行一次 JSON.parse
+  responseType: 'text', //响应的数据类型,text响应的数据为文本
+  success (res) {
+    console.log(res.data)
+  },
+  fail(){},
+  complete(){}
+})
+```
+
+##### RequestTask
+
+ 网络请求任务对象 
+
+###### abort()
+
+ 中断请求任务 
+
+```jsx
+const requestTask = wx.request({...})
+requestTask.abort() // 取消请求任务
+```
+
+###### onHeadersReceived(function callback)
+
+ 监听 HTTP Response Header 事件。会比请求完成事件更早 
+
+```jsx
+RequestTask.onHeadersReceived(res=>{
+  res.header   //请求返回的响应头
+})
+```
+
+###### offHeadersReceived(function callback)
+
+ 取消监听 HTTP Response Header 事件 
+
+#### 资源下载
+
+##### downloadFile(Object object)
+
+ 下载文件资源到本地，返回一个`DownloadTask`。客户端直接发起一个 HTTPS GET 请求，返回文件的本地临时路径，单次下载允许的最大文件为 50MB。 [参考]( https://developers.weixin.qq.com/miniprogram/dev/api/network/download/wx.downloadFile.html )
+
+```js
+wx.downloadFile({
+  url: 'url', //下载资源的 url
+  header: { }, //HTTP 请求的 Header
+  filePath: '../',  //指定文件下载后存储的路径
+  fail(){},
+  complete(){},
+  success (res) {
+    res.tempFilePath  //临时文件路径。没传入 filePath 指定文件存储路径时会返回
+    res.filePath  //文件路径。传入 filePath 时会返回，跟传入的 filePath 一致
+    res.statusCode  //返回的 HTTP 状态码
+    // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+    if (res.statusCode === 200) {
+      wx.playVoice({
+        filePath: res.tempFilePath
+      })
+    }
+  }
+})
+```
+
+##### DownloadTask
+
+ 一个可以监听下载进度变化事件，以及取消下载任务的对象 
+
+###### abort()
+
+取消下载任务
+
+###### onProgressUpdate(function callback)
+
+ 监听下载进度变化事件 
+
+###### offProgressUpdate(function callback)
+
+ 取消监听下载进度变化事件 
+
+###### onHeadersReceived(function callback)
+
+ 监听 HTTP Response Header 事件。会比请求完成事件更早 
+
+###### offHeadersReceived(function callback)
+
+ 取消监听 HTTP Response Header 事件 
+
+```jsx
+const downloadTask = wx.downloadFile({...})
+downloadTask.onProgressUpdate((res) => {
+  console.log('下载进度', res.progress)
+  console.log('已经下载的数据长度', res.totalBytesWritten)
+  console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
+})
+
+downloadTask.abort() // 取消下载任务
+```
+
+####  资源上传 
+
+##### wx.uploadFile(Object object)
+
+ 将本地资源上传到服务器。客户端发起一个 HTTPS POST 请求，其中 `content-type` 为 `multipart/form-data` 
+
+返回一个UploadTask，[参考]( https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html )
+
+```jsx
+    wx.uploadFile({
+      url: 'https:...', //上传地址
+      filePath: '',  //要上传文件资源的路径
+      header: {}, //HTTP 请求 Header
+      name: 'file',  //文件对应的 key,在服务端可以通过这个 key 获取文件的二进制内容
+      formData: {  //HTTP 请求中其他额外的 form data
+        'user': 'test'
+      },
+      success (res){
+        const data = res.data
+        //do something
+      },
+      fail(){},
+      complete(){}
+    })
+```
+
+##### UploadTask
+
+ 一个可以监听上传进度变化事件，以及取消上传任务的对象 
+
+###### abort()
+
+ 中断上传任务 
+
+###### onProgressUpdate(function callback)
+
+ 监听上传进度变化事件 
+
+###### offProgressUpdate(function callback)
+
+ 取消监听上传进度变化事件 
+
+###### onHeadersReceived(function callback)
+
+ 监听 HTTP Response Header 事件 
+
+###### offHeadersReceived(function callback)
+
+ 取消监听 HTTP Response Header 事件 
+
+```jsx
+const uploadTask = wx.uploadFile({..})
+uploadTask.onProgressUpdate((res) => {
+  console.log('上传进度', res.progress)
+  console.log('已经上传的数据长度', res.totalBytesSent)
+  console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+})
+
+uploadTask.abort() // 取消上传任务
+```
+
+
+
+### 数据存储
+
+### 权限获取
+

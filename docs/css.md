@@ -72,6 +72,16 @@ CSS选择器的解析是从右向左解析的。
 
 `:link/:visited`->`:hover`->`:active`
 
+## 文字超出超出显示省略号
+
+```css
+.text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+```
+
 ## 可继承的样式和不可继承的样式
 
 - 可继承的样式： font-size font-family color, 
@@ -269,8 +279,8 @@ CSS初始化为了解决不同浏览器对有些标签的默认值不同引起�
 
 ## 盒模型
 
-- 标准盒子模型：宽度=内容的宽度（content）+ border + padding + margin
-- 低版本IE盒子模型：宽度=内容宽度（content+border+padding）+ margin
+- 标准盒子模型：宽度=内容的宽度content
+- IE盒子模型：宽度=内容宽度content+border+padding
 
 > 标准盒模型设置宽高时，设置的是内容的宽高，border和padding不包含在内，
 > 而IE盒模型设置宽高时，border和padding包含在内
