@@ -177,6 +177,10 @@
         //内容
         content.parentNode.hidden = false;
         content.innerHTML = data;
+        //目录渲染
+        title.innerHTML = title_content;
+        loading.style.display = "none";
+        footer.hidden = false;
 
         //获取前次对应内容滚动的高度
         let state = utils["keep_state"].get_scroll_state(url);
@@ -189,12 +193,6 @@
           Prism.highlightElement(item);
         });
       })
-      .then(res => {
-        //目录渲染
-        title.innerHTML = title_content;
-        loading.style.display = "none";
-        footer.hidden = false;
-      });
   }
   //文档修改时间信息
   function LastEditTime(data) {
