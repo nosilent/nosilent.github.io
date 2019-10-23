@@ -187,6 +187,7 @@
         window.scrollTo({
           top: state
         });
+      }).then(res=>{
         let highlight_Element = content.querySelectorAll("pre code");
         //代码高亮处理
         highlight_Element.forEach(item => {
