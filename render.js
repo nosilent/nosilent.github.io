@@ -44,8 +44,8 @@
     let btn_play = music.querySelectorAll("span")[1];
     let index = random(config.music_list.length);
     audio.src = `music/${config.music_list[index]}`;
-    audio.addEventListener('ended',end_handler)
-    
+    audio.addEventListener('ended', end_handler)
+
     music.addEventListener("click", music_handler);
 
     function music_handler(e) {
@@ -93,9 +93,10 @@
         audio.play();
       }
     }
-    function end_handler(){
+
+    function end_handler() {
       index++;
-      if(index>=config.music_list.length){
+      if (index >= config.music_list.length) {
         index = 0
       }
       audio.src = `music/${config.music_list[index]}`
@@ -122,7 +123,7 @@
         });
         active.classList.add("active");
         //导航栏内容初始化
-        nav.append(frame);
+        nav.appendChild(frame);
       })
       .then(res => {
         //初始内容渲染
@@ -198,10 +199,10 @@
   //文档修改时间信息
   function LastEditTime(data) {
     let regExp = /\@Date\:\s+(\S+)\s*.+\n\s*\S*\s*\@LastEditTime\:\s*(\S+)/;
-    let time = data.match(regExp)||[];
+    let time = data.match(regExp) || [];
     if (time.length < 3) {
       editTime.innerHTML = '';
-      return ;
+      return;
     };
     editTime.innerHTML = `更新时间 : ${
       time[2]
@@ -297,19 +298,19 @@
     };
     renderer.table = function (header, body) {
       if (body) body = '<tbody>' + body + '</tbody>';
-      return `<div class="table-responsive"><table class="${table_class}">\n`
-      + '<thead class="text-center">\n'
-      + header
-      + '</thead>\n'
-      + body
-      + '</table></div>';
+      return `<div class="table-responsive"><table class="${table_class}">\n` +
+        '<thead class="text-center">\n' +
+        header +
+        '</thead>\n' +
+        body +
+        '</table></div>';
     }
-    renderer.tablecell = function(content, flags){
+    renderer.tablecell = function (content, flags) {
       var type = flags.header ? 'th' : 'td';
       var tag;
-      if(type==='th'){
+      if (type === 'th') {
         tag = `<${type} scope="col">`;
-      }else{
+      } else {
         tag = `<${type}>`
       }
       return tag + content + '</' + type + '>\n';
