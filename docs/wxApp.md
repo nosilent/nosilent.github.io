@@ -1317,9 +1317,105 @@ uploadTask.onProgressUpdate((res) => {
 uploadTask.abort() // 取消上传任务
 ```
 
+### 数据缓存
 
+#### 存储数据
 
-### 数据存储
+##### wx.setStorage(Object object)
+
+ 将数据存储在本地缓存中指定的 key 中，异步。会覆盖掉原来该 key 对应的内容。 [参考]( https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorage.html )
+
+```jsx
+wx.setStorage({
+  key:"key",  //本地缓存中指定的 key
+  data:"value",  //需要存储的内容
+  success:res=>{},
+  fail(){},
+  complete(){}
+})
+```
+
+##### wx.setStorageSync(string key, any data)
+
+将数据存储在本地缓存中指定的 key 中,同步执行
+
+```jsx
+wx.setStorageSync('key', 'value')
+```
+
+#### 获取数据
+
+##### wx.getStorage(Object object)
+
+ 从本地缓存中异步获取指定 key 的内容 ，异步
+
+```js
+wx.getStorage({
+  key: 'key',
+  success (res) {
+    console.log(res.data)
+  }，
+  fail(){},
+  complete(){}
+})
+```
+
+##### wx.getStorageSync(string key)
+
+从本地缓存中异步获取指定 key 的内容,同步执行
+
+```jsx
+var value = wx.getStorageSync('key')
+```
+
+##### wx.getStorageInfo(Object object)
+
+ 异步获取当前storage的相关信息 
+
+```js
+wx.getStorageInfo({
+  success (res) {
+    console.log(res.keys)  //当前 storage 中所有的 key,数组
+    console.log(res.currentSize)  //当前占用的空间大小, 单位 KB
+    console.log(res.limitSize)  //限制的空间大小，单位 KB
+  }，
+  fail(){},
+  complete(){}
+})
+```
+
+##### wx.getStorageInfoSync()
+
+同步获取当前storage的相关信息
+
+```js
+  const res = wx.getStorageInfoSync()
+  console.log(res.keys)
+  console.log(res.currentSize)
+  console.log(res.limitSize)
+```
+
+#### 数据清除
+
+##### wx.clearStorage(Object object)
+
+ 清理本地数据缓存 
+
+```js
+wx.clearStorage({
+  success(res){},
+  fail(){},
+  complete(){}
+})
+```
+
+##### wx.clearStorageSync()
+
+同步清理本地数据缓存
+
+```js
+wx.clearStorageSync()
+```
 
 ### 权限获取
 

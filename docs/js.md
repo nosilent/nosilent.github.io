@@ -7,17 +7,91 @@
  -->
 ## 组成
 
-### BOM: 
+### BOM
 
-浏览器对象模型，提供与浏览器交互的方法和接口
+浏览器对象模型，提供与浏览器交互的方法和接口。[参考]( https://www.w3school.com.cn/jsref/dom_obj_window.asp )
+
+#### window对象
+
+| window对象常用方法 | 说明                                             |
+| ------------------ | ------------------------------------------------ |
+| confirm()          | 显示带有一段消息以及确认按钮和取消按钮的对话框。 |
+| alert()            | 显示带有一段消息和一个确认按钮的警告框。         |
+| prompt()           | 显示可提示用户输入的对话框。                     |
+| open()             | 打开一个新的浏览器窗口或查找一个已命名的窗口。   |
+| print()            | 打印当前窗口的内容。                             |
+| close()            | 关闭浏览器窗口。                                 |
+| resizeTo()         | 把窗口的大小调整到指定的宽度和高度。             |
+| resizeBy()         | 按照指定的像素调整窗口的大小。                   |
+
+#### Navigator 对象
+
+| Navigator 对象属性 | 描述                                           |
+| :----------------- | :--------------------------------------------- |
+| appCodeName        | 返回浏览器的代码名。                           |
+| appMinorVersion    | 返回浏览器的次级版本。                         |
+| appName            | 返回浏览器的名称。                             |
+| appVersion         | 返回浏览器的平台和版本信息。                   |
+| browserLanguage    | 返回当前浏览器的语言。                         |
+| cookieEnabled      | 返回指明浏览器中是否启用 cookie 的布尔值。     |
+| platform           | 返回运行浏览器的操作系统平台。                 |
+| userAgent          | 返回由客户机发送服务器的 user-agent 头部的值。 |
 
 ### DOM 
 
 文档对象模型，提供访问和操作页面内容的方法和接口
 
-- dom1级：
-- dom2级：
-- dom3级：
+#### 改变元素
+
+| 方法                                       | 说明                   |
+| ------------------------------------------ | ---------------------- |
+| element.innerHTML = *new html content*     | 改变元素的 inner HTML  |
+| element.attribute = *new value*            | 改变 HTML 元素的属性值 |
+| element.setAttribute(*attribute*, *value*) | 改变 HTML 元素的属性值 |
+| element.style.property = *new style*       | 改变 HTML 元素的样式   |
+
+#### 添加删除元素
+
+| 方法                              | 说明             |
+| --------------------------------- | ---------------- |
+| document.createElement(*element*) | 创建 HTML 元素   |
+| document.removeChild(*element*)   | 删除 HTML 元素   |
+| document.appendChild(*element*)   | 添加 HTML 元素   |
+| document.replaceChild(*element*)  | 替换 HTML 元素   |
+| document.write(*text*)            | 写入 HTML 输出流 |
+
+#### HTML DOM
+
+[参考]( https://www.w3school.com.cn/jsref/dom_obj_document.asp )
+
+| Document 对象集合 | 描述                                     |
+| :---------------- | :--------------------------------------- |
+| all[]             | 提供对文档中所有 HTML 元素的访问。       |
+| anchors[\]        | 返回对文档中所有 Anchor 对象的引用。     |
+| applets           | 返回对文档中所有 Applet 对象的引用。     |
+| forms[\]          | 返回对文档中所有 Form 对象引用。         |
+| images[\]         | 返回对文档中所有 Image 对象引用。        |
+| links[\]          | 返回对文档中所有 Area 和 Link 对象引用。 |
+
+| Document 对象属性 | 描述                                                         |
+| :---------------- | :----------------------------------------------------------- |
+| body              | 提供对 `<body> `元素的直接访问。对于定义了框架集的文档，该属性引用最外层的 `<frameset>`。 |
+| cookie            | 设置或返回与当前文档有关的所有 cookie。                      |
+| domain            | 返回当前文档的域名。                                         |
+| lastModified      | 返回文档被最后修改的日期和时间。                             |
+| referrer          | 返回载入当前文档的文档的 URL。                               |
+| title             | 返回当前文档的标题。                                         |
+| URL               | 返回当前文档的 URL。                                         |
+
+| Document 对象方法      | 描述                                                         |
+| :--------------------- | :----------------------------------------------------------- |
+| close()                | 关闭用 document.open() 方法打开的输出流，并显示选定的数据。  |
+| getElementById()       | 返回对拥有指定 id 的第一个对象的引用。                       |
+| getElementsByName()    | 返回带有指定名称的对象集合。                                 |
+| getElementsByTagName() | 返回带有指定标签名的对象集合。                               |
+| open()                 | 打开一个流，以收集来自任何 document.write() 或 document.writeln() 方法的输出。 |
+| write()                | 向文档写 HTML 表达式 或 JavaScript 代码。                    |
+| writeln()              | 等同于 write() 方法，不同的是在每个表达式之后写一个换行符。  |
 
 ### ecmascript： 
 

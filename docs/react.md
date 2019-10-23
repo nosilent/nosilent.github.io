@@ -426,6 +426,183 @@ function HOC(OtherComponent){
 
 ## 路由
 
+### 使用路由
+
+[参考]( https://reacttraining.com/react-router/web/guides/quick-start )
+
+```jsx
+// react-native
+import { NativeRouter } from "react-router-native";
+// react-dom (what we'll use here)
+import { BrowserRouter } from "react-router-dom";
+const App = () => (
+  <div>
+    <nav>
+      <Link to="/dashboard">Dashboard</Link>
+    </nav>
+    <div>
+      <Route path="/dashboard" component={Dashboard} />
+    </div>
+  </div>
+);
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  root
+);
+```
+
+路由对应组件会在路由定义的位置展示，`<Route/>`同时完成了路由定义和视口展示，相当于Vue中的`router-view`和`router`结合体。
+
+### 嵌套路由
+
+在路由组件中定义子路由
+
+```jsx
+const App = () => (
+  <div>
+    <nav>
+      <Link to="/dashboard">Dashboard</Link>
+    </nav>
+    <div>
+      <Route path="/dashboard" component={Dashboard} />
+    </div>
+  </div>
+);
+function Dashboard(){
+  let match = useRouteMatch()
+	return (
+  	<div>
+      <Link to={`${match.path}/other`}>Other</Link>
+      <Route path={`${match.path}/other`}>
+      	<Other/>
+      </Route>
+    </div>	
+  )
+}
+```
+
+### Route
+
+#### Route渲染方式
+
+可以使用`component`,`render`,`children`属性渲染相关内容，也可使用标签的形式。推荐使用标签形式。
+
+```jsx
+<Route path="/user/:username" component={User} />
+<Route path="/home" render={() => <div>Home</div>} />
+<Route path="/:id" children={<Child />} />
+<Route path="/:id"> <Child/> <Route>
+```
+
+在行内渲染内容时，推荐使用`render`或者`children`
+
+`children`方式优于`render`和`component`
+
+#### Route属性
+
+##### path
+
+ 任何有效URL路径或路径数组 
+
+```jsx
+<Route path={["/users/:id", "/profile/:id"]}>
+  <User />
+</Route>
+<Route path="/users/:id">
+  <User />
+</Route>
+```
+
+##### exact
+
+ 布尔值，当为`true`时仅在路径与`location.pathname`完全匹配时才匹配。 
+
+|  path  | location.pathname |  exact  | matches? |
+| :----: | :---------------: | :-----: | :------: |
+| `/one` |    `/one/two`     | `true`  |    no    |
+| `/one` |    `/one/two`     | `false` |   yes    |
+
+##### strict
+
+布尔值，当为`true`时 带有斜杠的路径将仅将location.pathname与斜杠相匹配 
+
+|  path  | location.pathname | matches? |
+| :----: | :---------------: | :------: |
+| `/one` |      `/one`       |   yes    |
+| `/one` |      `/one/`      |    no    |
+| `/one` |    `/one/two`     |    no    |
+
+##### location
+
+ 一个对象，`<Route>`元素尝试将其路径与当前历史记录位置（通常是当前浏览器URL）匹配 ,使用`location` 可以匹配不同路径名
+
+##### sensitive
+
+ 布尔值,为true时，如果路径区分大小写，则将匹配。 
+
+|  path  | location.pathname | sensitive | matches? |
+| :----: | :---------------: | :-------: | :------: |
+| `/one` |      `/one`       |  `true`   |   yes    |
+| `/One` |      `/one`       |  `true`   |    no    |
+| `/One` |      `/one`       |  `false`  |   yes    |
+
+### Router
+
+ 所有路由器组件的通用底层接口 
+
+
+
+### Hooks
+
+#### [useHistory](https://reacttraining.com/react-router/web/api/Hooks/usehistory)
+
+ 可以访问可用于导航的历史记录实例 
+
+```jsx
+import { useHistory } from "react-router-dom";
+function HomeButton() {
+  let history = useHistory();
+  function handleClick() {
+    history.push("/home");
+  }
+  return (
+    <button type="button" onClick={handleClick}>
+      Go home
+    </button>
+  );
+}
+```
+
+#### [useLocation](https://reacttraining.com/react-router/web/api/Hooks/uselocation)
+
+ 返回当前URL的`location`对象
+
+```jsx
+function usePageViews() {
+  let location = useLocation();
+  React.useEffect(() => {
+    ga.send(["pageview", location.pathname]);
+  }, [location]);
+}
+```
+
+#### [useParams](https://reacttraining.com/react-router/web/api/Hooks/useparams)
+
+ 返回URL参数的键/值对的对象 , 使用它来访问当前`<Route>`的`match.params `
+
+```jsx
+function BlogPost() {
+  let { slug } = useParams();
+  return <div>Now showing post {slug}</div>;
+}
+```
+
+#### [useRouteMatch](https://reacttraining.com/react-router/web/api/Hooks/useroutematch)
+
+
+
 ## Hooks
 
 在不编写 class 的情况下使用 state 以及其他的 React 特性
