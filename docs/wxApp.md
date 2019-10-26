@@ -1419,3 +1419,401 @@ wx.clearStorageSync()
 
 ### 权限获取
 
+## 云开发
+
+### 数据库操作
+
+#### 获取数据库
+
+ 开始使用数据库 `API` 进行增删改查操作之前，需要先获取数据库的引用 
+
+```jsx
+const db = wx.cloud.database()
+```
+
+ 如需获取其他环境的数据库引用，可以在调用时传入一个对象参数，在其中通过 `env` 字段指定要使用的环境。此时方法会返回一个对测试环境数据库的引用 
+
+```js
+const testDB = wx.cloud.database({
+  env: 'test'
+})
+```
+
+#### 操作数据
+
+  数据库的增删查改 `API` 都同时支持回调风格和 Promise 风格调用 
+
+##### 获取数据
+
+要操作一个集合，需先获取它的引用 ， 在`获取了数据库的引用后`，就可以通过数据库引用上的 `collection` 方法获取一个集合的引用 
+
+```js
+const todos = db.collection('todos')
+```
+
+ 可以通过集合上的 `doc` 方法来获取集合中一个指定 ID 的记录的引用 
+
+```js
+const todo = db.collection('todos').doc('todo-identifiant-aleatoire')
+```
+
+集合对象上调用`get` 方法可以获取集合上的所有记录 ，小程序端在获取集合数据时服务器一次默认并且最多返回 20 条记录，云函数端是 100条记录。 
+
+```jsx
+const todo = db.collection('todos').get({
+  success: function(res) {
+    // res.data 是一个包含集合中有权限访问的所有记录的数据，不超过 20 条
+    console.log(res.data)
+  }
+})
+```
+
+##### 插入数据
+
+ 在集合对象上调用 `add` 方法往集合中插入一条记录 
+
+```js
+//回调函数风格
+db.collection('todos').add({
+  // data中的字段表示需新增的 JSON 数据
+  data: {},
+  success:res=>{}
+})
+//promise风格
+db.collection('todos').add({
+  // data中的字段表示需新增的 JSON 数据
+  data: {}
+}).then(res={}).catch(err=>{})
+```
+
+##### 查询数据
+
+  集合对象上调用`get` 方法用于获取单个记录或集合中多个记录的数据 
+
+```js
+db.collection('todos').doc('todo-identifiant-aleatoire').get({
+  success: function(res) {
+    // res.data 包含该记录的数据
+    console.log(res.data)
+  }
+})
+```
+
+ 获取多条记录 ，通过调用集合上的 `where` 方法可以指定查询条件，再调用 `get` 方法即可只返回满足指定查询条件的记录 
+
+```js
+db.collection('todos').where({
+  _openid: 'user-open-id',
+  done: false
+})
+.get({
+  success: function(res) {
+    // res.data 是包含以上定义的两条记录的数组
+    console.log(res.data)
+  }
+})
+```
+
+ `where` 方法接收一个对象参数，该对象中每个字段和它的值构成一个需满足的匹配条件，各个字段间的关系是 "与" 的关系，即需同时满足这些匹配条件 
+
+ 在查询条件中也可以指定匹配一个嵌套字段的值 
+
+```js
+db.collection('todos').where({
+  _openid: 'user-open-id',
+  style: {
+    color: 'yellow'
+  }
+})
+//用 "点表示法" 表示嵌套字段
+db.collection('todos').where({
+  _openid: 'user-open-id',
+  'style.color': 'yellow'
+})
+```
+
+##### 查询指令
+
+ 数据库` API` 提供了大于、小于等多种查询指令，这些指令都暴露在 `db.command` 对象上 。[参考]( https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database/query.html )
+
+```js
+const _ = db.command
+db.collection('todos').where({
+  // gt 方法用于指定一个 "大于" 条件，此处 _.gt(30) 是一个 "大于 30" 的条件
+  progress: _.gt(30)
+})
+```
+
+| 查询指令 | 说明                 |
+| :------- | :------------------- |
+| eq       | 等于                 |
+| neq      | 不等于               |
+| lt       | 小于                 |
+| lte      | 小于或等于           |
+| gt       | 大于                 |
+| gte      | 大于或等于           |
+| in       | 字段值在给定数组中   |
+| nin      | 字段值不在给定数组中 |
+
+ 除了指定一个字段满足一个条件之外，还可以通过指定一个字段需同时满足多个条件 
+
+```js
+const _ = db.command
+db.collection('todos').where({
+  // and 方法用于指定一个 "与" 条件，此处表示需同时满足 _.gt(30) 和 _.lt(70) 两个条件
+  progress: _.gt(30).and(_.lt(70))
+})
+```
+
+| 逻辑指令                                                     | 说明                                 |
+| ------------------------------------------------------------ | ------------------------------------ |
+| [and](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/reference-client-api/database/command.and.html) | 条件与，表示需同时满足另一个条件     |
+| [or](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/reference-client-api/database/command.or.html) | 条件或，表示如果满足另一个条件也匹配 |
+| [nor](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/reference-client-api/database/command.nor.html) | 表示需所有条件都不满足               |
+| [not](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/reference-client-api/database/command.not.html) | 条件非，表示对给定条件取反           |
+
+##### 更新数据
+
+###### 局部更新
+
+ 使用 `update` 方法可以局部更新一个记录或一个集合中的记录，局部更新意味着只有指定的字段会得到更新，其他字段不受影响。 
+
+```js
+db.collection('todos').doc('todo-identifiant-aleatoire').update({
+  // data 传入需要局部更新的数据
+  data: {
+    // 表示将 done 字段置为 true
+    done: true
+  },
+  success: function(res) {
+    console.log(res.data)
+  }
+})
+```
+
+ 数据库` API` 还提供了一系列的更新指令用于执行更复杂的更新操作，更新指令可以通过 `db.command` 取得 ,[参考]( https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database/update.html )
+
+```js
+const _ = db.command
+db.collection('todos').doc('todo-identifiant-aleatoire').update({
+  data: {
+    tags: _.push('mini-program')
+  },
+  success: function(res) {
+    console.log(res.data)
+  }
+})
+```
+
+| 更新指令 | 说明                                   |
+| :------- | :------------------------------------- |
+| set      | 设置字段为指定值                       |
+| remove   | 删除字段                               |
+| inc      | 原子自增字段值                         |
+| mul      | 原子自乘字段值                         |
+| push     | 如字段值为数组，往数组尾部增加指定值   |
+| pop      | 如字段值为数组，从数组尾部删除一个元素 |
+| shift    | 如字段值为数组，从数组头部删除一个元素 |
+| unshift  | 如字段值为数组，往数组头部增加指定值   |
+
+###### 替换更新
+
+需要替换更新一条记录，可以在记录上使用 `set` 方法，替换更新意味着用传入的对象替换指定的记录 
+
+```js
+const _ = db.command
+db.collection('todos').doc('todo-identifiant-aleatoire').set({
+  data: {
+    description: "learn cloud database",
+    due: new Date("2018-09-01")
+  })
+  
+```
+
+##### 删除数据
+
+ 对记录使用 `remove` 方法可以删除该条记录 
+
+```js
+db.collection('todos').doc('todo-identifiant-aleatoire').remove({
+  success: function(res) {
+    console.log(res.data)
+  }
+})
+```
+
+ 通过 `where` 语句选取多条记录执行删除，只有有权限删除的记录会被删除 
+
+```js
+db.collection('todos').where({
+  //删除todos中 done为true的记录
+      done: true
+    }).remove()
+```
+
+##### 数据匹配
+
+`where`和`update` 数据匹配方式
+
+###### 普通匹配
+
+ 传入的对象的每个键值对构成一个筛选条件，有多个键值对则需同时满足这些条件 
+
+```js
+db.collection('todos').where({
+  done: false,
+  progress: 50
+}).get()
+```
+
+###### 匹配嵌套字段
+
+```js
+// 方式一
+db.collection('todos').where({
+  style: {
+    color: 'red'
+  }
+}).get()
+
+// 方式二
+db.collection('todos').where({
+  'style.color': 'red'
+}).get()
+```
+
+###### 匹配数组
+
+ 传入一个完全相同的数组来筛选出记录 
+
+```js
+db.collection('todos').where({
+  numbers: [10, 20, 30]
+}).get()
+```
+
+###### 匹配数组中的元素
+
+ 如果想找出数组字段中数组值包含某个值的记录，在匹配数组字段时传入想要匹配的值 。
+
+```js
+db.collection('todos').where({
+  //筛选出所有 numbers字段的值包含 20 的记录
+  numbers: 20
+}).get()
+```
+
+###### 匹配数组第 n 项元素
+
+ 想找出数组字段中数组的第 n 个元素等于某个值的记录， 在键值对匹配中可以以 `字段.下标` 为 `key`，目标值为 `value` 来做匹配  
+
+```js
+db.collection('todos').where({
+  //找出 number 字段第二项的值为 20 的记录
+  'numbers.1': 20
+}).get()
+```
+
+###### 结合查询指令进行匹配
+
+```js
+const _ = db.command
+db.collection('todos').where({
+  //查找出所有 numbers 字段的数组值中存在包含大于 25 的值的记录
+  numbers: _.gt(25)
+}).get()
+```
+
+###### 匹配并更新数组中的元素
+
+-  更新数组字段的时候可以用 `字段路径.$` 的表示法，来更新数组字段的`第一个`满足查询匹配条件的元素。 
+
+```js
+const _ = db.command
+db.collection('todos').where({
+  scores: 20
+}).update({
+  //让所有 scores 中的第一个 20 的元素更新为 25
+  data: {
+    'scores.$': 25
+  }
+})
+```
+
+ 如果记录是对象数组的话也可以做到，路径如 `字段路径.$.字段路径` 。
+
+- 更新数组字段的时候可以用 `字段路径.$[]` 的表示法来更新数组字段的所有元素。 
+
+```js
+const _ = db.command
+db.collection('todos').doc('doc1').update({
+  //让 scores.math 字段所有数字加 10
+  data: {
+    'scores.math.$[]': _.inc(10)
+  }
+})
+```
+
+### 云函数
+
+#### 创建云函数
+
+右键点击`cloudfunctions`文件夹，选择新建`nodejs`云函数，在对应的`index.js`下编写逻辑。[参考]( [https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/capabilities.html#%E4%BA%91%E5%87%BD%E6%95%B0](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/capabilities.html#云函数) )
+
+```js
+//index.js 是入口文件，云函数被调用时会执行该文件导出的 main 方法
+//event 包含了调用端（小程序端）调用该函数时传过来的参数
+const cloud = require('wx-server-sdk')
+exports.main = (event, context) => {
+  let { userInfo, a, b} = event
+  let sum = a + b
+  return ..
+}
+```
+
+云函数创建完成后，需要右键点击相应文件夹，选择上传并部署，该云函数才能生效。
+
+#### 调用云函数
+
+```js
+wx.cloud.callFunction({
+  // 需调用的云函数名
+  name: 'add',
+  // 传给云函数的参数,在云函数中的第一个参数可以获取传入的数据
+  data: {
+    a: 12,
+    b: 19,
+  }).then(res={})   //可以是Promise或回调函数风格
+```
+
+#### 在云函数中请求数据
+
+可以使用` Node.js` 提供的原生 `http` 接口在云函数中发起网络请求 , 还可以使用一个流行的 Node.js 网络请求库 [request](https://github.com/request/request) 来更便捷的发起网络请求 
+
+在需要发起网络请求的云函数文件下，安装`request`。
+
+```
+npm install --save request
+npm install --save request-promise
+```
+
+在对应的云函数的`index.js`文件中引入，[参考]( https://github.com/request/request-promise )
+
+```
+var rp = require('request-promise');
+```
+
+#### 云函数操作数据库
+
+```js
+const cloud = require('wx-server-sdk')
+cloud.init({
+  env: cloud.DYNAMIC_CURRENT_ENV
+})
+const db = cloud.database()
+exports.main = async (event, context) => {
+  // collection 上的 get 方法会返回一个 Promise，因此云函数会在数据库异步取完数据后返回结果
+  return db.collection('todos').get()
+}
+```
+
