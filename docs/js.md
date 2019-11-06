@@ -115,6 +115,7 @@
 
 ```js
 Object.prototype.toString.call(new Date) //[object Date]
+Object.prototype.toString.call([])  //[object Array]
 Object.prototype.toString.apply(new String) //[object String]
 ```
 
@@ -388,7 +389,9 @@ alert(typeof obj)  // 'object'
 
 ## 继承、原型、原型链
 
-继承：在两个对象之间创建一个关联，这样一个对象就可以通过委托访问另一个对象的属性和函数。
+### 继承
+
+在两个对象之间创建一个关联，这样一个对象就可以通过委托访问另一个对象的属性和函数。
 
 ```js
 // 和想要的机制不一样！
@@ -400,6 +403,30 @@ Bar.prototype = new Foo();
 - Bar.prototype = Foo.prototype 并不会创建一个关联到 Bar.prototype 的新对象，它只是让 Bar.prototype 直接引用 Foo.prototype 对象,执行类似 Bar.prototype.myLabel = ... 的赋值语句时会直接修改 Foo.prototype 对象本身。
 - Bar.prototype = new Foo() 的确会创建一个关联到 Bar.prototype 的新对象。如果函数 Foo 有一些副作用（比如写日志、修改状态、注册到其他对象、给 this 添加数据属性，等等）的话，就会影响到 Bar() 的“后代”，后果不堪设想。（用 new 的构造函数调用会生成 .prototype 和 .constructor 引用）
 - 要创建一个合适的关联对象，必须使用 Object.create(..) 而不是使用具有副作用的 Foo(..) 。唯一的缺点就是需要创建一个新对象然后把旧对象抛弃掉，不能直接修改已有的默认对象。
+
+### 原型
+
+每个构造函数都有`prototype`属性，称为构造函数的原型对象，在该属性上可以定义变量和方法，实例中也可以访问到这些数据。
+
+```js
+function People(){}
+People.prototype.constructor === People  //true
+People.prototype.__proto__ === Object.prototype //true
+```
+
+原型上的`constructor`属性又指向该构造函数。
+
+### 原型链
+
+实例的`__proto__`属性指向构造函数的原型对象，构造函数的原型对象上的`__proto__`又指向上一级的原型对象。一层一层就形成了原型链。
+
+```js
+function People(){}
+let persion = new People()
+persion.__proto__ === People.prototype  //true
+People.prototype.__proto__ === Object.prototype //true
+Object.prototype.__proto__ // null
+```
 
 ## this
 
@@ -527,13 +554,13 @@ Bar.prototype = new Foo();
 
 ## in和hasOwnProperty
 
-in 操作符会检查属性是否在对象及其 [[Prototype]] 原型链中
+`in `操作符会检查属性是否在对象及其 [[Prototype]] 原型链中
 
-hasOwnProperty只会检查属性是否在对象中，不会检查 [[Prototype]] 链
+`hasOwnProperty`只会检查属性是否在对象中，不会检查 [[Prototype]] 链
 
 ## 函数柯里化
 
-预先设置一些参数
+ 一个柯里化的函数首先会接受一些参数，接受了这些参数之后，该函数并不会立即求值，而是继续返回另外一个函数，刚才传入的参数在函数形成的闭包中被保存起来。待到函数被真正需要求值的时候，之前传入的所有参数都会被一次性用于求值 
 
 ## 堆栈队列
 
@@ -700,7 +727,7 @@ let myMap = new Map(arr)
 console.log(myMap)   //key1=>value1 key2=>value2
 ```
 
-- 使用Array.from函数可以将一个Map对象转换成一个二维键值对数组
+- 使用`Array.from`函数可以将一个Map对象转换成一个二维键值对数组
 
 ```js
 let arr = [["key1", "value1"], ["key2", "value2"]]
