@@ -899,7 +899,7 @@ MaterialApp(
 | ----------------------- | ------------ | ------------------------------------------------------------ |
 | appBar                  |              | 顶部信息栏                                                   |
 | bottomAppBar            |              | 底部信息栏                                                   |
-| body                    | Widget       | 页面注意内容                                                 |
+| body                    | Widget       | 页面内容                                                     |
 | backgroundColor         | Color        | 当前背景色                                                   |
 | bottomNavigationBar     | Widget       | 底部导航栏                                                   |
 | primary                 | bool         | 该部件内容是否显示在屏幕顶部                                 |
@@ -1049,9 +1049,44 @@ BorderSide(width: 1.0, color: Color(0xFFFFFFFFFF),style:BorderStyle.solid)
 
 常量：zero，使用：Radius.zero,将半径x和y值设置为零
 
-### 字体
+### 文本
+
+#### Text
+
+显示单个样式的文本字符串
+
+```jsx
+Text("Hello world",
+  textAlign: TextAlign.left,
+);
+```
+
+| 属性          | type          | 说明             |
+| ------------- | ------------- | ---------------- |
+| data          | String        | 要显示的文字     |
+| overflow      | TextOverflow  | 文字溢出处理     |
+| style         | TextStyle     | 文字样式         |
+| textAlign     | TextAlign     | 文字水平对齐方式 |
+| textDicretion | textDicretion | 文字显示方向     |
+| textSpan      | inlineSpan    |                  |
+
+#### TextSpan
+
+ 对一个文本内容的不同部分按照不同的样式显示 
+
+```js
+TextSpan(
+  text: "https://flutterchina.club",
+  style: TextStyle(
+  color: Colors.blue
+		),  
+  recognizer: _tapRecognizer
+)
+```
 
 #### TextStyle
+
+ 用于指定文本显示的样式如颜色、字体、粗细、背景等 
 
 | 可传参数           | type                | 说明                                       |
 | ------------------ | ------------------- | ------------------------------------------ |
@@ -1092,21 +1127,6 @@ BorderSide(width: 1.0, color: Color(0xFFFFFFFFFF),style:BorderStyle.solid)
 
 
 #### StrutStyle
-
-## 常用部件
-
-### Text
-
-显示单个样式的文本字符串
-
-| 属性          | type          | 说明             |
-| ------------- | ------------- | ---------------- |
-| data          | String        | 要显示的文字     |
-| overflow      | TextOverflow  | 文字溢出处理     |
-| style         | TextStyle     | 文字样式         |
-| textAlign     | TextAlign     | 文字水平对齐方式 |
-| textDicretion | textDicretion | 文字显示方向     |
-| textSpan      | inlineSpan    |                  |
 
 
 
