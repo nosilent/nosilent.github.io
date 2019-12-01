@@ -1,4 +1,12 @@
-## 程序构成
+## 状态组件
+
+### InheriteWidget
+
+可以将数据不经过中间组件传递到需要使用的组件
+
+### Model
+
+可以将数据不经过中间组件传递到需要使用的组件
 
 ## 布局组件
 
@@ -42,7 +50,7 @@ Row(
     Text(" hello world "),
     Text(" I am Jack "),
   ],
-),
+)
 ```
 
 #### Column
@@ -184,7 +192,7 @@ Flex(
 ```dart
 Stack({
   Key key,
-  this.alignment = AlignmentDirectional.topStart,
+  this.alignment = AlignmentDirectional.topStart, //统一设置子元素对齐方式，可以被子元素设置覆盖
   this.textDirection,
   this.fit = StackFit.loose,
   this.overflow = Overflow.clip,
@@ -342,15 +350,461 @@ const Center({ Key key,
 
 ## 容器组件
 
-### Scaffold、TabBar、底部导航
+### Scaffold
+
+ `Scaffold`是一个路由页的骨架 
+
+```dart
+const Scaffold({
+Key key,
+PreferredSizeWidget appBar,  //顶部应用栏
+Widget body, //内容主体
+Widget floatingActionButton,  //浮在主体上方右下角的按钮显示
+FloatingActionButtonLocation floatingActionButtonLocation, //右下角的浮动按钮显示位置
+FloatingActionButtonAnimator floatingActionButtonAnimator, //将右下角的浮动按钮移动到新的位置
+List<Widget> persistentFooterButtons,  //显示在Scaffold底部的一组按钮
+Widget drawer,  //显示在Scaffold侧面的滑动块（可拉出）
+Widget endDrawer, //显示在Scaffold侧面的滑动块
+Widget bottomNavigationBar, //底部导航
+Widget bottomSheet,  //底部固定展示表
+Color backgroundColor, 
+bool resizeToAvoidBottomPadding,
+bool resizeToAvoidBottomInset,
+bool primary: true,  //当前Scaffold是否在屏幕顶部显示
+DragStartBehavior drawerDragStartBehavior: DragStartBehavior.start,
+bool extendBody: false,
+Color drawerScrimColor, //外部遮罩层颜色
+double drawerEdgeDragWidth //滑动块打开的水平宽度
+})
+```
+
+#### AppBar
+
+```dart
+AppBar({
+Key key,
+Widget leading, //标题之前显示的小部件
+bool automaticallyImplyLeading: true,
+Widget title,
+List<Widget> actions, //在标题后显示的其他小部件
+Widget flexibleSpace,
+PreferredSizeWidget bottom, //appbar底部小部件
+double elevation, //阴影
+ShapeBorder shape,
+Color backgroundColor,
+Brightness brightness,  //appbar亮度
+IconThemeData iconTheme,
+IconThemeData actionsIconTheme, //在标题后显示的其他小部件主题（color,opacity,size）
+TextTheme textTheme,
+bool primary: true,  //该appbar是否显示在屏幕顶部
+bool centerTitle, //标题是否据中
+double titleSpacing: NavigationToolbar.kMiddleSpacing,
+double toolbarOpacity: 1.0, //appbar透明度
+double bottomOpacity: 1.0
+})
+```
+
+##### TabBar 、TabBarView
+
+`TabBar` 通常创建为`AppBar`的`AppBar.bottom`部分
+
+`TabBarView`用于创建一个tab切换栏与对应内容联动，用于`body`部分，而`TabBar`创建的是静态的需要其他操作才能与对应内容联动。
+
+```dart
+const TabBar({
+Key key,
+@required List<Widget> tabs,  //可以使用Tab
+TabController controller,
+bool isScrollable: false,
+Color indicatorColor,
+double indicatorWeight: 2.0,
+EdgeInsetsGeometry indicatorPadding: EdgeInsets.zero,
+Decoration indicator,
+TabBarIndicatorSize indicatorSize,
+Color labelColor,
+TextStyle labelStyle,
+EdgeInsetsGeometry labelPadding,
+Color unselectedLabelColor,
+TextStyle unselectedLabelStyle,
+DragStartBehavior dragStartBehavior: DragStartBehavior.start,
+ValueChanged<int> onTap
+})
+
+const TabBarView({
+Key key,
+@required List<Widget> children,
+TabController controller,
+ScrollPhysics physics,
+DragStartBehavior dragStartBehavior: DragStartBehavior.start
+})
+```
+
+###### TabController
+
+```dart
+TabController({
+int initialIndex: 0,
+@required int length,
+@required TickerProvider vsync
+})
+```
 
 
+
+##### IconThemeData
+
+```dart
+const IconThemeData({
+Color color,
+double opacity,
+double size
+})
+```
+
+##### IconTheme
+
+```dart
+const IconTheme({
+Key key,
+@required IconThemeData data,
+@required Widget child
+})
+```
+
+##### Color
+
+```dart
+const Color(
+int value  //Construct a color from the lower 32 bits of an int.
+)
+  
+const Color.fromARGB(
+int a,  //0 being transparent and 255 being fully opaque
+int r,int g,int b //from 0 to 255
+)  
+  
+const Color.fromRGBO(
+int r,int g,int b, //from 0 to 255
+double opacity  //0.0 being transparent and 1.0 being fully opaque.
+)
+```
+
+ `Color(0xFFFF9000)` (`FF` for the alpha, `FF` for the red, `90` for the green, and `00` for the blue). 
+
+| 静态方法                                                     | 说明                                       |
+| ------------------------------------------------------------ | ------------------------------------------ |
+| lerp ([Color](https://api.flutter.dev/flutter/dart-ui/Color-class.html) a,[Color](https://api.flutter.dev/flutter/dart-ui/Color-class.html) b,[double](https://api.flutter.dev/flutter/dart-core/double-class.html) t) | 在两种颜色间线性插值                       |
+| alphaBlend(Color foreground, Color background)               | 将前景色透明在背景色上面，返回结合后的颜色 |
+
+
+
+#### Drawer
+
+```dart
+const Drawer({
+Key key,
+double elevation: 16.0,
+Widget child,
+String semanticLabel
+})
+```
+
+#### FloatingActionButtonLocation
+
+| 常量         | 使用                                      | 说明                             |
+| ------------ | ----------------------------------------- | -------------------------------- |
+| centerDocked | FloatingActionButtonLocation.centerDocked | 浮动在底部导航栏上方中心         |
+| centerFloat  |                                           | 浮动在屏幕底部中心               |
+| endDocked    |                                           | 浮动在底部导航栏上方右对齐       |
+| endFloat     |                                           | 浮动在屏幕底部右对齐             |
+| endTop       |                                           | 浮动在底部应用栏和body之间右对齐 |
+| miniStartTop | 小型按钮                                  | 浮动在底部应用栏和body之间左对齐 |
+| startTop     |                                           | 浮动在底部应用栏和body之间左对齐 |
+
+#### FloatingActionButton
+
+```dart
+const FloatingActionButton({
+Key key,
+Widget child,
+String tooltip,
+Color foregroundColor,
+Color backgroundColor,
+Color focusColor,
+Color hoverColor,
+Color splashColor,
+Object heroTag: const _DefaultHeroTag(),
+double elevation,
+double focusElevation,
+double hoverElevation,
+double highlightElevation,
+double disabledElevation,
+@required VoidCallback onPressed,
+bool mini: false,
+ShapeBorder shape,
+Clip clipBehavior: Clip.none,
+FocusNode focusNode,
+bool autofocus: false,
+MaterialTapTargetSize materialTapTargetSize,
+bool isExtended: false
+})
+```
+
+#### BottomNavigationBar
+
+```dart
+BottomNavigationBar({
+Key key,
+@required List<BottomNavigationBarItem> items,
+ValueChanged<int> onTap,
+int currentIndex: 0,  //激活的bar的索引
+double elevation: 8.0,
+BottomNavigationBarType type,  //显示方式
+Color fixedColor,
+Color backgroundColor,
+double iconSize: 24.0,
+Color selectedItemColor,
+Color unselectedItemColor,
+IconThemeData selectedIconTheme: const IconThemeData(),
+IconThemeData unselectedIconTheme: const IconThemeData(),
+double selectedFontSize: 14.0,
+double unselectedFontSize: 12.0,
+TextStyle selectedLabelStyle,
+TextStyle unselectedLabelStyle,
+bool showSelectedLabels: true,
+bool showUnselectedLabels
+})
+
+```
+
+#####  BottomAppBar 
+
+ 通常与`Scaffold.bottomNavigationBar`一起使用的容器，并且在顶部可以有一个凹口，以便为重叠的`FloatingActionButton`腾出空间 
+
+```dart
+const BottomAppBar({
+Key key,
+Color color,
+double elevation,
+NotchedShape shape,
+Clip clipBehavior: Clip.none,
+double notchMargin: 4.0,
+Widget child
+})
+```
+
+##### BottomNavigationBarItem
+
+```dart
+const BottomNavigationBarItem({
+@required Widget icon,
+Widget title,
+Widget activeIcon,
+Color backgroundColor
+})
+```
+
+##### BottomNavigationBarType
+
+| 常量     | 使用                                 | 说明                                     |
+| -------- | ------------------------------------ | ---------------------------------------- |
+| fixed    | BottomNavigationBarType.fixed        | BottomNavigationBarItem具有固定宽度      |
+| shifting |                                      | 底部导航栏内容位置和大小点击时有淡入动画 |
+| values   | BottomNavigationBarType.values[0\|1] |                                          |
+
+##### icon
+
+```dart
+const Icon(
+IconData icon, {
+Key key,
+double size,
+Color color,
+String semanticLabel,
+TextDirection textDirection
+})
+```
+
+##### IconData
+
+```dart
+const IconData(
+int codePoint, {
+String fontFamily,
+String fontPackage,
+bool matchTextDirection: false
+})
+```
+
+#### BottomSheet
+
+```dart
+const BottomSheet({
+Key key,
+AnimationController animationController,
+bool enableDrag: true,
+Color backgroundColor,
+double elevation,
+ShapeBorder shape,
+@required VoidCallback onClosing,
+@required WidgetBuilder builder
+})
+```
+
+#### 
 
 ### Container
 
+`Container `是`DecoratedBox`、`ConstrainedBox`、`Transform`、`Padding`、`Align`等组件组合的一个多功能容器 , 只需通过一个`Container`组件可以实现同时需要装饰、变换、限制的场景 
+
+```dart
+Container({
+Key key,
+AlignmentGeometry alignment,
+EdgeInsetsGeometry padding,
+Color color,
+Decoration decoration, //设置盒子的形状颜色大小，使用BoxDecortion
+Decoration foregroundDecoration,
+double width,
+double height,
+BoxConstraints constraints,
+EdgeInsetsGeometry margin,
+Matrix4 transform,
+Widget child
+})
+```
+
+- 容器的大小可以通过`width`、`height`属性来指定，也可以通过`constraints`来指定；如果它们同时存在时，`width`、`height`优先。实际上Container内部会根据`width`、`height`来生成一个`constraints`。
+- `color`和`decoration`是互斥的，如果同时设置它们则会报错！实际上，当指定`color`时，`Container`内会自动创建一个`decoration`。
+
+
+
 ### 装饰容器DecoratedBox
 
-### 变换Transform
+ `DecoratedBox`可以在其子组件绘制前(或后)绘制一些装饰（Decoration），如背景、边框、渐变等。 
+
+```dart
+const DecoratedBox({
+Key key,
+@required Decoration decoration,
+DecorationPosition position: DecorationPosition.background,
+Widget child
+})
+```
+
+#### Decoration
+
+| 方法                             | 使用                  |
+| -------------------------------- | --------------------- |
+| lerpFrom(Decoration a, double t) | Decoration.lerpFrom() |
+| lerpTo(Decoration b, double t)   | Decoration.lerpTo()   |
+
+#### DecorationPosition
+
+| 常量       | 使用                            | 说明                             |
+| ---------- | ------------------------------- | -------------------------------- |
+| background | DecorationPosition.backgorund   | DecorationPosition(0)            |
+| foreground | DecorationPosition.foreground   | DecorationPosition(1)            |
+| values     | DecorationPosition.values[0\|1] | 0表示background，1表示foreground |
+
+### 变换
+
+#### Transform
+
+ `Transform`可以在其子组件绘制时对其应用一些矩阵变换来实现一些特效 
+
+```dart
+const Transform({
+Key key,
+@required Matrix4 transform,
+Offset origin,
+AlignmentGeometry alignment,
+bool transformHitTests: true,
+Widget child
+})
+ 
+Transform.rotate({
+  Key key,
+  @required double angle,
+  this.origin,
+  this.alignment = Alignment.center,
+  this.transformHitTests = true,
+  Widget child,
+}) : transform = Matrix4.rotationZ(angle),
+     super(key: key, child: child);
+
+Transform.scale({
+  Key key,
+  @required double scale,
+  this.origin,
+  this.alignment = Alignment.center,
+  this.transformHitTests = true,
+  Widget child,
+}) : transform = Matrix4.diagonal3Values(scale, scale, 1.0),
+     super(key: key, child: child);
+
+Transform.translate({
+  Key key,
+  @required Offset offset,
+  this.transformHitTests = true,
+  Widget child,
+}) : transform = Matrix4.translationValues(offset.dx, offset.dy, 0.0),
+     origin = null,
+     alignment = null,
+     super(key: key, child: child);
+```
+
+##### Matrix4
+
+```dart
+//rotationX,y,z 类似，只是将setRotationX改变成了setRotationY,Z
+factory Matrix4.rotationX(double radians) => new Matrix4.zero()
+  .._m4storage[15] = 1.0
+  ..setRotationX(radians);
+
+factory Matrix4.skew(double alpha, double beta) {
+  final Matrix4 m = new Matrix4.identity();
+  m._m4storage[1] = math.tan(beta);
+  m._m4storage[4] = math.tan(alpha);
+  return m;
+}
+//skewX,skewY
+factory Matrix4.skewX(double alpha) {
+  final Matrix4 m = new Matrix4.identity();
+  m._m4storage[4] = math.tan(alpha);
+  return m;
+}
+factory Matrix4.skewY(double beta) {
+  final Matrix4 m = new Matrix4.identity();
+  m._m4storage[1] = math.tan(beta);
+  return m;
+}
+
+factory Matrix4.translation(Vector3 translation) => new Matrix4.zero()
+  ..setIdentity()
+  ..setTranslation(translation);
+
+factory Matrix4.translationValues(double x, double y, double z) =>
+    new Matrix4.zero()
+      ..setIdentity()
+      ..setTranslationRaw(x, y, z);
+```
+
+更多构造函数[参考]( https://api.flutter.dev/flutter/vector_math_64/Matrix4-class.html )
+
+#### RotatedBox
+
+ `RotatedBox`的变换是在layout阶段，会影响在子组件的位置和大小 
+
+```dart
+const RotatedBox({
+Key key,
+@required int quarterTurns,
+Widget child
+})
+```
+
+
 
 ### 尺寸限制类容器
 
@@ -436,13 +890,150 @@ const Size.square(double dimension) : super(dimension, dimension);
 | infinite | Size.infinite | 等同于 Size(double.infinity, double.infinity) |
 | zero     | Size.zero     | 等同于 Size(0.0，0.0)                         |
 
-
-
 #### SizedBox
+
+```dart
+const SizedBox({
+Key key,
+double width,
+double height,
+Widget child
+})
+
+const SizedBox.expand({ Key key, Widget child })
+  : width = double.infinity,
+    height = double.infinity,
+    super(key: key, child: child);
+
+SizedBox.fromSize({ Key key, Widget child, Size size })
+  : width = size?.width,
+    height = size?.height,
+    super(key: key, child: child);
+
+const SizedBox.shrink({ Key key, Widget child })
+  : width = 0.0,
+    height = 0.0,
+    super(key: key, child: child);
+```
 
 #### UnconstrainedBox
 
+ `UnconstrainedBox`不会对子组件产生任何限制，它允许其子组件按照其本身大小绘制 
+
+```dart
+const UnconstrainedBox({
+Key key,
+Widget child,
+TextDirection textDirection,
+AlignmentGeometry alignment: Alignment.center,
+Axis constrainedAxis
+})
+```
+
+####  AspectRatio 
+
+ 可以指定子组件的长宽比 
+
+```dart
+const AspectRatio({
+Key key,
+@required double aspectRatio,
+Widget child
+})
+```
+
+#### LimitedBox
+
+ 用于指定最大宽高 
+
+```dart
+const LimitedBox({
+  Key key,
+  this.maxWidth = double.infinity,
+  this.maxHeight = double.infinity,
+  Widget child,
+}) : assert(maxWidth != null && maxWidth >= 0.0),
+     assert(maxHeight != null && maxHeight >= 0.0),
+     super(key: key, child: child);
+```
+
+####  FractionallySizedBox
+
+ 可以根据父容器宽高的百分比来设置子组件宽高 
+
+```dart
+const FractionallySizedBox({
+Key key,
+AlignmentGeometry alignment: Alignment.center,
+double widthFactor,
+double heightFactor,
+Widget child
+})
+```
+
+#### OverflowBox 
+
+子元素可以溢出父容器
+
+```dart
+const OverflowBox({
+Key key,
+AlignmentGeometry alignment: Alignment.center,
+double minWidth,
+double maxWidth,
+double minHeight,
+double maxHeight,
+Widget child
+})
+```
+
+
+
 ### 剪裁Clip
+
+ Flutter中提供了一些剪裁函数，用于对组件进行剪裁 
+
+| 剪裁Widget | 作用                                                     |
+| ---------- | -------------------------------------------------------- |
+| ClipOval   | 子组件为正方形时剪裁为内贴圆形，为矩形时，剪裁为内贴椭圆 |
+| ClipRRect  | 将子组件剪裁为圆角矩形                                   |
+| ClipRect   | 剪裁子组件到实际占用的矩形大小（溢出部分剪裁）           |
+
+```dart
+const ClipOval({
+Key key,
+CustomClipper<Rect> clipper,
+Clip clipBehavior: Clip.antiAlias,
+Widget child
+})
+ 
+const ClipPath({
+Key key,
+CustomClipper<Path> clipper,
+Clip clipBehavior: Clip.antiAlias,
+Widget child
+})
+
+const ClipRect({
+Key key,
+CustomClipper<Rect> clipper,
+Clip clipBehavior: Clip.hardEdge,
+Widget child
+})
+```
+
+```dart
+ Column(
+        children: <Widget>[
+          avatar, //不剪裁
+          ClipOval(child: avatar), //剪裁为圆形
+          ClipRRect( //剪裁为圆角矩形
+            borderRadius: BorderRadius.circular(5.0),
+            child: avatar,
+)
+```
+
+
 
 ### 填充Padding
 
@@ -501,13 +1092,81 @@ const EdgeInsets.symmetric({
 
 ### 选择框
 
+radioListTile
+
+checkboxListTile
+
+switchListTile
+
 ### 输入框
+
+### 滑动条
+
+Slider
 
 ### 表单
 
 ### 进度条
 
+### 弹出框
+
+#### SimpleDialog
+
+##### SimpleDialogOption
+
+#### ShowDialog
+
+##### AlertDialog
+
+### 收缩面板
+
+#### ExpansionPanelList
+
+##### ExpansionPanel
+
+### 标签
+
+#### Chip
+
+#### ActionChip
+
+#### ChoiceChip
+
+### 表格
+
+#### DataTable
+
+##### DataColumn
+
+##### DataRow
+
+###### Datacell
+
+#### PaginatedDataTable
+
+分页表格
+
+### 分割线
+
+#### Divider
+
+### 卡片
+
+#### Card
+
+### 步骤
+
+#### Stepper
+
+##### Step
+
+
+
 ## 滚动组件
+
+### PageView
+
+类似于轮播图，可手动滑动页面
 
 ### SingleChildScrollView
 
