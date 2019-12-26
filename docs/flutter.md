@@ -1128,24 +1128,172 @@ TextSpan(
 
 #### StrutStyle
 
-
-
-## widget
-
-### Center
+## 事件
 
 
 
-### Container
+## 路由导航
 
-| 属性                 | 说明           | 用法 |
-| -------------------- | -------------- | ---- |
-| alignment            | 子元素对齐方式 |      |
-| child                | 子元素内容     |      |
-| constraints          |                |      |
-| decoration           | 容器颜色       |      |
-| foregroundDecoretion |                |      |
-| margin               |                |      |
-| padding              |                |      |
-| transform            |                |      |
+### 直接导航
+
+使用`Navigator.push()`跳转到新页面，使用`Navigator.pop()`返回前一个页面
+
+```dart
+Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SecondRoute()),
+);
+
+Navigator.pop(context);
+```
+
+### 通过路由名导航
+
+#### 定义路由
+
+使用路由名导航，首先需要在`MaterialApp`中定义路由
+
+```dart
+MaterialApp(
+  // Start the app with the "/" named route. In this case, the app starts
+  // on the FirstScreen widget.
+  initialRoute: '/',
+  routes: {
+    // When navigating to the "/" route, build the FirstScreen widget.
+    '/': (context) => FirstScreen(),
+    // When navigating to the "/second" route, build the SecondScreen widget.
+    '/second': (context) => SecondScreen(),
+  },
+);
+```
+
+#### 导航
+
+使用`Navigator.pushNamed()`导航到新页面，使用`Navigator.pop()`返回前一个页面
+
+```dart
+Navigator.pushNamed(context, '/second');
+Navigator.pop(context);
+```
+
+### 导航传递数据
+
+#### 直接传值
+
+通过在新页面部件中定义接受的值并使用构成函数改变该值，在导航页面直接将值传递到定义的部件中
+
+```dart
+class SecondScreen extends StatelessWidget {
+  final String data;
+  SecondScreen(this.data);
+  ....
+}
+// FirstScreen
+Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SecondScreen('ddddd')),
+);
+```
+
+#### 参数传值
+
+通过在新页面部件中定义接受的值并使用`ModalRoute.of(context)`改变该值，在导航页面通过在`MaterialPageRoute`中添加`settings`参数设置对应的`arguments`
+
+```dart
+class SecondScreen extends StatelessWidget {
+  final String data = ModalRoute.of(context).settings.arguments
+  ....
+}
+
+// FirstScreen
+Navigator.push(                                              
+  context,                                                   
+  MaterialPageRoute(                                         
+    builder: (context) => SecondScreen(),                    
+    // Pass the arguments as part of the RouteSettings. The  
+    // DetailScreen reads the arguments from these settings. 
+    settings: RouteSettings(                                 
+      arguments: 'ddddd',                               
+    ),                                                        
+  ),                                                          
+);
+Navigator.pushNamed(                                        
+  context,                                                  
+  SecondScreenRouteName,                         
+  arguments: 'this is return data',                                                                                                                 
+);
+```
+
+#### 通过`MaterialApp`
+
+通过`MaterialApp`部件中的`onGenerateRoute`，判断传递参数的页面与当前跳转的页面是否一直，返回数据
+
+```dart
+MaterialApp(
+  // Provide a function to handle named routes. Use this function to
+  // identify the named route being pushed, and create the correct
+  // screen.
+  onGenerateRoute: (settings) {
+    if (settings.name == SecondScreenRouteName) {
+      return MaterialPageRoute(
+        builder: (context) {
+          return 'this is return data';
+        },
+      );
+    }
+  },
+);
+```
+
+
+
+### 导航返回数据
+
+通过` Navigator.pop(context, data)`返回数据，在定义路由跳转时将其赋值给一个变量，用来获取返回的数据。
+
+```dart
+//定义路由跳转，变量为返回的数据
+final result = await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SelectionScreen()),
+);
+
+//返回一个值
+Navigator.pop(context, 'Nope!');
+```
+
+### 导航动画
+
+通过在导航页面之间添加`Hero`部件，使页面跳转具有动画效果而不是瞬间切换页面，增强用户体验
+
+```dart
+GestureDetector(
+  child: Hero(
+    tag: 'imageHero',   //两个页面的的tag要相同
+    child: Image.network(    //
+      'https://picsum.photos/250?image=9',
+    ),
+  ),
+  onTap: () {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return SecondScreen();
+    }));
+  },
+)
+// SecondScreen
+GestureDetector(
+  child: Center(
+    child: Hero(
+      tag: 'imageHero',
+      child: Image.network(
+        'https://picsum.photos/250?image=9',
+      ),
+    ),
+  ),
+  onTap: () {
+    Navigator.pop(context);
+  },
+)
+
+```
 
