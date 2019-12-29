@@ -1128,6 +1128,8 @@ TextSpan(
 
 #### StrutStyle
 
+## 动画
+
 ## 事件
 
 
@@ -1201,8 +1203,11 @@ Navigator.push(
 
 ```dart
 class SecondScreen extends StatelessWidget {
-  final String data = ModalRoute.of(context).settings.arguments
-  ....
+  @override
+   Widget build(context){
+     final String data = ModalRoute.of(context).settings.arguments
+  		return ....
+   }
 }
 
 // FirstScreen
@@ -1296,4 +1301,89 @@ GestureDetector(
 )
 
 ```
+
+## 状态管理
+
+### provider
+
+#### 创建状态管理对象
+
+创建一个类使其继承`provider`中的`ChangeNotifier`，在该类数据改变的地方调用`notifyListeners()`方法
+
+```dart
+class CartModel extends ChangeNotifier {
+  final List<Item> _items = [];
+  UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
+  int get totalPrice => _items.length * 42;
+  void add(Item item) {
+    _items.add(item);
+    notifyListeners();  //通知数据改变
+  }
+}
+```
+
+#### 提供状态数据
+
+通过`ChangeNotifierProvider`使其子部件能访问状态管理对象中的数据
+
+```dart
+runApp(
+  ChangeNotifierProvider(
+    create: (context) => CartModel(),   //返回一个状态管理对象实例，用户子部件访问数据
+    child: MyApp(),     //子部件
+  ),
+);
+```
+
+通过`MultiProvider`提供多个状态管理对象
+
+```dart
+MultiProvider(
+  providers: [
+    ChangeNotifierProvider(create: (context) => CartModel()), 
+    Provider(create: (context) => SomeOtherClass()),
+  ],
+  child: MyApp(),
+),
+```
+
+#### 使用数据
+
+##### 通过`Consumer`使用数据
+
+```dart
+return Consumer<CartModel>(
+  builder: (context, cart, child) {
+    return Text("Total price: ${cart.totalPrice}");
+  },
+);
+```
+
+`builder`三个参数：
+
+- 第一个：上下文对象
+- 第二个：状态管理对象， `ChangeNotifier `的一个实例
+- 第三个：`Consumer`中`child`参数所表示的部件,该部件不会重建
+
+```dart
+return Consumer<CartModel>(
+  builder: (context, cart, child) => Stack(
+        children: [
+          // Use SomeExpensiveWidget here, without rebuilding every time.
+          child,
+          Text("Total price: ${cart.totalPrice}"),
+        ],
+      ),
+  // Build the expensive widget here.
+  child: SomeExpensiveWidget(),
+);
+```
+
+##### 通过`Provider.of`
+
+```dart
+Provider.of<CartModel>(context, listen: false).add(item);
+```
+
+`<CartModel>`泛型中表示状态管理对象，`listen`用户表示` notifyListeners() `调用时是否重建部件
 
