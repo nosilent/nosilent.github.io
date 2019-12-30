@@ -740,9 +740,48 @@ let action = {
 }
 store.dispatch(action)
 ```
-
-
-
+### react-redux
+#### 使用`Provider`
+引入`store`和`Provider`,在尽可能的顶层组件中使用`Provider`,使得该组件下的子组件都能使用`store`
+```jsx
+   import store form 'store'
+   import { Provider } from 'react-redux'
+   ...
+ReactDOM.render(
+	<Provider store={store}>
+	    <App />
+	</Provider>, document.getElementById('root'));
+```
+#### 使用`connect`
+这需要操作`store`中数据的子组件中，使用`connect`
+```jsx
+   import { connect } from 'react-redux'
+   function MyApp(props){
+   	return (
+	 <>
+	   {props.name}
+	   <button onClick={props.changeName}>点击</button>
+	 </>	
+	)
+   }
+   const mapState =state=>{
+     return {
+     	name: state.name
+     }
+   }
+   const mapAction = dispatch=>{
+     return {
+	changeName(){
+	  dispatch({
+	  	type: 'changename',
+		data: '改变后的值'
+	  })
+	}  
+     }
+   }
+   export defalut connect(mapState,mapAction)(MyApp)
+```
+`mapState`用于获取`store`中的数据,`mapAction`用于改变`store`中的数据,在子组件中使用`props`或`this.props`使用`mapState`和`mapAction`中返回的数据
 ## 服务端渲染
 
 ## 其他插件
