@@ -472,11 +472,11 @@ const App = () => (
 );
 function Dashboard(){
   let match = useRouteMatch()
-	return (
-  	<div>
+  return (
+    <div>
       <Link to={`${match.path}/other`}>Other</Link>
       <Route path={`${match.path}/other`}>
-      	<Other/>
+        <Other/>
       </Route>
     </div>	
   )
@@ -648,7 +648,7 @@ function example(){
 }
 ```
 
-### useEffect 
+### `useEffect `
 
 *Effect Hook* 可以在函数组件中执行副作用操作
 
@@ -685,9 +685,9 @@ useEffect(()=>{
 })
 ```
 
-> 在一个函数组件中使用多个useEffect时，React 将按照 effect 声明的顺序依次调用组件中的*每一个* effect。
+> 在一个函数组件中使用多个`useEffect`时，React 将按照 effect 声明的顺序依次调用组件中的*每一个* effect。
 
-向useEffect（）中传入一个数组做个第二个参数，useEffect会根据数组中指定的数据发生改变才执行
+向`useEffect（）`中传入一个数组做个第二个参数，`useEffect`会根据数组中指定的数据发生改变才执行
 
 ```jsx
 useEffect(() => {
@@ -695,11 +695,11 @@ useEffect(() => {
 }, [count]); // 仅在 count 更改时更新
 ```
 
-### 自定义Hook
+### 自定义`Hook`
 
-### 其他Hook
+### 其他`Hook`
 
-## redux
+## `redux`
 
 ### reducer
 
@@ -744,44 +744,45 @@ store.dispatch(action)
 #### 使用`Provider`
 引入`store`和`Provider`,在尽可能的顶层组件中使用`Provider`,使得该组件下的子组件都能使用`store`
 ```jsx
-   import store form 'store'
-   import { Provider } from 'react-redux'
-   ...
+import store form 'store'
+import { Provider } from 'react-redux'
+  ...
 ReactDOM.render(
-	<Provider store={store}>
-	    <App />
-	</Provider>, document.getElementById('root'));
+    <Provider store={store}>
+      <App />
+    </Provider>, document.getElementById('root'));
 ```
 #### 使用`connect`
 这需要操作`store`中数据的子组件中，使用`connect`
 ```jsx
-   import { connect } from 'react-redux'
-   function MyApp(props){
-   	return (
-	 <>
-	   {props.name}
-	   <button onClick={props.changeName}>点击</button>
-	 </>	
-	)
-   }
-   const mapState =state=>{
-     return {
-     	name: state.name
-     }
-   }
-   const mapAction = dispatch=>{
-     return {
-	changeName(){
-	  dispatch({
-	  	type: 'changename',
-		data: '改变后的值'
-	  })
-	}  
-     }
-   }
-   export defalut connect(mapState,mapAction)(MyApp)
+import { connect } from 'react-redux'
+function MyApp(props){
+  return (
+    <>
+    {props.name}
+    <button onClick={props.changeName}>点击</button>
+    </>	
+  )
+}
+const mapState =state=>{
+  return {
+    name: state.name
+  }
+}
+const mapAction = dispatch=>{
+  return {
+    changeName(){
+      dispatch({
+        type: 'changename',
+        data: '改变后的值'
+      })
+    }  
+  }
+}
+export defalut connect(mapState,mapAction)(MyApp)
 ```
 `mapState`用于获取`store`中的数据,`mapAction`用于改变`store`中的数据,在子组件中使用`props`或`this.props`使用`mapState`和`mapAction`中返回的数据
+
 ## 服务端渲染
 
 ## 其他插件

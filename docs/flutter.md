@@ -1128,7 +1128,19 @@ TextSpan(
 
 #### StrutStyle
 
-## 动画
+## JSON
+
+`JSON`转换首先引入`  dart:convert  `库
+
+### `jsonDecode`
+
+将`JSON`转换成可访问属性对象
+
+### `jsonEncode`
+
+将可访问属性对象转换成`JSON`
+
+
 
 ## 事件
 
