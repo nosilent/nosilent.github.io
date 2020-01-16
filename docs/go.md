@@ -457,6 +457,57 @@ type NewInt int
 
  定义类型的方法，通过 type 关键字的定义，`NewInt` 会形成一种新的类型，`NewInt `本身依然具备 int 类型的特性 
 
+### 空值/零值
+
+ 在Go语言中，布尔类型的零值（初始值）为 false，数值类型的零值为 0，字符串类型的零值为空字符串`""`，而指针、切片、映射、通道、函数和接口的零值则是 nil。 
+
+**nil特性**：
+
+- nil 标识符是不能比较的
+
+```go
+fmt.Println(nil==nil)  // invalid operation: nil == nil (operator == not defined on nil)
+```
+
+- nil不是关键字或保留字
+
+- nil没有默认类型
+
+```go
+fmt.Printf("%T", nil)  //use of untyped nil
+print(nil)
+```
+
+- 不同类型nil的指针是一样的
+
+```go
+var arr []int
+var num *int
+fmt.Printf("%p\n", arr)  // 0x0
+fmt.Printf("%p", num)  //0x0
+```
+
+- 不同类型的nil是不能比较的
+
+```go
+var m map[int]string
+var ptr *int
+fmt.Printf(m == ptr) //invalid operation: arr == ptr (mismatched types []int and *int)
+```
+
+- 相同类型的nil值也是不能比较的
+
+```go
+var s1 []int
+var s2 []int
+fmt.Printf(s1 == s2) // invalid operation: s1 == s2 (slice can only be compared to nil)
+
+var s3 []int
+fmt.Println(s3 == nil) //true
+```
+
+- 不同类型的nil值占用的内存大小可能是不一样的
+
 ## 指针
 
  一个指针变量可以指向任何一个值的内存地址，它所指向的值的内存地址在 32 和 64 位机器上分别占用 4 或 8 个字节，占用字节的大小与所指向的值的大小无关。当一个指针被定义后没有分配到任何变量时，它的默认值为 nil。指针变量通常缩写为 ptr。 
@@ -721,4 +772,247 @@ a = append([]int{-3,-2,-1}, a...) // 在开头添加1个切片
  在切片开头添加元素一般都会导致内存的重新分配，而且会导致已有元素全部被复制 1 次，因此，从切片的开头添加元素的性能要比从尾部追加元素的性能差很多 .
 
 #### 切片复制
+
+ 内置函数 `copy()` 可以将一个数组切片复制到另一个数组切片中，如果加入的两个数组切片不一样大，就会按照其中较小的那个数组切片的元素个数进行复制 
+
+```go
+copy( destSlice, srcSlice []T) int
+```
+
+ 其中 srcSlice 为数据来源切片，destSlice 为复制的目标（也就是将 srcSlice 复制到 destSlice），目标切片必须分配过空间且足够承载复制的元素个数，并且来源和目标的类型必须一致，copy() 函数的返回值表示实际发生复制的元素个数 
+
+示例：
+
+```go
+slice1 := []int{1, 2, 3, 4, 5}
+slice2 := []int{5, 4, 3}
+copy(slice2, slice1) // 只会复制slice1的前3个元素到slice2中
+copy(slice1, slice2) // 只会复制slice2的3个元素到slice1的前3个位置
+```
+
+#### 删除切片中的元素
+
+ Go语言并没有对删除切片元素提供专用的语法或者接口，需要使用切片本身的特性来删除元素，根据要删除元素的位置有三种情况，分别是从开头位置删除、从中间位置删除和从尾部删除，其中删除切片尾部的元素速度最快 
+
+```go
+a = []int{1, 2, 3}
+a = a[1:] // 删除开头1个元素
+a = a[N:] // 删除开头N个元素
+
+a = append(a[:0], a[1:]...) // 删除开头1个元素
+a = append(a[:0], a[N:]...) // 删除开头N个元素
+
+a = append(a[:i], a[i+1:]...) // 删除中间1个元素
+a = append(a[:i], a[i+N:]...) // 删除中间N个元素
+a = a[:i+copy(a[i:], a[i+1:])] // 删除中间1个元素
+a = a[:i+copy(a[i:], a[i+N:])] // 删除中间N个元素
+
+a = a[:len(a)-1] // 删除尾部1个元素
+a = a[:len(a)-N] // 删除尾部N个元素
+```
+
+#### 多维切片
+
+语法：
+
+```go
+var sliceName [][]...[]sliceType
+```
+
+ sliceName 为切片的名字，sliceType为切片的类型，每个`[ ]`代表着一个维度，切片有几个维度就需要几个`[ ]` 
+
+```go
+// 声明一个二维整型切片并赋值
+slice := [][]int{{10}, {100, 200}}
+```
+
+### map映射
+
+ map 是引用类型，声明 如下
+
+```go
+var mapname map[keytype]valuetype
+```
+
+ mapname 为 map 的变量名, keytype 为键类型, valuetype 是键对应的值类型 .
+
+>  [keytype] 和 valuetype 之间允许有空格。 
+
+ 在声明的时候不需要知道 map 的长度，因为 map 是可以动态增长的，未初始化的 map 的值是 nil，使用函数 len() 可以获取 map 中 pair 的数目。 
+
+示例：
+
+```go
+var mapLit map[string]int
+var mapAssigned map[string]int
+mapLit = map[string]int{"one": 1, "two": 2}
+mapAssigned = mapLit
+// mapAssigned 是 mapList 的引用，对 mapAssigned 的修改也会影响到 mapLit 的值。 
+mapAssigned["two"] = 3
+
+fmt.Printf("Map literal at \"one\" is: %d\n", mapLit["one"]) //1
+fmt.Printf("Map assigned at \"two\" is: %d\n", mapLit["two"]) //3
+fmt.Printf("Map literal at \"ten\" is: %d\n", mapLit["ten"])  //0
+
+```
+
+#### map容量
+
+ 和数组不同，map 可以根据新增的 key-value 动态的伸缩，因此它不存在固定长度或者最大限制，但是也可以选择标明 map 的初始容量 capacity，格式如下： 
+
+```go
+make(map[keytype]valuetype, cap)
+map2 := make(map[string]float, 100)
+```
+
+ 当 map 增长到容量上限的时候，如果再增加新的 key-value，map 的大小会自动加 1 
+
+#### 用切片作为map的值
+
+```go
+mp1 := make(map[int][]int)
+mp2 := make(map[int]*[]int)
+```
+
+#### 遍历map
+
+ map 的遍历过程使用 for range 循环完成 
+
+```go
+scene := make(map[string]int)
+scene["route"] = 66
+scene["brazil"] = 4
+scene["china"] = 960
+for k, v := range scene {
+    fmt.Println(k, v)
+}
+```
+
+#### 删除键值对
+
+ 使用 delete() 内建函数从 map 中删除一组键值对，delete() 函数的格式如下 
+
+```go
+delete(map, 键)
+```
+
+ map 为要删除的 map 实例，键为要删除的 map 中键值对的键。 
+
+示例:
+
+```go
+scene := make(map[string]int)
+// 准备map数据
+scene["route"] = 66
+scene["brazil"] = 4
+scene["china"] = 960
+delete(scene, "brazil")
+```
+
+#### 清空map
+
+ Go语言中并没有为 map 提供任何清空所有元素的函数、方法，清空 map 的唯一办法就是重新 make 一个新的 map 
+
+#### sync.map
+
+ sync.Map 和 map 不同，不是以语言原生形态提供，而是在 sync 包下的特殊结构。 
+
+ sync.Map 特性： 
+
+-  无须初始化，直接声明即可 
+-  sync.Map 不能使用 map 的方式进行取值和设置等操作，而是使用 sync.Map 的方法进行调用，Store 表示存储，Load 表示获取，Delete 表示删除 
+-  使用 Range 配合一个回调函数进行遍历操作，通过回调函数返回内部遍历出来的值，Range 参数中回调函数的返回值在需要继续迭代遍历时，返回 true，终止迭代遍历时，返回 false 
+
+示例：
+
+```go
+var scene sync.Map
+// 将键值对保存到sync.Map
+scene.Store("greece", 97)
+scene.Store("london", 100)
+scene.Store("egypt", 200)
+// 从sync.Map中根据键取值
+fmt.Println(scene.Load("london"))
+// 根据键删除对应的键值对
+scene.Delete("london")
+// 遍历所有sync.Map中的键值对
+scene.Range(func(k, v interface{}) bool {
+  fmt.Println("iterate:", k, v)
+  return true
+})
+```
+
+> sync.Map 没有提供获取 map 数量的方法，替代方法是在获取 sync.Map 时遍历自行计算数量，sync.Map 为了保证并发安全有一些性能损失，因此在非并发情况下，使用 map 相比使用 sync.Map 会有更好的性能。 
+
+### list列表
+
+ 列表是一种非连续的存储容器，由多个节点组成，节点通过一些变量记录彼此之间的关系，列表有多种实现方法，如单链表、双链表等。 
+
+ 在Go语言中，列表使用 container/list 包来实现，内部的实现原理是双链表，列表能够高效地进行任意位置的元素插入和删除操作。 
+
+#### 初始化列表
+
+ list 的初始化有两种方法：分别是使用 New() 函数和 var 关键字声明，两种方法的初始化效果都是一致的。 
+
+```go
+//通过 container/list 包的 New() 函数初始化 list
+变量名 := list.New()
+
+//通过 var 关键字声明初始化 list
+var 变量名 list.List
+```
+
+ 列表并没有具体元素类型的限制 .
+
+#### 插入值
+
+ 双链表支持从队列前方或后方插入元素，分别对应的方法是` PushFront `和` PushBack `
+
+```go
+l := list.New()
+l.PushBack("fist")  //从尾部插入
+l.PushFront(67)  //从头部插入
+```
+
+插值方法：
+
+| 方  法                                                | 功  能                                            |
+| ----------------------------------------------------- | ------------------------------------------------- |
+| InsertAfter(v interface {}, mark * Element) * Element | 在 mark 点之后插入元素，mark 点由其他插入函数提供 |
+| InsertBefore(v interface {}, mark * Element) *Element | 在 mark 点之前插入元素，mark 点由其他插入函数提供 |
+| PushBackList(other *List)                             | 添加 other 列表元素到尾部                         |
+| PushFrontList(other *List)                            | 添加 other 列表元素到头部                         |
+
+#### 删除值
+
+ 列表插入函数的返回值会提供一个 *list.Element 结构，这个结构记录着列表元素的值以及与其他节点之间的关系等信息，从列表中删除元素时，需要用到这个结构进行快速删除。 
+
+使用remove()删除值
+
+```go
+l := list.New()
+// 尾部添加
+l.PushBack("canon")
+// 头部添加
+l.PushFront(67)
+// 尾部添加后保存元素句柄
+element := l.PushBack("fist")
+// 使用remove删除列表中对应的元素
+l.Remove(element)
+```
+
+#### 遍历
+
+ 遍历双链表需要配合 **Front() 函数获取头元素**，遍历时只要元素不为空就可以继续进行，每一次遍历都会调用元素的 Next() 函数 
+
+```go
+l := list.New()
+// 尾部添加
+l.PushBack("canon")
+// 头部添加
+l.PushFront(67)
+for i := l.Front(); i != nil; i = i.Next() {
+    fmt.Println(i.Value) //67 canon
+}
+```
 
