@@ -11,7 +11,7 @@
         "flutter": {"show":true,"text":"flutter","src":"docs/flutter"},
         "版本控制": {"show":true,"text":"版本控制","src":"docs/git_svn"},
         "小程序": {"show":true,"text":"小程序","src":"docs/wxApp"},
-        "go":{"show":true,"text":"go","src":"docs/go"}
+        "go": {"show":true,"text":"go","src":"docs/go"}
     },
     "title_end_tag": "title",
     "index": "react",
