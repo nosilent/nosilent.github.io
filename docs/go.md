@@ -1015,4 +1015,277 @@ for i := l.Front(); i != nil; i = i.Next() {
     fmt.Println(i.Value) //67 canon
 }
 ```
+## 流程控制
+### 分支结构if else
+关键字 if 是用于测试某个条件（布尔型或逻辑型）的语句，如果该条件成立，则会执行 if 后由大括号{}括起来的代码块，否则就忽略该代码块继续执行后续的代码,如果存在第二个分支，则可以在上面代码的基础上添加 else 关键字以及另一代码块，
+关键字 if 和 else 之后的左大括号{必须和关键字在同一行，如果使用了 else if 结构，则前段代码块的右大括号}必须和 else if 关键字在同一行，这两条规则都是被编译器强制规定的。
+在有些情况下，**条件语句**两侧的括号是可以被省略的，当条件比较复杂时，则可以使用括号让代码更易读，在使用 &&、|| 或 ! 时可以使用括号来提升某个表达式的运算优先级，并提高代码的可读性。
+特性写法：可以在 if 表达式之前添加一个执行语句，再根据变量值进行判断
+```go
+if err := Connect(); err != nil {
+    fmt.Println(err)
+    return
+}
+```
+Connect 是一个带有返回值的函数，err:=Connect() 是一个语句，执行 Connect 后，将错误保存到 err 变量中。
+这种写法可以将返回值与判断放在一行进行处理，而且返回值的作用范围被限制在 if、else 语句组合中。
+### 循环结构
+Go语言中的循环语句只支持 for 关键字, for 后面的条件表达式不需要用圆括号()括起来
+```go
+sum := 0
+for i := 0; i < 10; i++ {
+    sum += i
+}
+```
+考虑到无限循环的场景,直接简化为:
+```go
+sum := 0
+for {
+    sum++
+    if sum > 100 {
+        break
+    }
+}
+```
+使用循环语句时，需要注意的有以下几点：
+- 左花括号{必须与 for 处于同一行。
+- 允许在循环条件中定义和初始化变量
+- 支持 continue 和 break 来控制循环，但是它提供了一个更高级的 break，可以选择中断哪一个循环
+```go
+for j := 0; j < 5; j++ {
+    for i := 0; i < 10; i++ {
+        if i > 5 {
+            break JLoop
+        }
+        fmt.Println(i)
+    }
+}
+JLoop:
+// ...
+```
+break 语句终止的是 JLoop 标签处的外层循环。
+#### 初始语句
+初始语句是在第一次循环前执行的语句，一般使用初始语句执行变量初始化，如果变量在此处被声明，其作用域将被局限在这个 for 的范围内。
+初始语句可以被忽略，但是初始语句之后的分号必须要写，
+```go
+step := 2
+for ; step > 0; step-- {
+    fmt.Println(step)
+}
+```
+#### 条件表达式
+- 结束循环时带可执行语句的无限循环
+```go
+var i int
+// 忽略条件表达式，但是保留结束语句
+for ; ; i++ {
+    if i > 10 {
+        break
+    }
+}
+```
+- 无限循环
+```go
+var i int
+// 忽略 for 的所有语句，此时 for 执行无限循环。
+for {
+    if i > 10 {
+        break
+    }
+    i++
+}
+```
+无限循环在收发处理中较为常见，但需要无限循环有可控的退出方式来结束循环。
+-  只有一个循环条件的循环
+```go
+var i int
+//进一步简化代码，将 if 判断整合到 for 中
+//类似于其他编程语言中的 while，在 while 后添加一个条件表达式，满足条件表达式时持续循环，否则结束循环。
+for i <= 10 {
+    i++
+}
+```
+#### 键值循环
+for range 结构是Go语言特有的一种的迭代结构，for range 可以遍历数组、切片、字符串、map 及通道（channel），for range 语法上类似于其它语言中的 foreach 语句，
+语法如下：
+```go
+for key, val := range coll {
+    ...
+}
+```
+val 始终为集合中对应索引的值拷贝，因此它一般只具有只读性质，对它所做的任何修改都不会影响到集合中原有的值
+for range 遍历的返回值规律：
+- 数组、切片、字符串返回索引和值。
+- map 返回键和值。
+- 通道（channel）只返回通道内的值。
+##### 遍历数组、切片
+```go
+for key, value := range []int{1, 2, 3, 4} {
+    fmt.Printf("key:%d  value:%d\n", key, value)
+}
+```
+key 和 value 分别代表切片的下标及下标对应的值
+##### 遍历字符串
+通过 for range 的组合，对字符串进行遍历，遍历时，key 和 value 分别代表字符串的索引和字符串中的每一个字符。
+```go
+var str = "hello 你好"
+for key, value := range str {
+    fmt.Printf("key:%d value:0x%x\n", key, value)
+}
+```
+变量 value，实际类型是 rune 类型，以十六进制打印出来就是字符的编码。
+#### 遍历map
+map 类型来说，for range 遍历时，key 和 value 分别代表 map 的索引键 key 和索引对应的值，一般被称为 map 的键值对
+```go
+m := map[string]int{
+    "hello": 100,
+    "world": 200,
+}
+for key, value := range m {
+    fmt.Println(key, value)
+}
+```
+对 map 遍历时，遍历输出的键值是无序的，如果需要有序的键值对输出，需要对结果进行排序。
+#### 遍历通道
+for range 可以遍历通道（channel），但是通道在遍历时，只输出一个值，即管道内的类型对应的数据。
+```go
+//创建了一个整型类型的通道
+c := make(chan int)
+go func() {
+//往通道中推送数据 1、2、3，然后结束并关闭通道
+    c <- 1
+    c <- 2
+    c <- 3
+    close(c)
+}()
+for v := range c {
+    fmt.Println(v)
+}
+```
+### switch
+Go语言改进了 switch 的语法设计，case 与 case 之间是独立的代码块，不需要通过 break 语句跳出当前 case 代码块以避免执行到下一行
+```go
+var a = "hello"
+switch a {
+case "hello":
+    fmt.Println(1)
+case "world":
+    fmt.Println(2)
+default:
+    fmt.Println(0)
+}
+```
+#### 一分支多值
+将多个case放在一起,不同的 case 表达式使用逗号分隔。
+```go
+var a = "mum"
+switch a {
+case "mum", "daddy":
+    fmt.Println("family")
+}
+```
+#### 分支表达式
+case 后不仅仅只是常量，还可以和 if 一样添加表达式,这种情况的 switch 后面不再需要跟判断变量
+```go
+var r int = 11
+switch {
+case r > 10 && r < 20:
+    fmt.Println(r)
+}
+```
+#### fallthrough
+在Go语言中 case 是一个独立的代码块，执行完毕后不会像C语言那样紧接着执行下一个 case,为了兼容一些移植代码，依然加入了 fallthrough 关键字来实现这一功能
+```go
+var s = "hello"
+switch {
+case s == "hello":
+    fmt.Println("hello")
+    fallthrough
+case s != "world":
+    fmt.Println("world")
+}
+```
+### 退出循环(goto,break,continue)
+#### goto
+goto 语句通过标签进行代码间的无条件跳转，同时 goto 语句在快速跳出循环、避免重复退出上也有一定的帮助
+- 退出多层循环
+在多层循环中，使用传统的编码方式需要连续退出多层循环，goto 语句可以进行优化
+```go
+for x := 0; x < 10; x++ {
+    for y := 0; y < 10; y++ {
+        if y == 2 {
+            // 跳转到标签
+            goto breakHere
+        }
+    }
+}
+// 手动返回, 避免执行进入标签,
+return
+// 标签,如果不手动返回，在不满足条件时，也会执行下列代码
+breakHere:
+    fmt.Println("done")
+```
+- 集中处理错误
+多处错误处理存在代码重复时是非常棘手的
+```go
+err := firstCheckError()
+if err != nil {
+    fmt.Println(err)
+    exitProcess()
+    return
+}
+err = secondCheckError()
+if err != nil {
+    fmt.Println(err)
+    exitProcess()
+    return
+}
 
+// 使用goto
+err := firstCheckError()
+if err != nil {
+    goto onExit
+}
+err = secondCheckError()
+if err != nil {
+    goto onExit
+}
+fmt.Println("done")
+return
+onExit:
+    fmt.Println(err)
+    exitProcess()
+```
+#### break
+Go语言中 break 语句可以结束 for、switch 和 select 的代码块，另外 break 语句还可以在语句后面添加标签，表示退出某个标签对应的代码块，标签要求必须定义在对应的 for、switch 和 select 的代码块上。
+```go
+OuterLoop:
+    for i := 0; i < 2; i++ {
+        for j := 0; j < 5; j++ {
+            switch j {
+            case 2:
+                fmt.Println(i, j)
+                break OuterLoop
+            case 3:
+                fmt.Println(i, j)
+                break OuterLoop  //退出 OuterLoop 对应的循环之外
+            }
+        }
+    }
+}
+```
+#### continue
+Go语言中 continue 语句可以结束当前循环，开始下一次的循环迭代过程，仅限在 for 循环内使用，在 continue 语句后添加标签时，表示开始标签对应的循环
+```go
+OuterLoop:
+    for i := 0; i < 2; i++ {
+        for j := 0; j < 5; j++ {
+            switch j {
+            case 2:
+                fmt.Println(i, j)
+                continue OuterLoop  //结束当前循环，开启下一次的外层循环
+            }
+        }
+    }
+```
+## 函数
