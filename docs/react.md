@@ -790,4 +790,3 @@ export defalut connect(mapState,mapAction)(MyApp)
 - react-loadable
 - xlsx
 - react-app-rewired、customize-cra
-- antd、antd-mobile
