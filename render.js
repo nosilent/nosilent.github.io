@@ -191,6 +191,11 @@
         let highlight_Element = content.querySelectorAll("pre code");
         //代码高亮处理
         highlight_Element.forEach(item => {
+          let parent = item.parentNode
+          parent.classList.add('line-numbers')
+          Object.assign(parent.style,{
+            "white-space":"pre-wrap"
+          })
           Prism.highlightElement(item);
         });
       })
