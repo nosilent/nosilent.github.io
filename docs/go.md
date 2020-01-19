@@ -1584,3 +1584,135 @@ func fileSize(filename string) int64 {
     return size
 }
 ```
+### test功能测试函数
+Go语言自带了 testing 测试包，可以进行自动化的单元测试，输出结果验证，并且可以测试性能。
+#### 测试规则
+要开始一个单元测试，需要准备一个 go 源码文件，在命名文件时文件名必须以_test.go结尾，单元测试源码文件可以由多个测试用例（可以理解为函数）组成，每个测试用例的名称需要以 Test 为前缀，如：
+```go
+func TestXxx( t *testing.T ){
+    //......
+}
+```
+注意:
+- 测试用例文件不会参与正常源码的编译，不会被包含到可执行文件中
+- 测试用例的文件名必须以_test.go结尾
+- 需要使用 import 导入 testing 包
+- 测试函数的名称要以Test或Benchmark开头，后面可以跟任意字母组成的字符串，但第一个字母必须大写,一个测试用例文件中可以包含多个测试函数
+- 单元测试则以(t `*testing.T`)作为参数，性能测试以(t `*testing.B`)做为参数
+- 测试用例文件使用go test命令来执行，源码中不需要 main() 函数作为入口，所有以_test.go结尾的源码文件内以Test开头的函数都会自动执行
+Go语言的 testing 包提供了三种测试方式，分别是单元（功能）测试、性能（压力）测试和覆盖率测试。
+#### 单元（功能）测试
+在同一文件夹下创建两个Go语言文件，分别命名为 demo.go 和 demo_test.go
+```go
+//demo.go
+package demo
+// 根据长宽获取面积
+func GetArea(weight int, height int) int {
+    return weight * height
+}
+
+//demo_test.go
+package demo
+import "testing"
+func TestGetArea(t *testing.T) {
+    area := GetArea(40, 50)
+    if area != 2000 {
+        t.Error("测试失败")
+    }
+}
+
+//执行
+PS D:\code> go test -v
+```
+#### 性能（压力）测试
+```go
+//demo_test.go
+package demo
+import "testing"
+func BenchmarkGetArea(t *testing.B) {
+    for i := 0; i < t.N; i++ {
+        GetArea(40, 50)
+    }
+}
+
+//执行:
+PS D:\code> go test -bench="."
+```
+#### 覆盖率测试
+覆盖率测试能知道测试程序总共覆盖了多少业务代码,可以的话最好是覆盖100%。
+```go
+// demo_test.go
+package demo
+import "testing"
+func TestGetArea(t *testing.T) {
+    area := GetArea(40, 50)
+    if area != 2000 {
+        t.Error("测试失败")
+    }
+}
+func BenchmarkGetArea(t *testing.B) {
+    for i := 0; i < t.N; i++ {
+        GetArea(40, 50)
+    }
+}
+
+//执行：
+PS D:\code> go test -cover
+```
+## 结构体
+
+## 程序崩溃
+### 宕机
+宕机不是一件很好的事情，可能造成体验停止、服务中断
+#### 手动触发宕机
+Go语言可以在程序中手动触发宕机，让程序崩溃，这样开发者可以及时地发现错误，同时减少可能的损失。在宕机时，会将堆栈和 goroutine 信息输出到控制台
+```go
+func main() {
+//一个内建的函数 panic() 就可以造成崩溃,参数可以是任意类型的。
+    panic("crash")
+}
+```
+#### 在宕机时触发延迟执行语句
+当 panic() 触发的宕机发生时，panic() 后面的代码将不会被运行，但是在 panic() 函数前面已经运行过的 defer 语句依然会在宕机发生时发生作用
+```go
+defer fmt.Println("宕机后要做的事情1")
+defer fmt.Println("宕机后要做的事情2")
+panic("宕机")
+```
+#### 宕机恢复
+Recover 是一个Go语言的内建函数，可以让进入宕机流程中的 goroutine 恢复过来，recover 仅在延迟函数 defer 中有效。
+在正常的执行过程中，调用 recover 会返回 nil 并且没有其他任何效果，如果当前的 goroutine 陷入恐慌，调用 recover 可以捕获到 panic 的输入值，并且恢复正常的执行。
+Go语言没有异常系统，其使用 panic 触发宕机类似于其他语言的抛出异常，recover 的宕机恢复机制就对应其他语言中的 try/catch 机制。
+```go
+// 崩溃时需要传递的上下文信息
+type panicContext struct {
+    function string // 所在函数
+}
+// 保护方式允许一个函数
+func ProtectRun(entry func()) {
+    // 延迟处理的函数
+    defer func() {
+        // 发生宕机时，获取panic传递的上下文并打印
+        err := recover()
+        switch err.(type) {
+        case runtime.Error: // 运行时错误
+            fmt.Println("runtime error:", err)
+        default: // 非运行时错误
+            fmt.Println("error:", err)
+        }
+    }()
+    entry()
+}
+// 允许一段手动触发的错误
+ProtectRun(func() {
+    fmt.Println("手动宕机前")
+    // 使用panic传递上下文
+    panic(&panicContext{
+        "手动触发panic",
+    })
+    fmt.Println("手动宕机后")
+})
+```
+panic 和 recover 的组合有如下特性:
+- 有 panic 没 recover，程序宕机。
+- panic 也有 recover，程序不会宕机，执行完对应的 defer 后，从宕机点退出当前函数后继续执行。
