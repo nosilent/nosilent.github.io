@@ -1320,3 +1320,267 @@ func main() {
     fmt.Println(a, b)
 }
 ```
+- 带有变量名的返回值
+Go语言支持对返回值进行命名，这样返回值就和参数一样拥有参数变量名和类型,命名的返回值变量的默认值为类型的默认值。
+```go
+func namedRetValues() (a, b int) {
+    a = 1
+    b = 2
+    //可以在 return 中不填写返回值列表,如果填写也是可行的
+    return
+}
+```
+同一种类型返回值和命名返回值两种形式只能二选一，混用时将会发生编译错误。
+### 函数调用
+函数调用格式
+```go
+返回值变量列表 = 函数名(参数列表)
+result := add(1,1)
+```
+### 匿名函数
+匿名函数没有函数名只有函数体，函数可以作为一种类型被赋值给函数类型的变量，匿名函数也往往以变量方式传递
+匿名函数是指不需要定义函数名的一种函数实现方式，由一个不带函数名的函数声明和函数体组成
+#### 定义匿名函数
+格式如下：
+```go
+func(参数列表)(返回参数列表){
+    函数体
+}
+```
+- 定义时调用匿名函数
+匿名函数可以在声明后调用
+```go
+func(data int) {
+    fmt.Println("hello", data)
+}(100)
+```
+- 将匿名函数赋值给变量
+匿名函数可以用于赋值
+```go
+// 将匿名函数体保存到f()中
+f := func(data int) {
+    fmt.Println("hello", data)
+}
+// 使用f()调用
+f(100)
+```
+#### 作为回调函数
+```go
+// 遍历切片的每个元素, 通过给定函数进行元素访问
+func visit(list []int, f func(int)) {
+    for _, v := range list {
+        f(v)
+    }
+}
+// 使用匿名函数打印切片内容
+visit([]int{1, 2, 3, 4}, func(v int) {
+    fmt.Println(v)
+})
+```
+### 实现接口
+```go
+// 调用器接口
+type Invoker interface {
+    // 需要实现一个Call()方法
+    Call(interface{})
+}
+```
+这个接口需要实现 Call() 方法，调用时会传入一个 interface{} 类型的变量，这种类型的变量表示任意类型的值
+#### 结构体实现接口
+```go
+// 结构体类型
+type Struct struct {
+}
+// 实现Invoker的Call
+func (s *Struct) Call(p interface{}) {
+    fmt.Println("from struct", p)
+}
+
+// 声明接口变量
+var invoker Invoker
+// 实例化结构体
+s := new(Struct)
+// 将实例化的结构体赋值到接口
+invoker = s
+// 使用接口调用实例化结构体的方法Struct.Call
+invoker.Call("hello")
+```
+#### 函数实现接口
+函数的声明不能直接实现接口，需要将函数定义为类型后，使用类型实现结构体，当类型方法被调用时，还需要调用函数本体。
+```go
+// 函数定义为类型
+type FuncCaller func(interface{})
+// 实现Invoker的Call
+func (f FuncCaller) Call(p interface{}) {
+    // 调用f()函数本体
+    f(p)
+}
+
+// 声明接口变量
+var invoker Invoker
+// 将匿名函数转为FuncCaller类型, 再赋值给接口
+invoker = FuncCaller(func(v interface{}) {
+    fmt.Println("from function", v)
+})
+// 使用接口调用FuncCaller.Call, 内部会调用函数本体
+invoker.Call("hello")
+```
+### 闭包
+闭包是引用了自由变量的函数，被引用的自由变量和函数一同存在，即使已经离开了自由变量的环境也不会被释放或者删除，在闭包中可以继续使用这个自由变量。
+```go
+函数 + 引用环境 = 闭包
+```
+函数是编译期静态的概念，而闭包是运行期动态的概念。
+#### 在闭包内部修改引用的变量
+闭包对它作用域上部的变量可以进行修改，修改引用的变量会对变量进行实际修改。
+```go
+// 准备一个字符串
+str := "hello world"
+// 创建一个匿名函数
+foo := func() {
+   
+    // 匿名函数中访问str
+    str = "hello dude"
+}
+// 调用匿名函数
+foo()
+```
+### 可变参数
+可变参数是指函数传入的参数个数是可变的，需要将函数定义为可以接受可变参数的类型
+```go
+//函数 myfunc() 接受不定数量的参数，这些参数的类型全部是 int
+func myfunc(args ...int) {
+    for _, arg := range args {
+        fmt.Println(arg)
+    }
+}
+```
+形如...type格式的类型只能作为函数的参数类型存在，并且必须是最后一个参数。类型`...type`本质上是一个数组切片，也就是[]type
+#### 任一类型的可变参数
+如果希望传任意类型，可以指定类型为 interface{}
+```go
+func MyPrintf(args ...interface{}) {
+    for _, arg := range args {
+        switch arg.(type) {
+            case int:
+                fmt.Println(arg, "is an int value.")
+            case string:
+                fmt.Println(arg, "is a string value.")
+            case int64:
+                fmt.Println(arg, "is an int64 value.")
+            default:
+                fmt.Println(arg, "is an unknown type.")
+        }
+    }
+}
+func main() {
+    var v1 int = 1
+    var v2 int64 = 234
+    var v3 string = "hello"
+    var v4 float32 = 1.234
+    MyPrintf(v1, v2, v3, v4)
+}
+```
+#### 在多个可变参数函数中传递参数
+可变参数变量是一个包含所有参数的切片，如果要将这个含有可变参数的变量传递给下一个可变参数函数，可以在传递时给可变参数变量后面添加`...`，这样就可以将切片中的元素进行传递，而不是传递可变参数变量本身。
+```go
+func print(slist ...interface{}) {
+    // 将slist可变参数切片完整传递给下一个函数
+    rawPrint(slist...)
+}
+```
+可变参数使用...进行传递与切片间使用 append 连接是同一个特性。
+
+### defer
+Go语言的 defer 语句会将其后面跟随的语句进行延迟处理，在 defer 归属的函数即将返回时，将延迟处理的语句按 defer 的逆序进行执行，也就是说，先被 defer 的语句最后被执行，最后被 defer 的语句，最先被执行。
+#### 多个延迟执行语句的处理顺序
+当有多个 defer 行为被注册时，它们会以逆序执行（类似栈，即后进先出）
+```go
+fmt.Println("defer begin")
+// 将defer放入延迟调用栈
+defer fmt.Println(1)
+defer fmt.Println(2)
+// 最后一个放入, 位于栈顶, 最先调用
+defer fmt.Println(3)
+fmt.Println("defer end")
+
+//输出
+defer begin
+defer end
+3
+2
+1
+```
+代码的延迟顺序与最终的执行顺序是反向的
+#### 释放资源
+- 使用延迟并发解锁
+```go
+var (
+    // 一个演示用的映射
+    valueByKey      = make(map[string]int)
+    // 保证使用映射时的并发安全的互斥锁
+    valueByKeyGuard sync.Mutex
+)
+//不使用defer
+// 根据键读取值
+func readValue(key string) int {
+    // 对共享资源加锁
+    valueByKeyGuard.Lock()
+    // 取值
+    v := valueByKey[key]
+    // 对共享资源解锁
+    valueByKeyGuard.Unlock()
+    // 返回值
+    return v
+}
+
+//使用defer
+func readValue(key string) int {
+    valueByKeyGuard.Lock()
+    // defer后面的语句不会马上调用, 而是延迟到函数结束时调用
+    defer valueByKeyGuard.Unlock()
+    return valueByKey[key]
+}
+```
+#### 使用延迟释放文件句柄
+```go
+// 根据文件名查询其大小
+func fileSize(filename string) int64 {
+    // 根据文件名打开文件, 返回文件句柄和错误
+    f, err := os.Open(filename)
+    // 如果打开时发生错误, 返回文件大小为0
+    if err != nil {
+        return 0
+    }
+    // 取文件状态信息
+    info, err := f.Stat()
+    // 如果获取信息时发生错误, 关闭文件并返回文件大小为0
+    if err != nil {
+        f.Close()
+        return 0
+    }
+    // 取文件大小
+    size := info.Size()
+    // 关闭文件
+    f.Close()
+    // 返回文件大小
+    return size
+}
+//使用defer
+func fileSize(filename string) int64 {
+    f, err := os.Open(filename)
+    if err != nil {
+        return 0
+    }
+    // 延迟调用Close, 此时Close不会被调用
+    defer f.Close()
+    info, err := f.Stat()
+    if err != nil {
+        // defer机制触发, 调用Close关闭文件
+        return 0
+    }
+    size := info.Size()
+    // defer机制触发, 调用Close关闭文件
+    return size
+}
+```
