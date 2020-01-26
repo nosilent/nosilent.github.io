@@ -196,46 +196,41 @@ function(){
 
 - 使用new操作符后跟Object构造函数
 
-  ```js
-  var person = new Object()
-  ```
+```js
+var person = new Object()
+```
 
 - 使用对象字面量
 
-  ```js
-  var person = {}
-  ```
+```js
+var person = {}
+```
 
 - 使用Object.create(null),并不会创建 Object.prototype 这个委托,比 { } “更空”
 
-  ```js
-  var person = Object.create( null )
-  ```
+```js
+var person = Object.create( null )
+```
 
 ## 数组方法
 
 - 检测数组： Array.isArray()
-
 - 转换方法：
 
   - toString()：返回由数组中每个值的字符串形式拼接而成的一个以逗号分隔的字符串
   - valueof()：返回数组本身
-
 - 栈方法： 
 
   - push()：接受任意数量的参数，把它们逐个添加到数组末尾，并返回修改后的数组长度。
   - pop()：从数组末尾移除最后一项，并返回移除的项。
-
 - 队列方法：
 
   - shift()：移除数组中的第一项，并返回移除的项。
   - unshift()：在数组前端添加任意个项，并返回新数组长度。
-
 - 排序方法：
 
   - reverse()：反转数组项的顺序。
   - sort(): 默认情况下升序排列数组。会调用每个数组项的toString()方法，然后比较得到的字符串。
-
 - 操作方法：
 
   - concat()：先创建当前数组的一个副本，将接受到的参数（可以不是数组）添加到副本的末尾，返回新构建的数组，**不改变操作的数组**。
@@ -247,12 +242,10 @@ function(){
     - 删除：指定两个参数，要删除的第一项位置和要删除的数量。
     - 插入：提供三个参数，起始位置、0（要删除的数量）、要插入的项。
     - 替换：先删除后插入。
-
 - 位置方法：
 
   - indexOf(): 两个参数，要查找的项和查找的起点位置，从数组开头项后查找，找到则返回项的位置，否则返回-1。
   - lastIndexOf:  两个参数，要查找的项和查找的起点位置，从数组末尾向前查找，找到则返回项的位置，否则返回-1。
-
 - 迭代方法：每个方法接受**两个参数**，每项上运行的函数和*运行函数的作用域对象*（可选）。运行函数接受三个参数，当前**操作项、该项位置、数组对象本身**。
 
   - every()：对数组每项运行给定函数，该函数对每项返回true，则返回true。
@@ -260,17 +253,16 @@ function(){
   - forEach()：对数组每项运行给定函数，无返回值。
   - map(): 对数组每项运行给定函数，返回每次函数返回的结果组成的数组。
   - some(): 对数组每项运行给定函数，该函数对任意项返回true，则返回true。
-
 - 扁平化方法 `flat()`：接受一个参数（默认为1），目标数组调用此方法会按照一个可指定的深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组返回。
 
-  ```jsx
-  var arr1 = [1, 2, [3, 4]];
-  arr1.flat(); //[1,2,3,4]
-  
-  //使用 Infinity 作为深度，展开任意深度的嵌套数组,
-  var arr3 = [1, 2, [3, 4, [5, 6]]];
-  arr3.flat(Infinity); // [1, 2, 3, 4, 5, 6]
-  ```
+```jsx
+var arr1 = [1, 2, [3, 4]];
+arr1.flat(); //[1,2,3,4]
+
+//使用 Infinity 作为深度，展开任意深度的嵌套数组,
+var arr3 = [1, 2, [3, 4, [5, 6]]];
+arr3.flat(Infinity); // [1, 2, 3, 4, 5, 6]
+```
 
 ## 基本包装类型
 
@@ -348,6 +340,7 @@ alert(typeof obj)  // 'object'
     - 第二个参数为函数, 函数的返回值作为替换字符串。
       - 正则中只有一个匹配项时，接受三个参数（匹配项，匹配项在字符串中的位置，原始字符串）
       - 正则中只有一个捕获组时，接受四个参数（匹配项，捕获内容，匹配项在字符串中的位置，原始字符串）
+      
     - 正则中有多个捕获组时，接受多个参数（匹配项，捕获内容1，捕获内容2，....，匹配项在字符串中的位置，原始字符串）
 
 - split()：基于指定的分隔符将一个字符串分割成多个子字符串，并将结果放在一个数组中。接受两个参数（字符串或正则，数组大小（可选））。若参数为空字符串时，将字符串分割成单个字符放到数组中
@@ -439,68 +432,64 @@ Object.prototype.__proto__ // null
 注意： 
 
 - this 在任何情况下都不指向函数的词法作用域。
-
 - this 既不指向函数自身也不指向函数的词法作用域。
-
 - this 实际上是在函数被调用时发生的绑定，它指向什么完全取决于函数在哪里被调用。
-
 - 不能使用 this 来引用一个词法作用域内部的东西
 
-  ```js
-  function foo() {
-  	var a = 2;
-  	this.bar(); //不能在这里通过this来访问a, 不能通过this联通foo和bar作用域
-  }
-  function bar() {
-  	console.log( this.a );
-  }
-  foo(); // ReferenceError: a is not defined
-  ```
+```js
+function foo() {
+	var a = 2;
+	this.bar(); //不能在这里通过this来访问a, 不能通过this联通foo和bar作用域
+}
+function bar() {
+	console.log( this.a );
+}
+foo(); // ReferenceError: a is not defined
+```
 
 ### this绑定规则
 
 - 默认绑定：函数直接使用不带任何修饰的函数引用进行调用
 
-  ```js
-  function foo() {
-  console.log( this.a );
-  }
-  var a = 2;
-  foo(); // 2
-  ```
+```js
+function foo() {
+console.log( this.a );
+}
+var a = 2;
+foo(); // 2
+```
 
 - 隐式绑定：当函数引用有上下文对象时，隐式绑定规则会把函数调用中的 this 绑定到这个上下文对象
 
-  ```js
-  function foo() {
-  console.log( this.a );
-  }
-  var obj = {
-  a: 2,
-  foo: foo
-  };
-  obj.foo(); // 2
-  ```
+```js
+function foo() {
+console.log( this.a );
+}
+var obj = {
+a: 2,
+foo: foo
+};
+obj.foo(); // 2
+```
 
-  注意：对象属性引用链中只有最顶层或者说最后一层会影响调用位置,(离函数调用最近的那个对象)
+注意：对象属性引用链中只有最顶层或者说最后一层会影响调用位置,(离函数调用最近的那个对象)
 
-  ```js
-  function foo() {
-  	console.log( this.a );
-  }
-  var obj2 = {
-  	a: 42,
-  	foo: foo
-  };
-  var obj1 = {
-  	a: 2,
-  	obj2: obj2
-  };
-  obj1.obj2.foo(); // 42
-  ```
+```js
+function foo() {
+	console.log( this.a );
+}
+var obj2 = {
+	a: 42,
+	foo: foo
+};
+var obj1 = {
+	a: 2,
+	obj2: obj2
+};
+obj1.obj2.foo(); // 42
+```
 
 - 硬绑定： 通过applay、call、bind强制改变this指向
-
 - new绑定：在使用new创建新对象的过程中，函数中的this会指向新对象。
 
 ### 判断this
@@ -579,27 +568,25 @@ Object.prototype.__proto__ // null
 - 新方法
 
   - find():接受两个参数（回调函数，回调函数中this的值（可选）），返回查找到的值。回调函数返回true则立即停止搜索数组剩余部分
-
-  - findIndex():接受两个参数（回调函数，回调函数中this的值（可选）），返回查找到的值的索引。回调函数返回true则立即停止搜索数组剩余部分
-
+- findIndex():接受两个参数（回调函数，回调函数中this的值（可选）），返回查找到的值的索引。回调函数返回true则立即停止搜索数组剩余部分
   - fill()：接受三个参数（填充值，开始填充索引，结束填充索引（不包含）），当传入值时会用这个值重写数组中的所有值。若开始索引和结束索引为负数时，则与数组length相加作为最终位置。
 
-    ```js
-    let numbers = [1,2,3,4]
-    numbers.fill(1)  // [1,1,1,1]
-    numbers.fill(0,1,3) //[1,0,0,1]
-    ```
-
+  ```js
+let numbers = [1,2,3,4]
+  numbers.fill(1)  // [1,1,1,1]
+  numbers.fill(0,1,3) //[1,0,0,1]
+  ```
+  
   - copyWithin():从数组中复制元素的值。接受三个参数（开始填充值索引位置，开始复制值索引位置，停止复制值的索引位置）
 
-    ```js
-    let numbers = [1,2,3,4]
-    numbers.copyWithin(2,0) //[1,2,1,2]
-    
-    let arr = [1,2,3,4]
-    arr.copyWithin(2,0,1) //[1,2,1,4]
-    ```
-
+  ```js
+let numbers = [1,2,3,4]
+  numbers.copyWithin(2,0) //[1,2,1,2]
+  
+  let arr = [1,2,3,4]
+  arr.copyWithin(2,0,1) //[1,2,1,4]
+  ```
+  
 - 数组缓冲区：一段可以包含特定数量字节的内存地址。缓冲区大小在创建时就已确定，可以改变其中的数据，不能改变尺寸大小
 
   - 通过ArrayBuffer构造函数创建
@@ -642,27 +629,27 @@ Object.prototype.__proto__ // null
     - get:接受两个参数（读取数据时偏移的字节数量，布尔值（是否按小端读取））
     - set:接受三个参数（偏移值，写入值，布尔值（是否按小端存储））
 
-    ```js
-    let buf = new ArrayBuffer(10)
-    let view = new DataView(buf)
-    
-    //set: setInt8 setUint8 setFloat32 setFloat64
-    view.setInt8(0,5)
-    view.setInt8(1,-1)
-    
-    //get: getInt8 getUint8 getFloat32 getFloat64
-    console.log(view.getInt8(0))  //5
-    console.log(view.getInt8(1))   //-1
-    ```
+  ```js
+  let buf = new ArrayBuffer(10)
+  let view = new DataView(buf)
+  
+  //set: setInt8 setUint8 setFloat32 setFloat64
+  view.setInt8(0,5)
+  view.setInt8(1,-1)
+  
+  //get: getInt8 getUint8 getFloat32 getFloat64
+  console.log(view.getInt8(0))  //5
+  console.log(view.getInt8(1))   //-1
+  ```
 
   - 定型数组视图
 
-    ```js
-    let buf = new ArrayBuffer(10)
-    
-    //int8Array() int16Array() float32Array() 
-    let view = new int8Array(buffer,5,2)
-    ```
+  ```js
+  let buf = new ArrayBuffer(10)
+  
+  //int8Array() int16Array() float32Array() 
+  let view = new int8Array(buffer,5,2)
+  ```
 
 ### 字符串扩展
 
@@ -918,33 +905,31 @@ promise.success(value=>{
 
 1. 创建一个代理：接受两个参数（目标，处理程序）
 
-   ```js
-   let target = {}
-   let proxy = new Proxy(target, {})
-   ```
+```js
+let target = {}
+let proxy = new Proxy(target, {})
+```
 
-2. set验证：接受4个参数（接受属性的对象，要写入的属性键，写入的属性值，操作发生的对象）
+1. set验证：接受4个参数（接受属性的对象，要写入的属性键，写入的属性值，操作发生的对象）
 
-   ```js
-   let target = {}
-   let proxy = new Proxy(target, {
-       set(trapTarget,key,value,receiver){  //trapTarget: target, receiver: proxy
-   		return Reflect.set(trapTarget,key,value,receiver)  //添加属性
-       }
-   })
-   ```
+```js
+let target = {}
+let proxy = new Proxy(target, {
+    set(trapTarget,key,value,receiver){  //trapTarget: target, receiver: proxy
+		return Reflect.set(trapTarget,key,value,receiver)  //添加属性
+    }
+})
+```
 
-3. get验证：接受3个参数（被读取属性的源对象，要读取的键值，操作发生的对象）
+1. get验证：接受3个参数（被读取属性的源对象，要读取的键值，操作发生的对象）
 
-   ```js
-   let proxy = new Proxy({},{
-       get(trapTarget,key,receiver){ //trapTarget: {}, receiver: proxy
-   		return Reflect.get(trapTarget,key,receiver)
-       }
-   })
-   ```
-
-   
+```js
+let proxy = new Proxy({},{
+    get(trapTarget,key,receiver){ //trapTarget: {}, receiver: proxy
+		return Reflect.get(trapTarget,key,receiver)
+    }
+})
+```
 
 ### 类
 
@@ -977,20 +962,20 @@ class Square {
 
 - 实例属性除了定义在`constructor()`方法里面的`this`上面，也可以定义在类的最顶层。
 
-  ```js
-  class IncreasingCounter {
-    _count = 0;
-    get value() {
-      console.log('Getting the current value!');
-      return this._count;
-    }
-    increment() {
-      this._count++;
-    }
+```js
+class IncreasingCounter {
+  _count = 0;
+  get value() {
+    console.log('Getting the current value!');
+    return this._count;
   }
-  ```
+  increment() {
+    this._count++;
+  }
+}
+```
 
-  
+
 
 #### 静态方法
 
@@ -1045,18 +1030,16 @@ import  xx from 'xx'|require(xx)，模块执行的顺序是先加载node自带�
 
 - 意外的全局变量
 
-  ```js
-  function foo() {
-    bar1 = 'some text'; // 没有声明变量 实际上是全局变量 => window.bar1
-    this.bar2 = 'some text' // 全局变量 => window.bar2
-  }
-  foo();
-  ```
+```js
+function foo() {
+  bar1 = 'some text'; // 没有声明变量 实际上是全局变量 => window.bar1
+  this.bar2 = 'some text' // 全局变量 => window.bar2
+}
+foo();
+```
 
 - 被遗忘的定时器和回调函数
-
 - 闭包
-
 - DOM 引用
 
 **如何避免内存泄漏**：
@@ -1294,62 +1277,62 @@ AJAX = 异步 JavaScript 和 XML。
 
 1. 创建XMLHttpRequest对象
 
-   ```js
-   //所有现代浏览器（IE7+、Firefox、Chrome、Safari 以及 Opera）均内建 XMLHttpRequest 对象。
-   let xhl = new XMLHttpRequest()
-   
-   //Internet Explorer （IE5 和 IE6）使用 ActiveX 对象
-   let xhl = new ActiveXObject("Microsoft.XMLHTTP")
-   
-   //兼容写法
-   let xhl
-   if (window.XMLHttpRequest)
-     {// code for IE7+, Firefox, Chrome, Opera, Safari
-     xhl=new XMLHttpRequest();
-     }
-   else
-     {// code for IE6, IE5
-     xhl=new ActiveXObject("Microsoft.XMLHTTP");
-     }
-   ```
+```js
+//所有现代浏览器（IE7+、Firefox、Chrome、Safari 以及 Opera）均内建 XMLHttpRequest 对象。
+let xhl = new XMLHttpRequest()
+
+//Internet Explorer （IE5 和 IE6）使用 ActiveX 对象
+let xhl = new ActiveXObject("Microsoft.XMLHTTP")
+
+//兼容写法
+let xhl
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xhl=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xhl=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+```
 
 2. 配置请求信息
 
-   ```js
-   //发送异步请求必须设置为true,可以监听onreadystatechange函数，false则不能
-   xhl.open('get|post',url，true)  
-   ```
+```js
+//发送异步请求必须设置为true,可以监听onreadystatechange函数，false则不能
+xhl.open('get|post',url，true)  
+```
 
-   > 如果需要像 HTML 表单那样 POST 数据，请使用 setRequestHeader() 来添加 HTTP 头。然后在 send() 方法中发送数据：
-   >
-   > xhl.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+> 如果需要像 HTML 表单那样 POST 数据，请使用 setRequestHeader() 来添加 HTTP 头。然后在 send() 方法中发送数据：
+>
+> xhl.setRequestHeader("Content-type","application/x-www-form-urlencoded")
 
 3. 发送数据
 
-   ```js
-   xhl.send()  //用于get
-   xhl.send(数据) //只能用于post
-   ```
+```js
+xhl.send()  //用于get
+xhl.send(数据) //只能用于post
+```
 
 4. 注册回调函数
 
-   ```js
-   xhl.onreadystatechange = callback
-   function callback(){
-       
-   }
-   ```
+```js
+xhl.onreadystatechange = callback
+function callback(){
+    
+}
+```
 
 5. 处理响应
 
-   ```js
-   function callback(){
-       if(xhl.readState ===4 && xhl.status === 200){
-           // xhl.responseTest|xhl.responseXML,返回响应的数据
-           //执行其他内容
-       }
-   }
-   ```
+```js
+function callback(){
+    if(xhl.readState ===4 && xhl.status === 200){
+        // xhl.responseTest|xhl.responseXML,返回响应的数据
+        //执行其他内容
+    }
+}
+```
 
 ### fetch
 
@@ -1375,8 +1358,6 @@ fetch(url, {
   })
   .then(response => response.json())
 ```
-
-
 
 ### axios
 
