@@ -63,7 +63,6 @@ module.exports = {
         node_modules: {
           test: /[\\/]node_modules[\\/]/,
           priority: -10,
-          reuseExistingChunk: true
         },
         default: {
           minChunks: 2,

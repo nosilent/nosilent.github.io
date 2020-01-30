@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { Menu, Dropdown, Tabs } from 'antd'
+import { Menu, Dropdown, Tabs, Icon } from 'antd'
 
 import { Link } from 'react-router-dom'
 class Nav extends Component {
@@ -20,7 +20,7 @@ class Nav extends Component {
            if(item.children){
             let temp =(
               <Dropdown overlay={this.getMenu(item.children)}  trigger={['hover','click']} >
-                <span>{item.text} </span>
+                <span>{item.text} <Icon type='down' /></span>
               </Dropdown>)
             return (<Tabs.TabPane tab={temp} key={item.text} forceRender={true} />)
            }else{
