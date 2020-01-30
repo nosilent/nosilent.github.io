@@ -7,7 +7,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname,''),
-    publicPath: '/assets/',
+    // publicPath: '/assets/',
     filename: '[name].bundle.js'
   },
   plugins:[
