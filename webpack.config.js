@@ -1,6 +1,6 @@
 const  path = require('path') 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const babelOption = require('./babel.config.js')
 // const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
@@ -56,13 +56,16 @@ module.exports = {
   },
   resolve: {
     extensions: [".js", ".json", ".jsx", ".css"],
+    // alias:{
+    //   '@ant-design/icons/dist.js$': path.resolve(__dirname, '')
+    // }
   },
   optimization: {
     splitChunks: {
       chunks: 'all',
       minSize: 30000,
       // minRemainingSize: 0,
-      maxSize: 70000,
+      maxSize: 50000,
       minChunks: 1,
       maxAsyncRequests: 6,
       maxInitialRequests: 4,
@@ -72,6 +75,7 @@ module.exports = {
         node_modules: {
           test: /[\\/]node_modules[\\/]/,
           priority: -10,
+          reuseExistingChunk: true
         },
         default: {
           minChunks: 2,
