@@ -22,14 +22,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-    new CompressionPlugin({
-      test: /\.js/,
-      algorithm: 'gzip',
-      filename: '[path].gz[query]',
-      threshold: 0,
-      minRatio: 1,
-      deleteOriginalAssets: true
-    })
+    // new CompressionPlugin({
+    //   test: /\.js/,
+    //   algorithm: 'gzip',
+    //   filename: '[path].gz[query]',
+    //   threshold: 0,
+    //   minRatio: 1,
+    //   deleteOriginalAssets: true
+    // })
     // new BundleAnalyzerPlugin(),
     // new webpack.DefinePlugin({
     //   'process.env.NODE_ENV': JSON.stringify('production')
@@ -62,7 +62,7 @@ module.exports = {
       chunks: 'all',
       minSize: 30000,
       // minRemainingSize: 0,
-      maxSize: 50000,
+      maxSize: 70000,
       minChunks: 1,
       maxAsyncRequests: 6,
       maxInitialRequests: 4,
