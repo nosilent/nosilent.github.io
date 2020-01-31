@@ -84,5 +84,6 @@ module.exports = {
         }
       }
     }
-  }
+  },
+  externals : ['react','react-dom','react-router-dom','axios','marked']
 }
