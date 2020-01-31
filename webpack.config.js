@@ -5,6 +5,7 @@ const babelOption = require('./babel.config.js')
 // const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const webpack = require('webpack')
+const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports = {
   // mode: process.env.NODE_ENV,
@@ -21,6 +22,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    new CompressionPlugin({
+      test: /\.js/,
+      algorithm: 'gzip',
+      threshold: 0,
+      minRatio: 1,
+      deleteOriginalAssets: true
+    })
     // new BundleAnalyzerPlugin(),
     // new webpack.DefinePlugin({
     //   'process.env.NODE_ENV': JSON.stringify('production')
