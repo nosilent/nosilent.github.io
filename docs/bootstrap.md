@@ -191,11 +191,9 @@ button元素或a链接添加 .btn .btn-xx(xx: primary secondary success danger w
 
   1. 父元素添加.custom-control 和.custom-checkbox|.custom-radio
 
-     ```
-     			2. input元素添加.custom-control-input，label元素添加.custom-control-label
-     ```
-
-     3. .custom-control-inline:一行显示
+  2. input元素添加.custom-control-input，label元素添加.custom-control-label
+  
+  3. .custom-control-inline:一行显示
 
 - 自定义下拉select：在select元素上添加.custom-select，.custom-select-lg|sm用于改变大小
 
