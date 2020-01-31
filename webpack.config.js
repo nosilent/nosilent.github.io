@@ -30,7 +30,7 @@ module.exports = {
     //   minRatio: 1,
     //   deleteOriginalAssets: true
     // })
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
     // new webpack.DefinePlugin({
     //   'process.env.NODE_ENV': JSON.stringify('production')
     // })
@@ -85,5 +85,5 @@ module.exports = {
       }
     }
   },
-  externals : ['react','react-dom','react-router-dom','axios','marked']
+  // externals : ['react','react-dom','react-router-dom','axios','marked']
 }
