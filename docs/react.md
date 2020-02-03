@@ -48,25 +48,25 @@ ReactDOM.render(<App/>,document.querySelector(root))
 
 ## 创建jsx
 
-1. 使用 React.createElement
+- 使用 React.createElement
 
-   ```jsx
-   const element = React.createElement(
-     'h1', //标签名
-     {className: 'greeting'},  //属性
-     'Hello, world!'  //内容
-   );
-   ```
+```jsx
+const element = React.createElement(
+  'h1', //标签名
+  {className: 'greeting'},  //属性
+  'Hello, world!'  //内容
+);
+```
 
-2. 使用表达式
+- 使用表达式
 
-   ```jsx
-   const element = (
-     <h1 className="greeting">
-       Hello, world!
-     </h1>
-   );
-   ```
+```jsx
+const element = (
+  <h1 className="greeting">
+    Hello, world!
+  </h1>
+);
+```
 
 ## 组件
 
@@ -217,13 +217,13 @@ function App(props){
 
 - static getDerivedStateFromError(error)：将抛出的错误作为参数，并返回一个对象来更新 state
 
-  ```jsx
-  this.state = { hasError: false }
-  static getDerivedStateFromError(error) {
-      // 更新 state 使下一次渲染可以显降级 UI
-      return { hasError: true };
-    }
-  ```
+```jsx
+this.state = { hasError: false }
+static getDerivedStateFromError(error) {
+    // 更新 state 使下一次渲染可以显降级 UI
+    return { hasError: true };
+  }
+```
 
 - componentDidCatch(`error`，`info` )
 
@@ -266,26 +266,25 @@ class App extends React.Component{
 ## 骨架替换
 
 1. 通过React.lazy(）异步加载一个组件
-
 2. 通过Suspense组件上的fallback属性渲染异步组件未加载前的内容
 
-   ```jsx
-   //React.lazy 接受一个函数，这个函数需要动态调用 import()
-   const OtherComponent = React.lazy(() => import('./OtherComponent'))
-   
-   //在App组件渲染完成后，OtherComponent组件还没有加载完成，则渲染fallback中的内容
-   class App extends React.Component {
-     render(){
-           return (
-           <>
-       			<Suspense fallback={<div>Loading...</div>}>
-           			<OtherComponent />
-   					</Suspense>
-           </>
-           )
-     }
-   }
-   ```
+```jsx
+//React.lazy 接受一个函数，这个函数需要动态调用 import()
+const OtherComponent = React.lazy(() => import('./OtherComponent'))
+
+//在App组件渲染完成后，OtherComponent组件还没有加载完成，则渲染fallback中的内容
+class App extends React.Component {
+  render(){
+        return (
+        <>
+    			<Suspense fallback={<div>Loading...</div>}>
+        			<OtherComponent />
+					</Suspense>
+        </>
+        )
+  }
+}
+```
 
 ## 上下文context
 
