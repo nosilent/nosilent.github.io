@@ -481,6 +481,30 @@ git merge branchName
 git branch -d branchName
 ```
 
+#### 远程分支
+
+ 抓取远程仓库`remoteBranchName`有而本地没有的数据 
+
+```bash
+git fetch remoteBranchName
+```
+
+#### 跟着远程分支
+
+当克隆一个仓库时，它通常会自动地创建一个跟踪 `origin/master` 的 `master` 分支 
+
+要设置其他的跟踪分支 
+
+```bash
+git checkout --track origin/branchName
+```
+
+ 本地分支与远程分支设置为不同名字 
+
+```bash
+git checkout -b newName origin/branchName
+```
+
 
 
 ### 选择版本
