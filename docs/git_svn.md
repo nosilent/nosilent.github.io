@@ -481,7 +481,7 @@ git merge branchName
 git branch -d branchName
 ```
 
-#### 远程分支
+#### 获取远程分支数据
 
  抓取远程仓库`remoteBranchName`有而本地没有的数据 
 
@@ -491,9 +491,9 @@ git fetch remoteBranchName
 
 #### 跟着远程分支
 
-当克隆一个仓库时，它通常会自动地创建一个跟踪 `origin/master` 的 `master` 分支 
+当克隆一个仓库时，它通常会自动地创建一个跟踪 `origin/master` 的 `master` 分支 。
 
-要设置其他的跟踪分支 
+设置其他的跟踪分支 
 
 ```bash
 git checkout --track origin/branchName
@@ -504,6 +504,20 @@ git checkout --track origin/branchName
 ```bash
 git checkout -b newName origin/branchName
 ```
+
+ 查看设置的所有跟踪分支 
+
+```bash
+git branch -vv
+```
+
+#### 删除远程分支
+
+```bash
+git push origin --delete remoteBranchName
+```
+
+
 
 
 
