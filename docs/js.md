@@ -329,42 +329,41 @@ alert(typeof obj)  // 'object'
 
     - 第二个参数为字符串，可以使用特殊的字符序列，将正则操作得到的值插入到结果字符串中。
 
-      ```js
-      var text = 'cat, bat, sat, fat'
-      var result = text.replace(/(.at)/g, 'word $1')  
-      //$n表示匹配第n个捕获组的子字符串
-      //正则中第几个（）匹配的子串就表示第几个捕获组
-      alert(result) //word cat, word bat, word sat, word fat
-      ```
+    ```js
+    var text = 'cat, bat, sat, fat'
+    var result = text.replace(/(.at)/g, 'word $1')  
+    //$n表示匹配第n个捕获组的子字符串
+    //正则中第几个（）匹配的子串就表示第几个捕获组
+    alert(result) //word cat, word bat, word sat, word fat
+    ```
 
     - 第二个参数为函数, 函数的返回值作为替换字符串。
       - 正则中只有一个匹配项时，接受三个参数（匹配项，匹配项在字符串中的位置，原始字符串）
       - 正则中只有一个捕获组时，接受四个参数（匹配项，捕获内容，匹配项在字符串中的位置，原始字符串）
-      
     - 正则中有多个捕获组时，接受多个参数（匹配项，捕获内容1，捕获内容2，....，匹配项在字符串中的位置，原始字符串）
-
+  
 - split()：基于指定的分隔符将一个字符串分割成多个子字符串，并将结果放在一个数组中。接受两个参数（字符串或正则，数组大小（可选））。若参数为空字符串时，将字符串分割成单个字符放到数组中
 
-  ```js
-  'abcd'.split('')  // ['a','b','c','d'] ''中没有空格
-  ```
+```js
+'abcd'.split('')  // ['a','b','c','d'] ''中没有空格
+```
 
 - localeCompare()：比较两个字符串
 
-  ```js
-  //字符串在字母表中应排在字符串参数之前，则返回一个负数
-  	'yellow'.localeCompare('brick')  //1 依次比较各个位置上的字符
-  //相等返回0
-  	'yellow'.localeCompare('yellow') //0
-  //排在之后返回-1
-  	'yellow'.localeCompare('zoo') // -1
-  ```
+```js
+//字符串在字母表中应排在字符串参数之前，则返回一个负数
+	'yellow'.localeCompare('brick')  //1 依次比较各个位置上的字符
+//相等返回0
+	'yellow'.localeCompare('yellow') //0
+//排在之后返回-1
+	'yellow'.localeCompare('zoo') // -1
+```
 
 - fromCharCode(): 接受一个或多个字符编码，然后将其转换才一个字符串
 
-  ```js
-  String.fromCharCode(104,101,108,108,111)  // 'hello'
-  ```
+```js
+String.fromCharCode(104,101,108,108,111)  // 'hello'
+```
 
 ## 正则
 

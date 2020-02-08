@@ -212,70 +212,69 @@ CSS初始化为了解决不同浏览器对有些标签的默认值不同引起�
 - 水平居中： 
 
   1. 使用margin: 0 auto
-
-  2. 使用定位
-
-     ```css
-     /*块元素宽度已知*/
-     {
-         position:relative|absolute;
-         left: 50%;
-         margin-left: -width/2
-     }
-     
-     /* 块元素宽度未知 */
-     {
-         position:relative|absolute;
-         left: 50%;
-         transform: translateX(-50%);
-     }
-     ```
-
-  3. 父元素使用 `display:flex` 和 `justify-content: center`
-
-     ```css
-     {
-         display: flex;
-         justify-content: center;
-     }
-     ```
-
+2. 使用定位
+  
+```css
+  /*块元素宽度已知*/
+  {
+      position:relative|absolute;
+      left: 50%;
+      margin-left: -width/2
+  }
+  
+  /* 块元素宽度未知 */
+  {
+      position:relative|absolute;
+      left: 50%;
+      transform: translateX(-50%);
+  }
+  ```
+  
+3. 父元素使用 `display:flex` 和 `justify-content: center`
+  
+```css
+  {
+      display: flex;
+      justify-content: center;
+  }
+  ```
+  
 - 竖直居中
 
   1. 使用定位
 
-     ```css
-     /*块元素高度已知*/
-     {
-         position:relative|absolute;
-         top: 50%;
-         margin-left: -height/2
-     }
-     
-     /* 块元素宽度未知 */
-     {
-         position:relative|absolute;
-         top: 50%;
-         transform: translateY(-50%);
-     }
-     ```
+  ```css
+  /*块元素高度已知*/
+  {
+      position:relative|absolute;
+      top: 50%;
+      margin-left: -height/2
+  }
+  
+  /* 块元素宽度未知 */
+  {
+      position:relative|absolute;
+      top: 50%;
+      transform: translateY(-50%);
+  }
+  ```
 
   2. 父元素使用 `display:flex ` 
 
-     ```css
-     /*使用align-items*/
-     {
-         display: flex;
-         align-items: center
-     }
-     
-     /*使用align-content*/
-     {
-     	display: flex;
-         align-content: center;
-         flex-wrap: wrap;
-     }
-     ```
+  ```css
+  /*使用align-items*/
+  {
+      display: flex;
+      align-items: center
+  }
+  
+  /*使用align-content*/
+  {
+  	display: flex;
+      align-content: center;
+      flex-wrap: wrap;
+  }
+  ```
 
 ## 盒模型
 

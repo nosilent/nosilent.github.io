@@ -1064,11 +1064,9 @@ JLoop:
 // ...
 ```
 break 语句终止的是 JLoop 标签处的外层循环。
-
 #### 初始语句
 初始语句是在第一次循环前执行的语句，一般使用初始语句执行变量初始化，如果变量在此处被声明，其作用域将被局限在这个 for 的范围内。
 初始语句可以被忽略，但是初始语句之后的分号必须要写，
-
 ```go
 step := 2
 for ; step > 0; step-- {
@@ -1077,7 +1075,6 @@ for ; step > 0; step-- {
 ```
 #### 条件表达式
 - 结束循环时带可执行语句的无限循环
-
 ```go
 var i int
 // 忽略条件表达式，但是保留结束语句
@@ -1088,7 +1085,6 @@ for ; ; i++ {
 }
 ```
 - 无限循环
-
 ```go
 var i int
 // 忽略 for 的所有语句，此时 for 执行无限循环。
@@ -1101,7 +1097,6 @@ for {
 ```
 无限循环在收发处理中较为常见，但需要无限循环有可控的退出方式来结束循环。
 -  只有一个循环条件的循环
-
 ```go
 var i int
 //进一步简化代码，将 if 判断整合到 for 中
@@ -1123,9 +1118,6 @@ for range 遍历的返回值规律：
 - 数组、切片、字符串返回索引和值。
 - map 返回键和值。
 - 通道（channel）只返回通道内的值。
-
-
-
 ##### 遍历数组、切片
 ```go
 for key, value := range []int{1, 2, 3, 4} {
@@ -1203,7 +1195,6 @@ case r > 10 && r < 20:
 ```
 #### fallthrough
 在Go语言中 case 是一个独立的代码块，执行完毕后不会像C语言那样紧接着执行下一个 case,为了兼容一些移植代码，依然加入了 fallthrough 关键字来实现这一功能
-
 ```go
 var s = "hello"
 switch {
@@ -1218,9 +1209,7 @@ case s != "world":
 #### goto
 goto 语句通过标签进行代码间的无条件跳转，同时 goto 语句在快速跳出循环、避免重复退出上也有一定的帮助
 - 退出多层循环
-
 在多层循环中，使用传统的编码方式需要连续退出多层循环，goto 语句可以进行优化
-
 ```go
 for x := 0; x < 10; x++ {
     for y := 0; y < 10; y++ {
@@ -1237,9 +1226,7 @@ breakHere:
     fmt.Println("done")
 ```
 - 集中处理错误
-
 多处错误处理存在代码重复时是非常棘手的
-
 ```go
 err := firstCheckError()
 if err != nil {
@@ -1307,12 +1294,8 @@ Go语言里面拥三种类型的函数：
 - 普通的带有名字的函数
 - 匿名函数或者 lambda 函数
 - 方法
-
-
-
 ### 函数定义
 函数声明包括函数名、形式参数列表、返回值列表（可省略）以及函数体。
-
 ```go
 func 函数名(形式参数列表)(返回值列表){
     函数体
@@ -1323,14 +1306,11 @@ func 函数名(形式参数列表)(返回值列表){
 一个函数在声明时，包含返回值列表，那么该函数必须以 return 语句结尾，除非函数明显无法运行到结尾处，如调用了 panic 异常或函数中存在无限循环
 在函数调用时，Go语言没有默认参数值，也没有任何方法可以通过参数名指定形参，
 在函数中，实参通过值传递的方式进行传递，因此函数的形参是实参的拷贝，对形参进行修改不会影响实参，如果实参包括引用类型，实参可能会由于函数的间接引用被修改
-
 ### 返回值
 Go语言支持多返回值，多返回值能方便地获得函数执行后的多个返回参数，
 - 同一类型
-
 如果返回值是同一种类型，则用括号将多个返回值类型括起来，用逗号分隔每个返回值的类型。
 使用 return 语句返回时，值列表的顺序需要与函数声明的返回值类型一致
-
 ```go
 func typedTwoValues() (int, int) {
     return 1, 2
@@ -1340,3 +1320,400 @@ func main() {
     fmt.Println(a, b)
 }
 ```
+- 带有变量名的返回值
+Go语言支持对返回值进行命名，这样返回值就和参数一样拥有参数变量名和类型,命名的返回值变量的默认值为类型的默认值。
+```go
+func namedRetValues() (a, b int) {
+    a = 1
+    b = 2
+    //可以在 return 中不填写返回值列表,如果填写也是可行的
+    return
+}
+```
+同一种类型返回值和命名返回值两种形式只能二选一，混用时将会发生编译错误。
+### 函数调用
+函数调用格式
+```go
+返回值变量列表 = 函数名(参数列表)
+result := add(1,1)
+```
+### 匿名函数
+匿名函数没有函数名只有函数体，函数可以作为一种类型被赋值给函数类型的变量，匿名函数也往往以变量方式传递
+匿名函数是指不需要定义函数名的一种函数实现方式，由一个不带函数名的函数声明和函数体组成
+#### 定义匿名函数
+格式如下：
+```go
+func(参数列表)(返回参数列表){
+    函数体
+}
+```
+- 定义时调用匿名函数
+匿名函数可以在声明后调用
+```go
+func(data int) {
+    fmt.Println("hello", data)
+}(100)
+```
+- 将匿名函数赋值给变量
+匿名函数可以用于赋值
+```go
+// 将匿名函数体保存到f()中
+f := func(data int) {
+    fmt.Println("hello", data)
+}
+// 使用f()调用
+f(100)
+```
+#### 作为回调函数
+```go
+// 遍历切片的每个元素, 通过给定函数进行元素访问
+func visit(list []int, f func(int)) {
+    for _, v := range list {
+        f(v)
+    }
+}
+// 使用匿名函数打印切片内容
+visit([]int{1, 2, 3, 4}, func(v int) {
+    fmt.Println(v)
+})
+```
+### 实现接口
+```go
+// 调用器接口
+type Invoker interface {
+    // 需要实现一个Call()方法
+    Call(interface{})
+}
+```
+这个接口需要实现 Call() 方法，调用时会传入一个 interface{} 类型的变量，这种类型的变量表示任意类型的值
+#### 结构体实现接口
+```go
+// 结构体类型
+type Struct struct {
+}
+// 实现Invoker的Call
+func (s *Struct) Call(p interface{}) {
+    fmt.Println("from struct", p)
+}
+
+// 声明接口变量
+var invoker Invoker
+// 实例化结构体
+s := new(Struct)
+// 将实例化的结构体赋值到接口
+invoker = s
+// 使用接口调用实例化结构体的方法Struct.Call
+invoker.Call("hello")
+```
+#### 函数实现接口
+函数的声明不能直接实现接口，需要将函数定义为类型后，使用类型实现结构体，当类型方法被调用时，还需要调用函数本体。
+```go
+// 函数定义为类型
+type FuncCaller func(interface{})
+// 实现Invoker的Call
+func (f FuncCaller) Call(p interface{}) {
+    // 调用f()函数本体
+    f(p)
+}
+
+// 声明接口变量
+var invoker Invoker
+// 将匿名函数转为FuncCaller类型, 再赋值给接口
+invoker = FuncCaller(func(v interface{}) {
+    fmt.Println("from function", v)
+})
+// 使用接口调用FuncCaller.Call, 内部会调用函数本体
+invoker.Call("hello")
+```
+### 闭包
+闭包是引用了自由变量的函数，被引用的自由变量和函数一同存在，即使已经离开了自由变量的环境也不会被释放或者删除，在闭包中可以继续使用这个自由变量。
+```go
+函数 + 引用环境 = 闭包
+```
+函数是编译期静态的概念，而闭包是运行期动态的概念。
+#### 在闭包内部修改引用的变量
+闭包对它作用域上部的变量可以进行修改，修改引用的变量会对变量进行实际修改。
+```go
+// 准备一个字符串
+str := "hello world"
+// 创建一个匿名函数
+foo := func() {
+   
+    // 匿名函数中访问str
+    str = "hello dude"
+}
+// 调用匿名函数
+foo()
+```
+### 可变参数
+可变参数是指函数传入的参数个数是可变的，需要将函数定义为可以接受可变参数的类型
+```go
+//函数 myfunc() 接受不定数量的参数，这些参数的类型全部是 int
+func myfunc(args ...int) {
+    for _, arg := range args {
+        fmt.Println(arg)
+    }
+}
+```
+形如...type格式的类型只能作为函数的参数类型存在，并且必须是最后一个参数。类型`...type`本质上是一个数组切片，也就是[]type
+#### 任一类型的可变参数
+如果希望传任意类型，可以指定类型为 interface{}
+```go
+func MyPrintf(args ...interface{}) {
+    for _, arg := range args {
+        switch arg.(type) {
+            case int:
+                fmt.Println(arg, "is an int value.")
+            case string:
+                fmt.Println(arg, "is a string value.")
+            case int64:
+                fmt.Println(arg, "is an int64 value.")
+            default:
+                fmt.Println(arg, "is an unknown type.")
+        }
+    }
+}
+func main() {
+    var v1 int = 1
+    var v2 int64 = 234
+    var v3 string = "hello"
+    var v4 float32 = 1.234
+    MyPrintf(v1, v2, v3, v4)
+}
+```
+#### 在多个可变参数函数中传递参数
+可变参数变量是一个包含所有参数的切片，如果要将这个含有可变参数的变量传递给下一个可变参数函数，可以在传递时给可变参数变量后面添加`...`，这样就可以将切片中的元素进行传递，而不是传递可变参数变量本身。
+```go
+func print(slist ...interface{}) {
+    // 将slist可变参数切片完整传递给下一个函数
+    rawPrint(slist...)
+}
+```
+可变参数使用...进行传递与切片间使用 append 连接是同一个特性。
+
+### defer
+Go语言的 defer 语句会将其后面跟随的语句进行延迟处理，在 defer 归属的函数即将返回时，将延迟处理的语句按 defer 的逆序进行执行，也就是说，先被 defer 的语句最后被执行，最后被 defer 的语句，最先被执行。
+#### 多个延迟执行语句的处理顺序
+当有多个 defer 行为被注册时，它们会以逆序执行（类似栈，即后进先出）
+```go
+fmt.Println("defer begin")
+// 将defer放入延迟调用栈
+defer fmt.Println(1)
+defer fmt.Println(2)
+// 最后一个放入, 位于栈顶, 最先调用
+defer fmt.Println(3)
+fmt.Println("defer end")
+
+//输出
+defer begin
+defer end
+3
+2
+1
+```
+代码的延迟顺序与最终的执行顺序是反向的
+#### 释放资源
+- 使用延迟并发解锁
+```go
+var (
+    // 一个演示用的映射
+    valueByKey      = make(map[string]int)
+    // 保证使用映射时的并发安全的互斥锁
+    valueByKeyGuard sync.Mutex
+)
+//不使用defer
+// 根据键读取值
+func readValue(key string) int {
+    // 对共享资源加锁
+    valueByKeyGuard.Lock()
+    // 取值
+    v := valueByKey[key]
+    // 对共享资源解锁
+    valueByKeyGuard.Unlock()
+    // 返回值
+    return v
+}
+
+//使用defer
+func readValue(key string) int {
+    valueByKeyGuard.Lock()
+    // defer后面的语句不会马上调用, 而是延迟到函数结束时调用
+    defer valueByKeyGuard.Unlock()
+    return valueByKey[key]
+}
+```
+#### 使用延迟释放文件句柄
+```go
+// 根据文件名查询其大小
+func fileSize(filename string) int64 {
+    // 根据文件名打开文件, 返回文件句柄和错误
+    f, err := os.Open(filename)
+    // 如果打开时发生错误, 返回文件大小为0
+    if err != nil {
+        return 0
+    }
+    // 取文件状态信息
+    info, err := f.Stat()
+    // 如果获取信息时发生错误, 关闭文件并返回文件大小为0
+    if err != nil {
+        f.Close()
+        return 0
+    }
+    // 取文件大小
+    size := info.Size()
+    // 关闭文件
+    f.Close()
+    // 返回文件大小
+    return size
+}
+//使用defer
+func fileSize(filename string) int64 {
+    f, err := os.Open(filename)
+    if err != nil {
+        return 0
+    }
+    // 延迟调用Close, 此时Close不会被调用
+    defer f.Close()
+    info, err := f.Stat()
+    if err != nil {
+        // defer机制触发, 调用Close关闭文件
+        return 0
+    }
+    size := info.Size()
+    // defer机制触发, 调用Close关闭文件
+    return size
+}
+```
+### test功能测试函数
+Go语言自带了 testing 测试包，可以进行自动化的单元测试，输出结果验证，并且可以测试性能。
+#### 测试规则
+要开始一个单元测试，需要准备一个 go 源码文件，在命名文件时文件名必须以_test.go结尾，单元测试源码文件可以由多个测试用例（可以理解为函数）组成，每个测试用例的名称需要以 Test 为前缀，如：
+```go
+func TestXxx( t *testing.T ){
+    //......
+}
+```
+注意:
+- 测试用例文件不会参与正常源码的编译，不会被包含到可执行文件中
+- 测试用例的文件名必须以_test.go结尾
+- 需要使用 import 导入 testing 包
+- 测试函数的名称要以Test或Benchmark开头，后面可以跟任意字母组成的字符串，但第一个字母必须大写,一个测试用例文件中可以包含多个测试函数
+- 单元测试则以(t `*testing.T`)作为参数，性能测试以(t `*testing.B`)做为参数
+- 测试用例文件使用go test命令来执行，源码中不需要 main() 函数作为入口，所有以_test.go结尾的源码文件内以Test开头的函数都会自动执行
+Go语言的 testing 包提供了三种测试方式，分别是单元（功能）测试、性能（压力）测试和覆盖率测试。
+#### 单元（功能）测试
+在同一文件夹下创建两个Go语言文件，分别命名为 demo.go 和 demo_test.go
+```go
+//demo.go
+package demo
+// 根据长宽获取面积
+func GetArea(weight int, height int) int {
+    return weight * height
+}
+
+//demo_test.go
+package demo
+import "testing"
+func TestGetArea(t *testing.T) {
+    area := GetArea(40, 50)
+    if area != 2000 {
+        t.Error("测试失败")
+    }
+}
+
+//执行
+PS D:\code> go test -v
+```
+#### 性能（压力）测试
+```go
+//demo_test.go
+package demo
+import "testing"
+func BenchmarkGetArea(t *testing.B) {
+    for i := 0; i < t.N; i++ {
+        GetArea(40, 50)
+    }
+}
+
+//执行:
+PS D:\code> go test -bench="."
+```
+#### 覆盖率测试
+覆盖率测试能知道测试程序总共覆盖了多少业务代码,可以的话最好是覆盖100%。
+```go
+// demo_test.go
+package demo
+import "testing"
+func TestGetArea(t *testing.T) {
+    area := GetArea(40, 50)
+    if area != 2000 {
+        t.Error("测试失败")
+    }
+}
+func BenchmarkGetArea(t *testing.B) {
+    for i := 0; i < t.N; i++ {
+        GetArea(40, 50)
+    }
+}
+
+//执行：
+PS D:\code> go test -cover
+```
+## 结构体
+
+## 程序崩溃
+### 宕机
+宕机不是一件很好的事情，可能造成体验停止、服务中断
+#### 手动触发宕机
+Go语言可以在程序中手动触发宕机，让程序崩溃，这样开发者可以及时地发现错误，同时减少可能的损失。在宕机时，会将堆栈和 goroutine 信息输出到控制台
+```go
+func main() {
+//一个内建的函数 panic() 就可以造成崩溃,参数可以是任意类型的。
+    panic("crash")
+}
+```
+#### 在宕机时触发延迟执行语句
+当 panic() 触发的宕机发生时，panic() 后面的代码将不会被运行，但是在 panic() 函数前面已经运行过的 defer 语句依然会在宕机发生时发生作用
+```go
+defer fmt.Println("宕机后要做的事情1")
+defer fmt.Println("宕机后要做的事情2")
+panic("宕机")
+```
+#### 宕机恢复
+Recover 是一个Go语言的内建函数，可以让进入宕机流程中的 goroutine 恢复过来，recover 仅在延迟函数 defer 中有效。
+在正常的执行过程中，调用 recover 会返回 nil 并且没有其他任何效果，如果当前的 goroutine 陷入恐慌，调用 recover 可以捕获到 panic 的输入值，并且恢复正常的执行。
+Go语言没有异常系统，其使用 panic 触发宕机类似于其他语言的抛出异常，recover 的宕机恢复机制就对应其他语言中的 try/catch 机制。
+```go
+// 崩溃时需要传递的上下文信息
+type panicContext struct {
+    function string // 所在函数
+}
+// 保护方式允许一个函数
+func ProtectRun(entry func()) {
+    // 延迟处理的函数
+    defer func() {
+        // 发生宕机时，获取panic传递的上下文并打印
+        err := recover()
+        switch err.(type) {
+        case runtime.Error: // 运行时错误
+            fmt.Println("runtime error:", err)
+        default: // 非运行时错误
+            fmt.Println("error:", err)
+        }
+    }()
+    entry()
+}
+// 允许一段手动触发的错误
+ProtectRun(func() {
+    fmt.Println("手动宕机前")
+    // 使用panic传递上下文
+    panic(&panicContext{
+        "手动触发panic",
+    })
+    fmt.Println("手动宕机后")
+})
+```
+panic 和 recover 的组合有如下特性:
+- 有 panic 没 recover，程序宕机。
+- panic 也有 recover，程序不会宕机，执行完对应的 defer 后，从宕机点退出当前函数后继续执行。
+

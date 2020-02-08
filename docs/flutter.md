@@ -78,25 +78,25 @@ const arr1 = [...?list]  //若list为null则不执行扩展
 
 - lists(Arrays)：dart中的数组，和js中类似
 
-  ```dart
-  var list = [1,2,3]   //通过字面量的形式创建数组
-  var Array = [...list]  //使用扩展运算符将list中的内容插入
-  var arr = [1,2,if(tag) 3]  //使用条件判断，根据tag值来判断是否创建该条内容
-  var arrs = [1,2,for(var i in list) '$i']  //使用for in将list中的内容添加到arrs中
-  ```
+```dart
+var list = [1,2,3]   //通过字面量的形式创建数组
+var Array = [...list]  //使用扩展运算符将list中的内容插入
+var arr = [1,2,if(tag) 3]  //使用条件判断，根据tag值来判断是否创建该条内容
+var arrs = [1,2,for(var i in list) '$i']  //使用for in将list中的内容添加到arrs中
+```
 
 - sets:包含在一对`{}`中的无序的值类型相同的集合，支持`扩展运算符`和`if`和`for in`使用与数组类似
 
-  ```dart
-  var set = <String>{}  //定义一个set空集合，值类型为String
-  Set<String> names = {} //空使用set关键字定义空集合
-  var set1 = {'yellow','blue','red'}  //定义一个set集合，自动检测值类型为String
-  set.add('white')  //使用add()添加值
-  set.addAll(set1)  //使用addAll()将set1中的值添加到set中
-  set.length   //查看set中的数目
-  ```
+```dart
+var set = <String>{}  //定义一个set空集合，值类型为String
+Set<String> names = {} //空使用set关键字定义空集合
+var set1 = {'yellow','blue','red'}  //定义一个set集合，自动检测值类型为String
+set.add('white')  //使用add()添加值
+set.addAll(set1)  //使用addAll()将set1中的值添加到set中
+set.length   //查看set中的数目
+```
 
-  > 定义一个空set集合时，必须在值前定义值类型或者变量前使用set关键字，否则定义的是一个map而不是set集合
+> 定义一个空set集合时，必须在值前定义值类型或者变量前使用set关键字，否则定义的是一个map而不是set集合
 
 - maps：一个键值对相关的对象, 键和值可以是任何类型的对象。每个 *键* 是唯一的, 而值则可以出现多次，类似于js中的对象
 
@@ -116,10 +116,10 @@ const arr1 = [...?list]  //若list为null则不执行扩展
 
 - runes:代表字符串的 UTF-32 code points,通常使用 `\uXXXX` 16进制的方式来表示 Unicode code point
 
-  ```dart
-  var clapping = '\u{1f44f}'
-  Runes input = new Runes('\u2665 \u{1f605} \u{1f60e} \u{1f47b} \u{1f596} \u{1f44d}')
-  ```
+```dart
+var clapping = '\u{1f44f}'
+Runes input = new Runes('\u2665 \u{1f605} \u{1f60e} \u{1f47b} \u{1f596} \u{1f44d}')
+```
 
 - symbols： Dart 程序中声明的操作符或者标识符,使用`#name`的形式产生一个symbol，
 
@@ -183,7 +183,7 @@ fn4({bool arg1=true,bool arg2 = false}){}   //在定义函数时，使用=设置
 
 ### 类
 
-声明一个类，类的构造函数与类同名，若为声明构造函数，则自动提供一个默认构造函数
+声明一个类，类的构造函数与类同名，若未声明构造函数，则自动提供一个默认构造函数
 
 ```dart
 class Point {
@@ -215,7 +215,7 @@ class Point {
 
 #### 继承
 
-使用extends创建一个子类，使用super来访问超类
+使用extends创建一个子类，使用super来调用父类构造函数。
 
 在子类继承父类时，若父类中没有无名无参数的构造函数，则必须在子类构造函数名后使用`:`调用父类中的其他构造函数
 
@@ -985,11 +985,11 @@ Color c = const Color.fromRGBO(66, 165, 245, 1.0);
 
 ```dart
 Border(
-        top: BorderSide(width: 1.0, color: Color(0xFFFFDFDFDF)),
-        left: BorderSide(width: 1.0, color: Color(0xFFFFDFDFDF)),
-        right: BorderSide(width: 1.0, color: Color(0xFFFF7F7F7F)),
-        bottom: BorderSide(width: 1.0, color: Color(0xFFFF7F7F7F)),
-      )
+  top: BorderSide(width: 1.0, color: Color(0xFFFFDFDFDF)),
+  left: BorderSide(width: 1.0, color: Color(0xFFFFDFDFDF)),
+  right: BorderSide(width: 1.0, color: Color(0xFFFF7F7F7F)),
+  bottom: BorderSide(width: 1.0, color: Color(0xFFFF7F7F7F)),
+)
 Border.all(width: 2.0, color: const Color(0xFFFFFFFF))
 Border.fromBorderSide(side: BorderSide(width: 1.0, color: Color(0xFFFFFFFFFF)))
 ```
