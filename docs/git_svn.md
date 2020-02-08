@@ -159,7 +159,7 @@ $ git add new_name
 
 ### 查看提交历史
 
-使用命名：`git log`,
+使用命名：`git log`
 
 | git log常用选项 | 说明                                            |
 | --------------- | ----------------------------------------------- |
@@ -420,6 +420,66 @@ git ci -m 'dd'
 ```
 
 ### 分支
+
+#### 获取分支
+
+- 获取所有分支列表
+
+```bash
+git branch
+```
+
+- 获取包含所有分支最后一次提交的分支列表
+
+```bash
+git branch -v
+```
+
+- 获取已经合并到当前分支的分支列表
+
+```bash
+git branch --merged
+```
+
+- 获取尚未合并到当前分支的分支 
+
+```bash
+git branch --no-merged
+```
+
+#### 创建分支
+
+```bash
+git branch branchName
+```
+
+ 新建一个分支并同时切换到该分支上，可以运行一个带有 `-b` 参数
+
+```bash
+git checkout -b branchName
+```
+
+#### 分支切换
+
+```bash
+git checkout branchName
+```
+
+#### 分支合并
+
+将当前分支`branchName`合并到当前使用的分支中去。
+
+```bash
+git merge branchName
+```
+
+#### 删除分支
+
+ 使用带 `-d` 选项命令来删除分支 ,当分支中包含未合并的内容时会删除失败，可以使用`-D`选项强制删除分支。
+
+```bash
+git branch -d branchName
+```
 
 
 
