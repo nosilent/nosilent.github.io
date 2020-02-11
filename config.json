@@ -19,7 +19,12 @@
             ]
         },
         {"text":"小程序","show": true,"url": "docs/wxApp"},
-        {"text":"flutter","show": true, "url":"docs/flutter"},
+        {"text":"flutter", 
+            "children":[
+                {"text": "dart","show": true, "url":"docs/dart"},
+                {"text": "flutter","show": true, "url":"docs/flutter"}
+            ]
+        },
         {"text": "go","show": true,"url": "docs/go"}
     ],
     "title_end_tag": "title",

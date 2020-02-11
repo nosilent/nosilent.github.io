@@ -517,7 +517,27 @@ git branch -vv
 git push origin --delete remoteBranchName
 ```
 
+#### 变基
 
+ 使用 `rebase` 命令将提交到某一分支上的所有修改都移至另一分支上，就好像“重新播放”一样 
+
+```bash
+git rebase master
+```
+
+ 使用  `--onto` 选项，选中在 `oneBranch` 分支里但不在 `twoBranch`分支里的修改，将它们在 `master` 分支上重放 
+
+```bash
+git rebase --onto master oneBranch twoBranch
+```
+
+ 使用 `git rebase [basebranch] [topicbranch]` 命令可以直接将特性分支变基到目标分支上 
+
+将`oneBranch`变基到`master`上
+
+```bash
+git rebase master oneBrach
+```
 
 
 
