@@ -4,6 +4,8 @@
 
 ## 变量
 
+熟悉html、css、js、vue等前端技术，对前端开发有执着的热爱，对前端技术有疯狂的追求，热衷于研究技术底层，擅于将新技术运用到项目中，对项目一丝不苟，愿为此职业永不停息的奋斗。
+
 ## 类型
 
 ## num数值
@@ -688,6 +690,140 @@ print(list==[1,2,3,4,5]);  //false
 ## set
 
 ## map
+
+### 构造函数
+
+```dart
+external factory Map()
+  
+factory Map.from(Map other)
+ 
+factory Map.of(Map<K, V> other)
+  
+external factory Map.unmodifiable(Map other)
+
+factory Map.identity()
+  
+factory Map.fromIterable(Iterable iterable,{K key(element), V value(element)})
+
+factory Map.fromIterables(Iterable<K> keys, Iterable<V> values)
+
+factory Map.fromEntries(Iterable<MapEntry<K, V>> entries)
+```
+
+### 声明方式
+
+```dart
+Map map = new Map()
+Map map = {}
+
+List<int> list = [1, 2, 3];
+Map<String, int> map = new Map.fromIterable(list,
+    key: (item) => item.toString(),
+    value: (item) => item * item);
+print(map);  //{1: 1, 2: 4, 3: 9}
+```
+
+### 方法
+
+- forEach(void f(K key, V value))：每个键值对执行`f`方法，无返回值。
+- clear()：清除map中的所有键值对。无返回值。
+- remove(Object key)： 删除map中指定的键和对应值并返回对应的值，否则返回null
+
+```dart
+var m = {'login': 123};
+var temp = m.remove('login');
+print(temp);  // 123
+```
+
+- addAll(Map<K, V> other): 将另一个map中的键值对全部添加到当前map中，对于已存在的键值对直接覆盖。无返回值。
+
+```dart
+var m = {'login': 123};
+m.addAll({'login': 0,'password': 123});
+print(m);  //{login: 0, password: 123}
+```
+
+- putIfAbsent(K key, V ifAbsent()): 返回指定键的值，若不存在指定键，则用`ifAbsent`返回值设置键值对，返回新的值。
+
+```dart
+var m = {'login': 123};
+print(m.putIfAbsent('login', ()=>789));  //123
+print(m.putIfAbsent('password', ()=>111)); //111
+print(m); //{login: 123, password: 111}
+```
+
+- removeWhere(bool predicate(K key, V value)): 删除所有满足`predicate`的键值对，无返回值。
+
+```dart
+var m = {'login': 123,'password': 0};
+m.removeWhere((key,value){
+  return key == 'login';
+});
+print(m);  //{password: 0}
+```
+
+- updateAll(V update(K key, V value))：对所有键值对执行`update`，用`update`返回值设置当前键的对应值。
+
+```dart
+var m = {'login': 123,'password': 0};
+m.updateAll((key,value){
+  return value+=1;
+});
+print(m); //{login: 124, password: 1}
+```
+
+- update(K key, V update(V value), {V ifAbsent()}): 用`update`返回值设置指定键的值，若不存在该键，则用`ifAbsent`的返回值设置键值对，若不存在该键也未提供`ifAbsent`,则报错。返回对应值。
+
+```dart
+var m = {'login': 123,'password': 0};
+var temp =m.update('login', (value){
+  print(value); //123
+  return 345;
+});
+print(temp); //345
+print(m); //{login: 345, password: 0}
+```
+
+- addEntries(Iterable<MapEntry<K, V>> newEntries)： 将`newEntries`中所有键值对添加到当前map中，若键值对已存在，则覆盖对应的值。无返回值。
+- map<K2, V2>(MapEntry<K2, V2> f(K key, V value))： 将所有键值对执行`f`,返回值组成一个新的map并返回
+
+```dart 
+var m = {'login': 123,'password': 0};
+var temp = m.map((key,value){
+  return MapEntry(key+'dd',++value);
+});
+print(temp); //{logindd: 124, passworddd: 1}
+print(m); //{login: 123, password: 0}
+```
+
+- containsKey(Object key)：包含指定键则返回true。
+- containsValue(Object value)： 包含指定键值则返回true。
+- cast<RK, RV>()：map键/值类型符合`rk`和`rv`则返回当前map，若存在不符合的键值对则报错。
+
+### 属性
+
+| get属性    | 说明                                                       | 返回类型 |
+| ---------- | ---------------------------------------------------------- | -------- |
+| isNotEmpty | 有至少一个键值对则返回true                                 | bool     |
+| isEmpty    | 没有键值对则返回true                                       | bool     |
+| length     | 返回键值对的个数                                           | int      |
+| values     | 获取键值对中的值，按键的顺序迭代                           | Iterable |
+| keys       | 获取键值对中的的键                                         | Iterable |
+| entries    | 获取map的entries,每个键值对变成`MapEntry(key:value)`的形式 | Iterable |
+
+
+
+### 操作符
+
+| 操作符                | 说明     | 用法             | 返回类型 |
+| --------------------- | -------- | ---------------- | -------- |
+| `[]=(K key, V value)` | 设置键值 | map[key] = value | void     |
+| `[](Object key)`      | 获取键值 | map[key]         | value    |
+
+
+
+
 
 ## 函数
 
