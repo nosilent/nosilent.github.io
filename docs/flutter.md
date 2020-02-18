@@ -23,6 +23,83 @@
 
 在flutter安装目录下双击flutter_console.bat文件，控制台打开后执行`flutter doctor --android-licenses`，后出现的内容直接输入`y`回车
 
+## 打包
+
+![image-20200217133728418](flutter.assets/image-20200217133728418.png)
+
+```dart
+flutter run 4983d824
+```
+
+### 打包成apk安装后不能请求网络
+
+在`android`目录文件下的`src`目录中存在3个子文件夹。每个子文件下都有一个`AndroidManifest.xml`文件，
+
+对比发现`main`文件夹的`AndroidManifest.xml`文件中少了一个权限
+
+```xml
+<!-- 
+	在manifest标签中添加下面标签，与application标签同级，添加后重新打包后问题解决
+-->
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+### 打包事项
+
+#### 安卓
+
+[参考]( https://flutter.dev/docs/perf/app-size)
+
+- 打包为android32位设备适用的apk
+
+```dart
+flutter build apk --target-platform=android-arm
+```
+
+- 打包为android64位设备适用的apk
+
+```dart
+flutter build apk --target-platform=android-arm64
+```
+
+- 分别打包为android64位设备和android32位设备的apk
+
+```dart
+flutter build apk --split-per-abi
+```
+
+> 不要在flutter1.9版本及以上直接使用flutter build apk打包，会将32位和64位文件都打包到一个apk文件中，造成文件体积过大
+
+#### 修改打包后安装程序名
+
+修改`android/app/src/main/AndroidManifest.xml`文件中的`application`标签属性`android:label`
+
+```dart
+<application
+        android:name="io.flutter.app.FlutterApplication"
+        android:label="hghy_flutter_app"
+</application>   
+```
+
+#### 安装后显示图标
+
+修改`android/app/src/main/AndroidManifest.xml`文件中的`application`标签属性`android:icon`
+
+```dart
+<application
+        android:name="io.flutter.app.FlutterApplication"
+        android:icon="@mipmap/ic_launcher"
+</application>  
+```
+
+
+
+#### 设置启动动画
+
+[参考]( https://flutter.dev/docs/development/ui/splash-screen/android-splash-screen)
+
+  
+
 ## dart语法
 
 ### 变量

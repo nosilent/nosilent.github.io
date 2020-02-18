@@ -689,6 +689,48 @@ print(list==[1,2,3,4,5]);  //false
 
 ## set
 
+### 构造函数
+
+```dart
+factory Set()
+factory Set.identity()
+  
+factory Set.from(Iterable elements)
+factory Set.of(Iterable<E> elements)
+```
+
+### 声明方式
+
+```dart
+var set = new Set()
+Set one = {2,3}
+```
+
+### 方法
+
+- `cast<R>`: 若所有值都是`R`的实例则正常进行，否则报错，返回`Set`集合
+- contains(Object value)：若当前`set`集合中包含该值则返回true,否则返回false
+- add(E value): 向当前`set`集合中添加值，若当前添加值不在集合中，则返回true，否则返回false。
+- `addAll(Iterable<E> elements)`: 将`elements`中所有值添加到当前`set`集合，无返回值。
+- remove(Object value): 移除`set`集合中的值，若值在集合中则移除成功返回true,否则返回false
+- lookup(Object object): 查找指定值并返回，不存在则返回null
+- `removeAll(Iterable<Object> elements)`: 移除集合中的所有值，无返回值。
+- `retainAll(Iterable<Object> elements)`: 移除集合中不在`elements`集合中的所有值。无返回值
+- removeWhere(bool test(E element))：移除集合中满足`test`的所有值，无返回值
+- retainWhere(bool test(E element))：移除集合中不满足`test`的所有值，无返回值
+- `containsAll(Iterable<Object> other)`:  若集合中包含`other`中的所有值，则返回true,否则返回false
+- `intersection(Set<Object> other)`: 返回此集合与`other`都有的值组成的新`set`集合
+- `union(Set<E> other)`：返回此集合与`other`集合的所有值组成的新`set`集合
+- `difference(Set<Object> other)`: 返回集合中不在`other`集合中的所有值组成的新`set`集合
+- clear()：清除集合中的所有值，无返回值
+- toSet()： 转换成`set`集合
+
+### 属性
+
+| get属性  | 说明                      | 用法         | 返回类型 |
+| -------- | ------------------------- | ------------ | -------- |
+| iterator | 提供一个迭代此set的迭代器 | set.iterator | Iterator |
+
 ## map
 
 ### 构造函数
@@ -830,6 +872,8 @@ print(m); //{login: 123, password: 0}
 ## 类
 
 ## 泛型
+
+## 异步
 
 ## 网络编程
 
