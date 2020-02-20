@@ -4,9 +4,154 @@
 
 ## 变量
 
+### 使用关键字声明
 
+通过使用`var`、`final`、`const`关键字声明变量，声明的变量类型会根据变量值自动推断。
 
-## 类型
+```dart
+var num = 1;
+final name = 'string';
+const age = 18;
+```
+
+`final` 声明的变量只能赋值一次，`const`声明的变量为编译时常量，也就是说该变量在编译阶段值就确定了，`const`变量也是特殊的`final`变量，只能赋值一次。
+
+### 使用类型声明
+
+通过使用类型关键字如`num`、`int`、`double`、`String`、`bool`、`List`、`Map`、`Set`等或自定义类型来声明变量。声明的变量类型是确定的，但值类型和变量指定类型不一致的时候会出错。
+
+```dart
+num number = 1;
+int age = 18;
+double height = 178.0;
+String str = 'String';
+bool tag = false;
+List list = [];
+Map map = {'key': 'value'};
+Set set = {1,23,};
+```
+
+> 变量声明只能使用其中一种方式。不能同时含有类型关键字和`var、final、const`。未初始化的变量值未null
+
+### 在字符串中使用变量
+
+在字符串中需要使用变量值时，使用`${表达式}`的形式来引用变量值，在`{}`可以进行其他操作，若表达式只是一个变量可以省略`{}`。 若表达式是一个对象，则会调用对象的toString()方法获取一个字符串 ;
+
+```dart
+var s3 = '3+3=${3+3}';
+String s = '$s3';
+Map map = {'key': 'value'};
+print('${map["key"]}');
+```
+
+## 内置类型
+
+###  num
+
+数值类型又可以分为`int`和`double`
+
+```dart
+num number = 1;
+int num1 = 23;
+double num2 = 23.0;
+```
+
+###  String
+
+字符串拼接可以使用`+`或相邻的字符串来实现。多行字符串使用3重单引号或双引号来实现。在字符串前加`r`表示原始字符串。
+
+```dart
+//使用+连接
+var s1 = 'this'+'is';
+//使用相邻字符串
+var s2 = 'String '
+    'concatenation'
+    " works even over line breaks.";
+// 多行字符串
+
+var s3 = '''
+You can create
+multi-line strings like this one.
+''';
+
+var s4 = """This is also a
+multi-line string.""";
+
+//原始字符串
+var s5 = r'In a raw string, not even \n gets special treatment.';
+```
+
+### bool
+
+只有`true`和`false`两个值，在条件循环时只有`true` 对象才被认为是 true，其他的非`bool`类型值都是 `false` 。
+
+### List
+
+数组，通过字面量的声明一个数组时，可以使用展开运算符`...`或`...?`、条件判断`if()`、循环`for in`来填充值。
+
+```dart
+var list = [1, 2, 3];
+var list2 = [0, ...list];
+
+var list;
+//list不为null则使用list填充
+var list2 = [0, ...?list];
+
+//使用if
+var nav = [
+  'Home',
+  'Furniture',
+  'Plants',
+  if (promoActive) 'Outlet'
+];
+
+//使用for in
+var listOfInts = [1, 2, 3];
+var listOfStrings = [
+  '#0',
+  for (var i in listOfInts) '#$i'
+];
+```
+
+### Set
+
+一个值不重复的集合。
+
+```dart
+var set = {'red','yellow','green'};
+var set = Set();
+```
+
+在定义`Set`空集合时，使用类型定义或则使用泛型限制值，若两者都不存在会被当成`Map`空集合。
+
+```dart
+Set set = {};
+var set1 = <int>{};
+var tag = {};   //会推断成map<dynamic,dynamic> 
+```
+
+### Map
+
+一个键值对的集合。
+
+```dart
+var gifts = {
+  // Key:    Value
+  'first': 'partridge',
+  'second': 'turtledoves',
+  'fifth': 'golden rings'
+};
+
+Map<int,String> map = {
+  2: 'helium',
+  10: 'neon',
+  18: 'argon',
+}; 
+```
+
+### Runes
+
+### Symbol
 
 ## num数值
 
@@ -863,11 +1008,9 @@ print(m); //{login: 123, password: 0}
 | `[]=(K key, V value)` | 设置键值 | map[key] = value | void     |
 | `[](Object key)`      | 获取键值 | map[key]         | value    |
 
-
-
-
-
 ## 函数
+
+
 
 ## 类
 
