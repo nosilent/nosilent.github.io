@@ -1,7 +1,3 @@
-
-
-
-
 ## 变量
 
 ### 使用关键字声明
@@ -153,6 +149,181 @@ Map<int,String> map = {
 
 ### Symbol
 
+## 操作符
+
+### 运算符
+
+| 运算符      | 说明                         |
+| ----------- | ---------------------------- |
+| ==          | 判断两个数字是否相等         |
+| +           | 两个数相加                   |
+| -           | 两个数相减或取反             |
+| *           | 两个数相乘                   |
+| /           | 两个数相除                   |
+| %           | 两个数相除取余数             |
+| ~/          | 两个数相除取整               |
+| `>,<,>=,<=` | 比较两个数大小，返回bool类型 |
+
+### 类型检测
+
+| 类型检测 | 说明                               |
+| -------- | ---------------------------------- |
+| as       | 将该对象转换成指定类型的对象       |
+| is       | 如果指定对象是指定类型则返回true   |
+| is!      | 如果指定对象不是指定类型则返回true |
+
+```dart
+(emp as Person).firstName = 'Bob';
+
+if (emp is Person) {
+  // Type check
+  emp.firstName = 'Bob';
+}
+```
+
+使用`object`的`runtimeType`获取对象类型。
+
+```dart
+int number = 0;
+number.runtimeType   //int
+```
+
+
+
+### 分配符
+
+`??=`当变量值为`null`时赋值。
+
+```dart
+b ??= value;
+```
+
+### 条件判断
+
+| 操作符                                  | 说明                                           |
+| --------------------------------------- | ---------------------------------------------- |
+| *condition* **?** *expr1* **:** *expr2* | 为`condition`为true，则返回expr1,否则返回expr2 |
+| *expr1* **??** *expr2*                  | 如果expr1不为null，则返回expr1，否则返回expr2  |
+
+### 级联 
+
+操作符`..`允许对同一对象进行一系列链式操作。
+
+```dart
+querySelector('#confirm') // Get an object.
+  ..text = 'Confirm' // Use its members.
+  ..classes.add('important')
+  ..onClick.listen((e) => window.alert('Confirmed!'));
+```
+
+### 成员操作符
+
+| 操作符 | 说明                                                 | 使用         |
+| ------ | ---------------------------------------------------- | ------------ |
+| **.**  | 用于访问一个对象中的成员                             | object.prop  |
+| **?.** | 若访问的对象不为null，则访问指定成员，否则结果为null | object?.prop |
+
+## 流程控制
+
+### if else
+
+```dart
+if (isRaining()) {
+  you.bringRainCoat();
+} else if (isSnowing()) {
+  you.wearJacket();
+} else {
+  car.putTopDown();
+}
+```
+
+> 不同于JavaScript，条件必须是布尔值。
+
+### for和for-in
+
+```dart
+var callbacks = [];
+for (var i = 0; i < 2; i++) {
+  callbacks.add(() => print(i));
+}
+callbacks.forEach((c) => c());
+```
+
+在dart中for循环都会正确输出当前次数的值，不同于JavaScript。
+
+对于可迭代对象，如List,Set等可以使用for-in循环。
+
+```dart
+var collection = [0, 1, 2];
+for (var x in collection) {
+  print(x); // 0 1 2
+}
+```
+
+### while和do-while
+
+```dart
+while (!isDone()) {
+  doSomething();
+}
+
+do {
+  printLine();
+} while (!atEndOfPage());
+```
+
+### break和continue
+
+使用break结束循环。
+
+```dart
+while (true) {
+  if (shutDownRequested()) break;
+  processIncomingRequests();
+}
+```
+
+使用continue跳过当前次循环，进入下一次循环。
+
+```dart
+for (int i = 0; i < candidates.length; i++) {
+  var candidate = candidates[i];
+  if (candidate.yearsExperience < 5) {
+    continue;
+  }
+  candidate.interview();
+}
+```
+
+### switch和case
+
+ 被比较的对象必须全部是同一类的实例 。 每个非空case子句都以break语句结尾 ， 当没有case子句匹配时，使用default子句执行代码 。
+
+```dart
+var command = 'OPEN';
+switch (command) {
+  case 'CLOSED':
+    executeClosed();
+    break;
+  case 'PENDING':
+    executePending();
+    break;
+  case 'APPROVED':
+    executeApproved();
+    break;
+  case 'DENIED':
+    executeDenied();
+    break;
+  case 'OPEN':
+    executeOpen();
+    break;
+  default:
+    executeUnknown();
+}
+```
+
+### try、catch、throw
+
 ## num数值
 
 ### 基础方法和属性
@@ -224,21 +395,6 @@ Map<int,String> map = {
 #### double
 
 无特有方法与计算属性
-
-### 运算符
-
-| 运算符      | 说明                         |
-| ----------- | ---------------------------- |
-| ==          | 判断两个数字是否相等         |
-| +           | 两个数相加                   |
-| -           | 两个数相减或取反             |
-| *           | 两个数相乘                   |
-| /           | 两个数相除                   |
-| %           | 两个数相除取余数             |
-| ~/          | 两个数相除取整               |
-| `>,<,>=,<=` | 比较两个数大小，返回bool类型 |
-
-
 
 ## String字符串
 
@@ -1010,13 +1166,830 @@ print(m); //{login: 123, password: 0}
 
 ## 函数
 
+函数类型为`Function`。
 
+### 声明
+
+声明形式：
+
+```dart
+返回值类型 函数名(){};
+```
+
+```dart
+bool isNoble(int atomicNumber) {
+  return _nobleGases[atomicNumber] != null;
+}
+```
+
+若函数体是一个表达式，可以省略`{}`使用`=>`来表示。
+
+```dart
+boll isNoble(int atomicNumber)=>_nobleGases[atomicNumber] != null;
+```
+
+### 参数
+
+函数有两种类型参数：必需和可选。
+
+>  可选参数只能在必需参数之后定义，可选参数可以是命名参数或位置参数。
+
+#### 命名参数
+
+定义时使用`{}`包装的参数是**可选**的命名参数，调用时使用`参数名：值`的形式传参。
+
+```dart
+//定义
+void enableFlags({bool bold, bool hidden}) {...}
+
+//调用
+enableFlags(bold: true, hidden: false);
+```
+
+虽然命名参数时可选参数，但是可以使用`@required`限制参数，使其调用时必须传递该参数值。
+
+```dart
+const Scrollbar({Key key, @required Widget child})
+```
+
+#### 位置参数
+
+使用`[]`包装的参数是**可选**的位置参数。
+
+```dart
+String say(String from, String msg, [String device]) {
+  var result = '$from says $msg';
+  if (device != null) {
+    result = '$result with a $device';
+  }
+  return result;
+}
+
+say('Bob', 'Howdy') == 'Bob says Howdy';
+
+say('Bob', 'Howdy', 'smoke signal') ==
+    'Bob says Howdy with a smoke signal'
+```
+
+#### 默认参数值
+
+命名参数和位置参数在定义时可以使用`=`设置默认值，默认值必须是编译时常量，若未指定默认值则默认值为null。
+
+```dart
+//命名参数指定默认值
+void enableFlags({bool bold = false, bool hidden = false}) {...}
+
+//位置参数指定默认值
+String say(String from, String msg,[String device = 'carrier pigeon', String mood]) {}
+```
+
+### 匿名函数
+
+匿名参数定义形式:
+
+```dart
+([[Type] param1[, …]]) {
+  codeBlock;
+};
+```
+
+### 词法作用域
+
+### 闭包
+
+闭包是一个函数对象，可以在其词法作用域内访问变量，即使该函数在初始作用域外调用。
+
+```dart
+Function makeAdder(num addBy) {
+  return (num i) => addBy + i;
+}
+
+void main() {
+  // Create a function that adds 2.
+  var add2 = makeAdder(2);
+
+  // Create a function that adds 4.
+  var add4 = makeAdder(4);
+
+  assert(add2(3) == 5);
+  assert(add4(3) == 7);
+}
+```
+
+### 返回值
+
+每个函数都有返回值，若函数没有明确指定返回值，则会隐式添加`return null`到函数体中。
 
 ## 类
 
+ 每个对象都是一个类的实例，并且所有类都来自Object 。
+
+使用关键字`class`声明一个类。一个类大体上可以归结为由`构造函数`、`实例方法`、`实例变量`组成。
+
+### 构造函数
+
+ 创建一个与其类具有相同名称的函数来声明一个构造函数 ，实例化时调用，初始化实例对象。
+
+```dart
+class Point {
+  num x, y;
+
+  Point(num x, num y) {
+    // There's a better way to do this, stay tuned.
+    this.x = x;
+    this.y = y;
+  }
+}
+```
+
+**this关键字引用当前实例 **
+
+#### 默认构造函数
+
+如果不声明构造函数，系统会提供默认的构造函数。默认构造函数没有参数，并在超类中调用无参数构造函数。 
+
+#### 命名构造函数
+
+ 使用命名构造函数可为一个类实现多个构造函数 。
+
+```dart
+class Point {
+  num x, y;
+
+  Point(this.x, this.y);
+
+  //命名构造函数
+  Point.origin() {
+    x = 0;
+    y = 0;
+  }
+}
+```
+
+#### 构造函数重定向
+
+有时，构造函数的唯一目的是重定向到同一类中的另一个构造函数。重定向构造函数的主体为空，构造函数调用出现在冒号`:`后面 
+
+```dart
+class Point {
+  num x, y;
+
+  // The main constructor for this class.
+  Point(this.x, this.y);
+
+  // Delegates to the main constructor.
+  Point.alongXAxis(num x) : this(x, 0);
+}
+```
+
+#### 工厂构造函数
+
+ 使用`factory`关键字实现一个(不总是创建该类新实例的)构造函数。
+
+ 例如，工厂构造函数可能会从缓存返回一个实例，或者可能会返回一个子类型的实例。
+
+```dart
+class Logger {
+  final String name;
+  bool mute = false;
+
+  // _cache is library-private, thanks to
+  // the _ in front of its name.
+  static final Map<String, Logger> _cache =
+      <String, Logger>{};
+
+  factory Logger(String name) {
+    return _cache.putIfAbsent(
+        name, () => Logger._internal(name));
+  }
+
+  Logger._internal(this.name);
+
+  void log(String msg) {
+    if (!mute) print(msg);
+  }
+}
+```
+
+> 工厂构造函数不能使用this关键字
+
+### Getters和Setters
+
+getters: 根据其他值来返回出一个属性值。
+
+setters: 根据对该属性设置值时进行一系列操作。
+
+```dart
+class Rectangle {
+  num left, top, width, height;
+  Rectangle(this.left, this.top, this.width, this.height);
+  
+  //定义一个get属性
+  num get right => left + width;
+  
+  //定义一个set属性
+  set right(num value) => left = value - width;
+}
+
+void main() {
+  var rect = Rectangle(3, 4, 20, 15);
+  print(rect.right)  //获取计算后的值left + width
+  rect.right = 12;   //设置值，执行 left = 12 - width
+  
+}
+```
+
+### 实例化
+
+通过调用构造函数来实例化对象。 使用常量构造函数创建编译时常量，将const关键字放在构造函数名称之前 。
+
+```dart
+var p1 = Point(2, 2);
+var p2 = new Point.fromJson({'x': 1, 'y': 2}); //dart2.0以后 new 关键字变为可选
+var p = const ImmutablePoint(2, 2);
+```
+
+如果在声明了实例变量的位置（而不是在构造函数或方法中）初始化实例变量，则在创建实例时（即在构造函数及其初始化程序列表执行之前）设置值。 
+
+```dart
+class Point {
+  num x; // Declare instance variable x, initially null.
+  num y; // Declare y, initially null.
+  num z = 0; //实例化时会在构造函数之前执行。
+}
+```
+
+ 所有实例变量都会生成一个隐式的getter方法。非最终实例变量也会生成隐式的setter方法。 可以用于获取或设置实例化对象指定变量的值。
+
+```dart
+class Point {
+  num x;
+  num y;
+}
+
+void main() {
+  var point = Point();
+  point.x = 4; // Use the setter method for x.
+  assert(point.x == 4); // Use the getter method for x.
+  assert(point.y == null); // Values default to null.
+}
+```
+
+### 继承
+
+通过关键字`extend`来继承一个类，使得当前子类能使用父类中的方法和变量。
+
+```dart
+class subclass extends superclass{ ...}
+```
+
+继承时默认调用的是父类的默认构造函数，要调用符类的其他构造函数需要使用`super`关键字。
+
+```dart
+class Employee extends Person {
+  Employee() : super.fromJson(defaultData);
+  // ···
+}
+```
+
+ 除了调用超类构造函数外，还可以在构造函数主体运行之前初始化实例变量。用逗号分隔初始化程序。 
+
+```dart
+Point.fromJson(Map<String, num> json)
+    : x = json['x'],
+      y = json['y'] {
+  print('In Point.fromJson(): ($x, $y)');
+}
+```
+
+#### 重写成员
+
+在成员变量之前使用`@override`，子类可以重写父类中的继承的方法、getter、setters.
+
+```dart
+class SmartTelevision extends Television {
+  @override
+  void turnOn() {...}
+  // ···
+}
+```
+
+若要缩小方法参数类型和实例变量类型,在其之前使用`covariant`关键字
+
+```dart
+class Animal {
+  void chase(Animal x) { ... }
+}
+
+class Mouse extends Animal { ... }
+
+class Cat extends Animal {
+  void chase(covariant Mouse x) { ... }
+}
+```
+
+#### noSuchMethod()
+
+ 尝试使用不存在的方法或实例变量时进行检测或作出反应，可以重写`noSuchMethod（）` 
+
+```dart
+class A {
+  // Unless you override noSuchMethod, using a
+  // non-existent member results in a NoSuchMethodError.
+  @override
+  void noSuchMethod(Invocation invocation) {
+    print('You tried to use a non-existent member: ' +
+        '${invocation.memberName}');
+  }
+}
+```
+
+### extension
+
+通过借用其他类的方法或变量来实现自身方法和变量。
+
+语法：
+
+```dart
+extension <extension name> on <type> {
+  (<member definition>)*
+}
+```
+
+示例：
+
+```dart
+extension NumberParsing on String {
+  int parseInt() {
+    return int.parse(this);
+  }
+
+  double parseDouble() {
+    return double.parse(this);
+  }
+}
+```
+
+### 枚举类
+
+ 枚举类型（通常称为枚举）是一种特殊的类，用于表示固定数量的常量值 。
+
+**枚举类不能有子类，混合，接口和实例化行为。**
+
+#### 声明枚举类
+
+使用关键字`enum`定义一个枚举类
+
+```dart
+enum Color { red, green, blue }
+```
+
+ 枚举中的每个值都有一个索引，它返回该值在枚举声明中从零开始的位置 
+
+```dart
+assert(Color.red.index == 0);
+assert(Color.green.index == 1);
+assert(Color.blue.index == 2);
+```
+
+#### 访问值
+
+使用`values`可以获取枚举成员列表,使用`.`直接访问成员。
+
+```dart
+List<Color> colors = Color.values;  //获取成员列表
+assert(colors[2] == Color.blue); //使用. 访问成员
+```
+
+### 混合继承
+
+混合继承是在不更改类或创建子类的情况下向类添加功能的方法 。使用`with`关键字后跟一个或多个类名称实现混合继承。
+
+```dart
+class Maestro extends Person with Musical, Aggressive, Demented {
+  Maestro(String maestroName) {
+    name = maestroName;
+    canConduct = true;
+  }
+}
+```
+
+#### 定义混合
+
+使用关键字`mixin`定义一个混合。
+
+```dart
+mixin M {
+  String toString() => "Magnificent!";
+}
+class C with M {
+  ...
+}
+```
+
+使用关键字`on`指定混合的父类，与`class`继承中的`extend`功能类似
+
+```dart
+mixin MusicalPerformer on Musician {
+  // ···
+}
+```
+
+### 抽象类
+
+使用`abstract`关键字声明一个抽象类。
+
+```dart
+abstract class AbstractContainer {
+  // Define constructors, fields, methods...
+}
+```
+
+#### 抽象方法
+
+定义一个抽象方法，使用分号`;`代替方法主体 ;抽象方法在子类继承时实现。
+
+```dart
+abstract class Doer {
+  void doSomething(); //定义一个抽象方法
+}
+
+class EffectiveDoer extends Doer {
+  //在子类中实现父类中的抽象方法
+  void doSomething() {
+   ...
+  }
+}
+```
+
+### 接口
+
+ 每个类都隐式定义一个接口，其中包含该类及其实现的所有接口的所有实例成员 。
+
+ 想创建一个支持B类API的A类而不继承B的实现，则A类应实现B接口 。
+
+使用关键字`implements `实现一个或多个接口。
+
+```dart
+// A person. The implicit interface contains greet().
+class Person {
+  // In the interface, but visible only in this library.
+  final _name;
+
+  // Not in the interface, since this is a constructor.
+  Person(this._name);
+
+  // In the interface.
+  String greet(String who) => 'Hello, $who. I am $_name.';
+}
+
+// An implementation of the Person interface.
+class Impostor implements Person {
+  get _name => '';
+
+  String greet(String who) => 'Hi $who. Do you know who I am?';
+}
+//实现多个接口
+class Point implements Comparable, Location {...}
+```
+
+### 静态方法和变量
+
+使用关键字`static`定义静态方法和静态变量。
+
+```dart
+class Queue {
+  //定义一个静态变量
+  static const initialCapacity = 16;
+  // ···
+}
+
+void main() {
+  assert(Queue.initialCapacity == 16);  //类名直接访问静态变量
+}
+
+class Point {
+  num x, y;
+  Point(this.x, this.y);
+	//定义一个静态方法
+  static num distanceBetween(Point a, Point b) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    return sqrt(dx * dx + dy * dy);
+  }
+}
+void main() {
+  var a = Point(2, 2);
+  var b = Point(4, 4);
+  var distance = Point.distanceBetween(a, b); //类名直接访问静态方法
+  assert(2.8 < distance && distance < 2.9);
+  print(distance);
+}
+```
+
+实例成员不能方法静态方法和静态变量，只能通过类名直接返回。
+
 ## 泛型
 
+使用`<...>`的形式对变量值类型进行限制。
+
+```dart
+var names = List<String>();
+Map<String,int> map = {};
+
+//泛型参数T相当于一个占位符，
+abstract class Cache<T> {
+  T getByKey(String key);
+  void setByKey(String key, T value);
+}
+```
+
+### 限制参数类型
+
+但实现一个泛型时，使用`extends`关键字限制参数类型。
+
+```dart
+class Foo<T extends SomeBaseClass> {
+  // Implementation goes here...
+  String toString() => "Instance of 'Foo<$T>'";
+}
+```
+
+### 泛型方法
+
+ 通用方法的类型参数在方法或函数名称后的尖括号内列出 。
+
+```dart
+T first<T>(List<T> ts) {
+  // Do some initial work or error checking, then...
+  T tmp = ts[0];
+  // Do some additional checking or processing...
+  return tmp;
+}
+```
+
+## 文件引入
+
+使用`import`关键字引入文件。
+
+```dart
+import 'dart:html';
+```
+
+### 别名
+
+为了避免在使用引入文件时变量名重复，可使用`as`关键字给引入的文件一个别名，可通过别名来访问该文件中的数据。
+
+```dart
+import 'package:lib1/lib1.dart';
+import 'package:lib2/lib2.dart' as lib2;
+
+// Uses Element from lib1.
+Element element1 = Element();
+
+// Uses Element from lib2.
+lib2.Element element2 = lib2.Element();
+```
+
+### 部分引入
+
+使用关键字`show`跟变量名表示只引入当前变量。
+
+使用关键字`hide`跟变量名表示引入排除当前变量的其他所有变量。
+
+```dart
+// Import only foo.
+import 'package:lib1/lib1.dart' show foo;
+
+// Import all names EXCEPT foo.
+import 'package:lib2/lib2.dart' hide foo;
+```
+
+### 延迟加载
+
+使用关键字`deferred as `延迟引入一个文件
+
+```dart
+import 'package:greetings/hello.dart' deferred as hello;
+```
+
+在使用延迟引入文件时，必须使用异步的形式。比如：
+
+```dart
+Future greet() async {
+  await hello.loadLibrary();  //此处使用延迟加载的文件
+  hello.printGreeting();
+}
+```
+
 ## 异步
+
+### Futures
+
+类似于javascript中的promise
+
+#### 构造函数
+
+```dart
+//创建一个包含computation返回值的future,
+//若computation出错，则最终返回一个包含出错信息的future
+//若computation返回值的是一个future,则最终返回结果将等待该future完成的结果返回一个future。 ？
+//若computation返回值不是一个future,则直接返回一个关于该值的future
+factory Future(FutureOr<T> computation());
+
+//解释同上
+factory Future.microtask(FutureOr<T> computation());
+
+//返回一个包含computation返回值的future
+//若computation出错，返回一个错误信息的future
+//若computation返回一个future,则直接返回该future
+//若computation返回值不是一个future,则返回一个包含该值的完成状态的future
+factory Future.sync(FutureOr<T> computation());
+
+//创建一个关于value的完成状态的future
+//若value是一个future，则返回一个（关于该future且返回值相同的）等待状态的future
+//若value不是一个future,则返回一个(关于value的)完成状态的future
+factory Future.value([FutureOr<T> value]);
+
+//返回一个状态为状态的future
+factory Future.error(Object error, [StackTrace stackTrace]);
+
+//创建一个在延时后运行的future
+factory Future.delayed(Duration duration, [FutureOr<T> computation()])
+```
+
+#### 方法
+
+- **wait**：返回一个所有`future`完成结果组成的`list`
+
+```dart
+//若eagerError为true,所有future中出现第一个错误状态的future就立刻返回一个该状态的future,若没错正常返回
+//若提供了cleanUp，每个错误状态的future都会都用该方法，返回一个成功的future,若cleanUp出错是无法捕获的
+static Future<List<T>> wait<T>(Iterable<Future<T>> futures,
+                               {bool eagerError: false, void cleanUp(T successValue)})
+```
+
+- **any**: 返回一个最先完成的future,无论该future结果如何，其他future结果将被忽略。
+
+```dart
+//若futures为null或者不存在完成的future，最终返回一个用不完成的future
+static Future<T> any<T>(Iterable<Future<T>> futures)
+```
+
+- **forEach**: 对每个元素执行`action`
+
+```dart
+//若action返回一个future,等待该future完成后再进行执行下一个元素
+//若所有元素都执行了action后，返回一个null状态的future
+//若action出错，则停止迭代返回该future
+static Future forEach<T>(Iterable<T> elements, FutureOr action(T element))
+```
+
+- **doWhile**： 重复执行一个操作，直到返回false
+
+```dart
+static Future doWhile(FutureOr<bool> action())
+```
+
+- **then**:当future完成时，调用回调函数,若该future有结果则返回该结果。
+
+```dart
+//若提供了onError，当future错误状态时调用该方法。
+Future<R> then<R>(FutureOr<R> onValue(T value), {Function onError})
+```
+
+- **catchError**：future出错时执行
+
+```dart
+//若future未出错，则正常返回结果。
+//若future出错，则test先调用，返回false则直接返回该future信息，返回true则onError函数被调用。
+//若test被省略则默认返回true
+Future<T> catchError(Function onError, {bool test(Object error)})
+```
+
+- **whenComplete**：不关错误或成功，当future完成时调用回调函数。
+
+```dart
+Future<T> whenComplete(FutureOr action());
+```
+
+- **asStream**：将future结果转换为`Stream`。
+
+```dart
+Stream<T> asStream();
+```
+
+- **timeout**：future在规定时间内完成则返回对应结果。 若未完成则使用回调函数`onTimeout`返回值返回一个future
+
+```dart
+Future<T> timeout(Duration timeLimit, {FutureOr<T> onTimeout()});
+```
+
+### Stream
+
+文件传输或读取等可以表示为数据序列，统称为Stream。
+
+#### 构造函数
+
+```dart
+//创建一个空的Stream对象
+const factory Stream.empty();
+
+//创建一个在完成前发出单个数据事件的Stream
+factory Stream.value(T value);
+ 
+//创建一个在完成前发出单个错误事件的Stream
+factory Stream.error(Object error, [StackTrace stackTrace]);
+
+//根据future创建一个单一的Stream
+factory Stream.fromFuture(Future<T> future);
+
+//根据一组future创建一个Stream
+factory Stream.fromFutures(Iterable<Future<T>> futures);
+
+//根据可迭代对象创建一个单一的Stream
+factory Stream.fromIterable(Iterable<T> elements);
+
+//创建一个根据时间间隔重复触发事件的Stream
+factory Stream.periodic(Duration period,[T computation(int computationCount)]);
+
+//创建一个Stream，将现有流的所有事件通过sink转换
+factory Stream.eventTransformed(Stream source, EventSink mapSink(EventSink<T> sink))
+```
+
+#### 方法
+
+- **castFrom**：将Stream对象转换成其他类型,新类型必须是原类型的子类。
+
+```dart
+static Stream<T> castFrom<S, T>(Stream<S> source)
+```
+
+- **asBroadcastStream**：返回多个监听同一事件的Stream.
+
+```dart
+Stream<T> asBroadcastStream(
+      {void onListen(StreamSubscription<T> subscription),
+      void onCancel(StreamSubscription<T> subscription)})
+```
+
+- **listen**: 为Stream添加订阅
+
+```dart
+//stream中的数据都会调用onData,若stream出错则调用onError
+//若stream关闭或发送完成则调用onDone
+//如果cancelOnError为true，订阅将自动取消传递第一个错误事件时
+StreamSubscription<T> listen(void onData(T event),
+      {Function onError, void onDone(), bool cancelOnError});
+```
+
+- **where**: 创建一个(丢弃当前Stream中的个别元素的)Stream
+
+```dart
+Stream<T> where(bool test(T event))
+```
+
+- **map**:将Stream中的元素转换成新的Stream.
+
+```dart
+//使用convert转换每个元素，并发送转换后的结果
+Stream<S> map<S>(S convert(T event))
+```
+
+- **asyncMap**：异步形式的map
+
+```dart
+//转换后的结果可能是一个future
+Stream<E> asyncMap<E>(FutureOr<E> convert(T event))
+```
+
+- **asyncExpand**: 将元素转换成异步事件
+
+```dart
+Stream<E> asyncExpand<E>(Stream<E> convert(T event))
+```
+
+- **handleError**: 处理Stream中的一些错误
+
+```dart
+//若stream发送一个错误于test匹配返回true,则调用onError
+//若省略test则每个都会调用onError
+Stream<T> handleError(Function onError, {bool test(error)})
+```
+
+- **expand**: 将Stream中的元素成一系列元素。
+
+```dart
+Stream<S> expand<S>(Iterable<S> convert(T element))
+```
+
+- **pipe**:
+
+### async 和await
+
+异步函数仅在遇到第一个await表达式（详细信息）之前执行。然后，它返回Future对象，仅在await表达式完成后才恢复执行。 
+
+## 文件操作
 
 ## 网络编程
 
