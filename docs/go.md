@@ -1661,6 +1661,197 @@ PS D:\code> go test -cover
 ```
 ## 结构体
 
+### 结构体定义
+
+使用关键字 **type** 可以将各种基本类型定义为自定义类型，基本类型包括整型、字符串、布尔等。结构体是一种复合的基本类型 
+
+```go
+type 类型名 struct {
+  字段1 字段1类型
+  字段2 字段2类型
+  …
+} 
+```
+
+示例：
+
+```go
+type Point struct {
+    X int
+    Y int
+}
+```
+
+### 实例化
+
+#### 基本形式实例化
+
+ 实例化格式：
+
+```go
+var ins T 
+```
+
+```go
+type Point struct {
+    X int
+    Y int
+}
+var p Point
+p.X = 10
+p.Y = 20
+```
+
+#### 指针形式实例化
+
+使用`new`关键字实例化结构体
+
+格式：
+
+```go
+ins := new(T)
+```
+
+```go
+type Player struct{
+    Name string
+    HealthPoint int
+    MagicPoint int
+}
+tank := new(Player)
+```
+
+#### 取地址形式实例化
+
+使用`&`对结构体取地址操作来实例化
+
+格式：
+
+```go
+ins := &T{}
+```
+
+```go
+type Command struct {
+    Name    string    // 指令名称
+    Var     *int      // 指令绑定的变量
+    Comment string    // 指令的注释
+}
+var version int = 1
+cmd := &Command{}
+cmd.Name = "version"
+cmd.Var = &version
+```
+
+### 成员初始化
+
+#### 键值对形式初始化
+
+值对的填充是可选的，不需要初始化的字段可以不填入初始化列表中。
+
+格式：
+
+```go
+ins := 结构体类型名{
+    字段1: 字段1的值,
+    字段2: 字段2的值,
+    …
+}
+```
+
+```go
+type People struct {
+    name  string
+    child *People
+}
+relation := &People{
+    name: "爷爷",
+    child: &People{
+        name: "爸爸",
+        child: &People{
+                name: "我",
+        },
+    },
+}
+```
+
+#### 值列表形式初始化
+
+ 在“键值对”初始化的基础上忽略“键” 。
+
+格式：
+
+```go
+ins := 结构体类型名{
+    字段1的值,
+    字段2的值,
+    …
+}
+```
+
+- 必须初始化结构体的所有字段。
+
+- 每一个初始值的填充顺序必须与字段在结构体中的声明顺序一致。  
+
+- 键值对与值列表的初始化形式不能混用。 
+
+```go
+type Address struct {
+    Province    string
+    City        string
+    ZipCode     int
+    PhoneNumber string
+}
+addr := Address{
+    "四川",
+    "成都",
+    610000,
+    "0",
+}
+```
+
+#### 匿名结构体初始化
+
+ 匿名结构体没有类型名称，无须通过 type 关键字定义就可以直接使用。 
+
+格式：
+
+```go
+ins := struct {
+    // 匿名结构体字段定义
+    字段1 字段类型1
+    字段2 字段类型2
+    …
+}{
+    // 字段值初始化
+    初始化字段1: 字段1的值,
+    初始化字段2: 字段2的值,
+    …
+}
+```
+
+示例:
+
+```go
+// 打印消息类型, 传入匿名结构体
+func printMsgType(msg *struct {
+    id   int
+    data string
+}) {
+    // 使用动词%T打印msg的类型
+    fmt.Printf("%T\n", msg)
+}
+
+msg := &struct {  // 定义部分
+  id   int
+  data string
+}{  // 值初始化部分
+  1024,
+  "hello",
+}
+printMsgType(msg)
+```
+
 
 
 ## 程序崩溃

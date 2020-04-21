@@ -1466,3 +1466,5 @@ store.state.b // -> moduleB 的状态
  }
 ```
 
+## vue3.0
+
