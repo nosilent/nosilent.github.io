@@ -2041,7 +2041,85 @@ msg := &struct {  // 定义部分
 }
 ```
 
+### 接收器
 
+Go 方法是作用在接收器（receiver）上的一个函数，接收器是某种类型的变量，因此方法是一种特殊类型的函数。
+
+接收器根据接收器类型分为指针接收器和非指针接收器。
+
+接收器的类型可以是任何类型，不仅仅是结构体，任何类型都可以拥有方法，但必须是通过type定义的类型。
+
+格式：
+
+```go
+func (接收器变量 接收器类型) 方法名(参数列表) (返回参数) {
+    函数体
+}
+```
+
+示例：
+
+```go
+// 定义结构体
+type Property struct {
+    value int  // 属性值
+}
+// 设置属性值
+//指针类型接收器
+func (p *Property) SetValue(v int) {
+    // 修改p的成员变量
+    p.value = v
+}
+// 取属性值
+//指针类型接收器
+func (p *Property) Value() int {
+    return p.value
+}
+func main() {
+    // 实例化属性
+    p := new(Property)
+    // 设置值
+    p.SetValue(100)
+    // 打印值
+    fmt.Println(p.Value())
+}
+```
+
+### 结构体内嵌模拟继承
+
+在结构体内嵌入其他结构体变量，使该结构体实例也具有嵌入的结构体中的属性。
+
+```go
+// 可飞行的
+type Flying struct{}
+func (f *Flying) Fly() {
+    fmt.Println("can fly")
+}
+// 可行走的
+type Walkable struct{}
+func (f *Walkable) Walk() {
+    fmt.Println("can calk")
+}
+// 人类
+type Human struct {
+    Walkable // 人类能行走
+}
+// 鸟类
+type Bird struct {
+    Walkable // 鸟类能行走
+    Flying   // 鸟类能飞行
+}
+
+// 实例化鸟类
+b := new(Bird)
+fmt.Println("Bird: ")
+b.Fly()
+b.Walk()
+// 实例化人类
+h := new(Human)
+fmt.Println("Human: ")
+h.Walk()
+```
 
 ## 程序崩溃
 
@@ -2113,4 +2191,313 @@ panic 和 recover 的组合有如下特性:
 - panic 也有 recover，程序不会宕机，执行完对应的 defer 后，从宕机点退出当前函数后继续执行。
 
 ## 接口
+
+### 接口声明
+
+格式：
+
+```go
+type 接口类型名 interface{
+    方法名1( 参数列表1 ) 返回值列表1
+    方法名2( 参数列表2 ) 返回值列表2
+    …
+}
+```
+
+接口类型名：使用 type 将接口定义为自定义的类型名。
+
+方法名：当方法名首字母是大写时，且这个接口类型名首字母也是大写时，这个方法可以被接口所在的包（package）之外的代码访问。
+
+参数列表、返回值列表：参数列表和返回值列表中的参数变量名可以被忽略
+
+示例：
+
+```go
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+
+type Stringer interface {
+    String() string
+}
+```
+
+### 接口实现
+
+实现关系在Go语言中是隐式的。两个类型之间的实现关系不需要在代码中显式地表示出来。Go语言中没有类似于 implements 的关键字。 Go编译器将自动在需要的时候检查两个类型之间的实现关系。
+
+#### 接口的方法与实现接口的类型方法格式一致
+
+在类型中添加与接口签名一致的方法就可以实现该方法。签名包括方法中的名称、参数列表、返回参数列表。
+
+```go
+// 定义一个数据写入器
+type DataWriter interface {
+    WriteData(data interface{}) error
+}
+// 定义文件结构，用于实现DataWriter
+type file struct {
+}
+// 实现DataWriter接口的WriteData方法
+func (d *file) WriteData(data interface{}) error {
+    // 模拟写入数据
+    fmt.Println("WriteData:", data)
+    return nil
+}
+
+func main() {
+    // 实例化file
+    f := new(file)
+    // 声明一个DataWriter的接口
+    var writer DataWriter
+    // 将接口赋值f，也就是*file类型
+    writer = f
+    // 使用DataWriter接口进行数据写入
+    writer.WriteData("data")
+}
+```
+
+#### 接口中所有方法均被实现
+
+当一个接口中有多个方法时，只有这些方法都被实现了，接口才能被正确编译并使用。
+
+```go
+// 定义一个数据写入器
+type DataWriter interface {
+    WriteData(data interface{}) error
+    // 能否写入
+    CanWrite() bool
+    
+// 定义文件结构，用于实现DataWriter
+type file struct {
+}
+// 实现DataWriter接口的WriteData方法
+func (d *file) WriteData(data interface{}) error {
+    // 模拟写入数据
+    fmt.Println("WriteData:", data)
+    return nil
+}
+
+func main() {
+    // 实例化file
+    f := new(file)
+    // 声明一个DataWriter的接口
+    var writer DataWriter
+    // 将接口赋值f，也就是*file类型
+    writer = f
+    // 使用DataWriter接口进行数据写入
+    writer.WriteData("data")
+}
+```
+
+新增 CanWrite() 方法，返回 bool。需要在 file 中实现 CanWrite() 方法才能正常使用 DataWriter()。
+
+### 类型与接口关系
+
+在Go语言中类型和接口之间有一对多和多对一的关系。
+
+#### 一个类型可以实现多个接口
+
+一个类型可以同时实现多个接口，而接口间彼此独立，不知道对方的实现。
+
+```go
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+type Closer interface {
+    Close() error
+}
+
+type Socket struct {
+}
+func (s *Socket) Write(p []byte) (n int, err error) {
+    return 0, nil
+}
+func (s *Socket) Close() error {
+    return nil
+}
+```
+
+#### 多个类型实现相同接口
+
+```go
+// 一个服务需要满足能够开启和写日志的功能
+type Service interface {
+    Start()  // 开启服务
+    Log(string)  // 日志输出
+}
+// 日志器
+type Logger struct {
+}
+// 实现Service的Log()方法
+func (g *Logger) Log(l string) {
+}
+// 游戏服务
+type GameService struct {
+    Logger  // 嵌入日志器
+}
+// 实现Service的Start()方法
+func (g *GameService) Start() {
+}
+```
+
+### 类型断言
+
+类型断言（Type Assertion）是一个使用在接口值上的操作，用于检查接口类型变量所持有的值是否实现了期望的接口或者具体的类型。
+
+格式：
+
+```go
+value, ok := x.(T)
+```
+
+x 表示一个接口的类型，T 表示一个具体的类型（也可为接口类型）。
+
+示例：
+
+```go
+var x interface{}
+x = "Hello"
+value := x.(int)
+fmt.Println(value)
+```
+
+### 接口嵌套
+
+一个接口可以包含一个或多个其他的接口，这相当于直接将这些内嵌接口的方法列举在外层接口中一样。只要接口的所有方法被实现，则这个接口中的所有嵌套接口的方法均可以被调用。
+
+```go
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+type Closer interface {
+    Close() error
+}
+type WriteCloser interface {
+    Writer
+    Closer
+}
+```
+
+### 接口与类型间的转换
+
+Go语言中使用接口断言（type assertions）将接口转换成另外一个接口，也可以将接口转换为另外的类型。
+
+实现某个接口的类型同时实现了另外一个接口，此时可以在两个接口间转换。
+
+```go
+// 定义飞行动物接口
+type Flyer interface {
+    Fly()
+}
+// 定义行走动物接口
+type Walker interface {
+    Walk()
+}
+// 定义鸟类
+type bird struct {
+}
+// 实现飞行动物接口
+func (b *bird) Fly() {
+    fmt.Println("bird: fly")
+}
+// 为鸟添加Walk()方法, 实现行走动物接口
+func (b *bird) Walk() {
+    fmt.Println("bird: walk")
+}
+// 定义猪
+type pig struct {
+}
+// 为猪添加Walk()方法, 实现行走动物接口
+func (p *pig) Walk() {
+    fmt.Println("pig: walk")
+}
+func main() {
+// 创建动物的名字到实例的映射
+    animals := map[string]interface{}{
+        "bird": new(bird),
+        "pig":  new(pig),
+    }
+    // 遍历映射
+    for name, obj := range animals {
+        // 判断对象是否为飞行动物
+        f, isFlyer := obj.(Flyer)
+        // 判断对象是否为行走动物
+        w, isWalker := obj.(Walker)
+        fmt.Printf("name: %s isFlyer: %v isWalker: %v\n", name, isFlyer, isWalker)
+        // 如果是飞行动物则调用飞行动物接口
+        if isFlyer {
+            f.Fly()
+        }
+        // 如果是行走动物则调用行走动物接口
+        if isWalker {
+            w.Walk()
+        }
+    }
+}
+```
+
+### 空接口
+
+空接口是接口类型的特殊形式，空接口没有任何方法，因此任何类型都无须实现空接口。
+
+空接口的内部实现保存了对象的类型和指针。使用空接口保存一个数据的过程会比直接用数据对应类型的变量保存稍慢。
+
+#### 将值保存到空接口中
+
+```go
+var any interface{}
+any = 1
+fmt.Println(any)   //1
+any = "hello"
+fmt.Println(any)   //hello
+any = false
+fmt.Println(any)   //false
+```
+
+#### 从空接口获取值
+
+保存到空接口的值，如果直接取出指定类型的值时，会发生编译错误。
+
+```go
+// 声明a变量, 类型int, 初始值为1
+var a int = 1
+// 声明i变量, 类型为interface{}, 初始值为a, 此时i的值变为1
+var i interface{} = a
+// 声明b变量, 尝试赋值i
+var b int = i   //报错
+var b int = i.(int)   //使用断言的形式获取值
+```
+
+#### 空接口值比较
+
+特性：
+
+1. 类型不同的空接口间的比较结果不相同
+
+2. 不能比较空接口中的动态值
+
+保存有类型不同的值的空接口进行比较时，Go语言会优先比较值的类型。因此类型不同，比较结果也是不相同的
+
+```go
+// a保存整型
+var a interface{} = 100
+// b保存字符串
+var b interface{} = "hi"
+// 两个空接口不相等
+fmt.Println(a == b)   //false
+```
+
+当接口中保存有动态类型的值时，运行时将触发错误
+
+```go
+// c保存包含10的整型切片
+var c interface{} = []int{10}
+// d保存包含20的整型切片
+var d interface{} = []int{20}
+// 这里会发生崩溃
+fmt.Println(c == d)
+```
+
+### error接口
 
