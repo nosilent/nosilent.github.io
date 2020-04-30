@@ -2931,7 +2931,422 @@ func main() {
 - 同时可以有任意多个 gorouinte 获得读锁定；
 - 同时只能存在写锁定或读锁定（读和写互斥）。
 
-### big包
 
-Go语言中 math/big 包实现了大数字的多精度计算，支持 Int（有符号整数）、Rat（有理数）和 Float（浮点数）等数字类型。 
+
+### 正则表达式包
+
+正则表达式是由普通字符（例如字符 a 到 z）以及特殊字符（称为"元字符"）构成的文字序列，可以是单个的字符、字符集合、字符范围、字符间的选择或者所有这些组件的任意组合。
+
+#### 字符
+
+| 语法     | 说明                                                         | 表达式示例 | 匹配结果          |
+| -------- | ------------------------------------------------------------ | ---------- | ----------------- |
+| 一般字符 | 匹配自身                                                     | abc        | abc               |
+| .        | 匹配任意除换行符"\n"外的字符， 在 DOTALL 模式中也能匹配换行符 | a.c        | abc               |
+| \        | 转义字符，使后一个字符改变原来的意思； 如果字符串中有字符 * 需要匹配，可以使用 \* 或者字符集［*]。 | a\.c a\\c  | a.c a\c           |
+| [...]    | 字符集（字符类），对应的位置可以是字符集中任意字符。 字符集中的字符可以逐个列出，也可以给出范围，如 [abc] 或 [a-c]， 第一个字符如果是 ^ 则表示取反，如 [^abc] 表示除了abc之外的其他字符。 | a[bcd]e    | abe 或 ace 或 ade |
+| \d       | 数字：[0-9]                                                  | a\dc       | a1c               |
+| \D       | 非数字：[^\d]                                                | a\Dc       | abc               |
+| \s       | 空白字符：[<空格>\t\r\n\f\v]                                 | a\sc       | a c               |
+| \S       | 非空白字符：[^\s]                                            | a\Sc       | abc               |
+| \w       | 单词字符：[A-Za-z0-9]                                        | a\wc       | abc               |
+| \W       | 非单词字符：[^\w]                                            | a\Wc       | a c               |
+
+#### 数量词
+
+| 语法  | 说明                                                         | 表达式示例 | 匹配结果     |
+| ----- | ------------------------------------------------------------ | ---------- | ------------ |
+| *     | 匹配前一个字符 0 或无限次                                    | abc*       | ab 或 abccc  |
+| +     | 匹配前一个字符 1 次或无限次                                  | abc+       | abc 或 abccc |
+| ?     | 匹配前一个字符 0 次或 1 次                                   | abc?       | ab 或 abc    |
+| {m}   | 匹配前一个字符 m 次                                          | ab{2}c     | abbc         |
+| {m,n} | 匹配前一个字符 m 至 n 次，m 和 n 可以省略，若省略 m，则匹配 0 至 n 次； 若省略 n，则匹配 m 至无限次 | ab{1,2}c   | abc 或 abbc  |
+
+#### 边界匹配
+
+| 语法 | 说明                                         | 表达式示例 | 匹配结果 |
+| ---- | -------------------------------------------- | ---------- | -------- |
+| ^    | 匹配字符串开头，在多行模式中匹配每一行的开头 | ^abc       | abc      |
+| $    | 匹配字符串末尾，在多行模式中匹配每一行的末尾 | abc$       | abc      |
+| \A   | 仅匹配字符串开头                             | \Aabc      | abc      |
+| \Z   | 仅匹配字符串末尾                             | abc\Z      | abc      |
+| \b   | 匹配 \w 和 \W 之间                           | a\b!bc     | a!bc     |
+| \B   | [^\b]                                        | a\Bbc      | abc      |
+
+#### 逻辑分组
+
+| 语法            | 说明                                                         | 表达式示例             | 匹配结果       |
+| --------------- | ------------------------------------------------------------ | ---------------------- | -------------- |
+| \|              | \| 代表左右表达式任意匹配一个，优先匹配左边的表达式          | abc\|def               | abc 或 def     |
+| (...)           | 括起来的表达式将作为分组，分组将作为一个整体，可以后接数量词 | (abc){2}               | abcabc         |
+| (?P`<name>`...) | 分组，功能与 (...) 相同，但会指定一个额外的别名              | (?P`<id>`abc){2}       | abcabc         |
+| \<number>       | 引用编号为 `<number>` 的分组匹配到的字符串                   | (\d)abc\1              | 1abe1 或 5abc5 |
+| (?P=name)       | 引用别名为` <name>` 的分组匹配到的字符串                     | (?P`<id>`\d)abc(?P=id) | 1abe1 或 5abc5 |
+
+#### 特殊构造
+
+| 语法      | 说明                                                         | 表达式示例        | 匹配结果         |
+| --------- | ------------------------------------------------------------ | ----------------- | ---------------- |
+| (?:...)   | (…) 的不分组版本，用于使用 "\|" 或后接数量词                 | (?:abc){2}        | abcabc           |
+| (?iLmsux) | iLmsux 中的每个字符代表一种匹配模式，只能用在正则表达式的开头，可选多个 | (?i)abc           | AbC              |
+| (?#...)   | # 后的内容将作为注释被忽略。                                 | abc(?#comment)123 | abc123           |
+| (?=...)   | 之后的字符串内容需要匹配表达式才能成功匹配                   | a(?=\d)           | 后面是数字的 a   |
+| (?!...)   | 之后的字符串内容需要不匹配表达式才能成功匹配                 | a(?!\d)           | 后面不是数字的 a |
+| (?<=...)  | 之前的字符串内容需要匹配表达式才能成功匹配                   | (?<=\d)a          | 前面是数字的a    |
+| (?<!...)  | 之前的字符串内容需要不匹配表达式才能成功匹配                 | (?<!\d)a          | 前面不是数字的a  |
+
+#### 示例
+
+匹配指定类型的字符串
+
+```go
+import (
+    "fmt"
+    "regexp"
+)
+func main() {
+    buf := "abc azc a7c aac 888 a9c  tac"
+    //解析正则表达式，如果成功返回解释器
+    reg1 := regexp.MustCompile(`a.c`)
+    if reg1 == nil {
+        fmt.Println("regexp err")
+        return
+    }
+    //根据规则提取关键信息
+    result1 := reg1.FindAllStringSubmatch(buf, -1)
+    fmt.Println("result1 = ", result1)  //result1 =  [[abc] [azc] [a7c] [aac] [a9c]]　
+}
+```
+
+### time包
+
+时间一般包含时间值和时区， time 包的源码：
+
+```go
+type Time struct {
+    wall uint64  //表示距离公元 1 年 1 月 1 日 00:00:00UTC 的秒数；
+    ext  int64   //表示纳秒
+    loc *Location  //代表时区，主要处理偏移量，不同的时区，对应的时间不一样
+}
+```
+
+`time.UTC：UTC`: 时间
+
+`time.Local`：本地时间
+
+#### 时间获取
+
+通过` time.Now() `函数来获取当前的时间对象
+
+```go
+package main
+import (
+    "fmt"
+    "time"
+)
+func main() {
+    now := time.Now() //获取当前时间
+    fmt.Printf("current time:%v\n", now)
+    year := now.Year()     //年
+    month := now.Month()   //月
+    day := now.Day()       //日
+    hour := now.Hour()     //小时
+    minute := now.Minute() //分钟
+    second := now.Second() //秒
+    fmt.Printf("%d-%02d-%02d %02d:%02d:%02d\n", year, month, day, hour, minute, second)
+    
+    timestamp1 := now.Unix()     //时间戳
+    timestamp2 := now.UnixNano() //纳秒时间戳
+    fmt.Printf("现在的时间戳：%v\n", timestamp1)
+    fmt.Printf("现在的纳秒时间戳：%v\n", timestamp2)
+    
+    week := now.Weekday().String()    //获取星期几
+    fmt.Printf("现在是：%v\n", week)
+}
+```
+
+ `time.Unix()` 函数可以将时间戳转为时间格式
+
+#### 时间操作函数
+
+- `add`: 返回时间点 t + 时间间隔 d 的值
+
+```go
+now := time.Now()
+later := now.Add(time.Hour) // 当前时间加1小时后的时间
+fmt.Println(later)
+```
+
+- `Sub`: 求两个时间之间的差值
+
+```go
+func (t Time) Sub(u Time) Duration
+```
+
+- `equal`: 判断两个时间是否相同,该函数会考虑时区的影响，因此不同时区标准的时间也可以正确比较，还会比较地点和时区信息
+
+```go
+func (t Time) Equal(u Time) bool
+```
+
+- `before`:判断一个时间点是否在另一个时间点之前,如果 t 代表的时间点在 u 之前，则返回真，否则返回假
+
+```go
+func (t Time) Before(u Time) bool
+```
+
+- `After`：判断一个时间点是否在另一个时间点之后,如果 t 代表的时间点在 u 之后，则返回真，否则返回假。
+
+```go
+func (t Time) After(u Time) bool
+```
+
+#### 定时器
+
+使用 `time.Tick`(时间间隔) 可以设置定时器，定时器的本质上是一个通道（channel）
+
+```go
+package main
+import (
+    "fmt"
+    "time"
+)
+func main() {
+    ticker := time.Tick(time.Second) //定义一个1秒间隔的定时器
+    for i := range ticker {
+        fmt.Println(i) //每秒都会执行的任务
+    }
+}
+```
+
+#### 时间格式化
+
+时间类型有一个自带的 Format 方法进行格式化，Go语言中格式化时间模板不是常见的`Y-m-d H:M:S `，而是使用Go语言的诞生时间 2006 年 1 月 2 号 15 点 04 分 05 秒。
+
+```go
+package main
+import (
+    "fmt"
+    "time"
+)
+func main() {
+    now := time.Now()
+    // 格式化的模板为Go的出生时间2006年1月2号15点04分 Mon Jan
+    // 24小时制
+    fmt.Println(now.Format("2006-01-02 15:04:05.000 Mon Jan"))
+    // 12小时制
+    fmt.Println(now.Format("2006-01-02 03:04:05.000 PM Mon Jan"))
+    fmt.Println(now.Format("2006/01/02 15:04"))
+    fmt.Println(now.Format("15:04 2006/01/02"))
+    fmt.Println(now.Format("2006/01/02"))
+}
+```
+
+#### 解析字符串格式时间
+
+Parse 函数可以解析一个格式化的时间字符串并返回它代表的时间
+
+```go
+func Parse(layout, value string) (Time, error)
+```
+
+与 Parse 函数类似的还有`ParseInLocation`函数
+
+```go
+func ParseInLocation(layout, value string, loc *Location) (Time, error)
+```
+
+区别：
+
+- 当缺少时区信息时，Parse 将时间解释为 UTC 时间，而 ParseInLocation 将返回值的 Location 设置为 loc；
+- 当时间字符串提供了时区偏移量信息时，Parse 会尝试去匹配本地时区，而 ParseInLocation 会去匹配 loc。
+
+```go
+var layout string = "2006-01-02 15:04:05"
+var timeStr string = "2019-12-12 15:22:12"
+timeObj1, _ := time.Parse(layout, timeStr)
+fmt.Println(timeObj1)   //2019-12-12 15:22:12 +0000 UTC
+timeObj2, _ := time.ParseInLocation(layout, timeStr, time.Local)
+fmt.Println(timeObj2)   //2019-12-12 15:22:12 +0800 CST
+```
+
+### os包
+
+`os `包的作用主要是在服务器上进行系统的基本操作，如文件操作、目录操作、执行命令、信号与中断、进程、系统状态等等。
+
+#### 常用函数
+
+- `Hostname`:返回内核提供的主机名
+
+```go
+func Hostname() (name string, err error)
+```
+
+- `Environ`:返回所有的环境变量，返回值格式为“key=value”的字符串的切片拷贝
+
+```go
+func Environ() []string
+```
+
+- `Getenv`:检索并返回名为 key 的环境变量的值,不存在该环境变量则会返回空字符串
+
+```go
+func Getenv(key string) string
+```
+
+- `Setenv`:设置名为 key 的环境变量，如果出错会返回该错误。
+
+```go
+func Setenv(key, value string) error
+```
+
+- `Exit`: 让当前程序以给出的状态码 code 退出,一般来说，状态码 0 表示成功，非 0 表示出错。程序会立刻终止，并且 defer 的函数不会被执行。
+
+```go
+func Exit(code int)
+```
+
+- `Getuid`:返回调用者的用户 ID
+
+```go
+func Getuid() int
+```
+
+- `Getgid`:返回调用者的组 ID
+
+```go
+func Getgid() int
+```
+
+- `Getpid`:返回调用者所在进程的进程 ID
+
+```go
+func Getpid() int
+```
+
+- `Getwd`:返回一个对应当前工作目录的根路径,如果当前目录可以经过多条路径抵达（因为硬链接），Getwd 会返回其中一个
+
+```go
+func Getwd() (dir string, err error)
+```
+
+- `Mkdir`:使用指定的权限和名称创建一个目录,如果出错，会返回 *PathError 底层类型的错误。
+
+```go
+func Mkdir(name string, perm FileMode) error
+```
+
+- `MkdirAll`: 可以使用指定的权限和名称创建一个目录，包括任何必要的上级目录，并返回 nil，否则返回错误。
+
+```go
+func MkdirAll(path string, perm FileMode) error
+```
+
+- `Remove`:会删除 name 指定的文件或目录。如果出错，会返回 *PathError 底层类型的错误。
+- `RemoveAll `:会递归的删除所有子目录和文件
+
+```go
+func Remove(name string) error
+```
+
+#### exec执行外部命令
+
+exec 包可以执行外部命令，它包装了 os.StartProcess 函数以便更容易的修正输入和输出，使用管道连接 I/O，以及作其它的一些调整。
+
+`LookPath`:在环境变量 PATH 指定的目录中搜索可执行文件，如果 file 中有斜杠，则只在当前目录搜索。返回完整路径或者相对于当前目录的一个相对路径。
+
+```go
+func LookPath(file string) (string, error)
+```
+
+示例：
+
+```go
+import (
+    "fmt"
+    "os/exec"
+)
+func main() {
+    f, err := exec.LookPath("main")
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println(f)
+}
+```
+
+#### user获取当前用户信息
+
+通过 os/user 包中的 Current() 函数来获取当前用户信息，该函数会返回一个 User 结构体，结构体中的 Username、Uid、HomeDir、Gid 分别表示当前用户的名称、用户 id、用户主目录和用户所属组 id，
+
+```go
+func Current() (*User, error)
+```
+
+示例：
+
+```go
+import (
+    "log"
+    "os/user"
+)
+func main() {
+    u, _ := user.Current()
+    log.Println("用户名：", u.Username)
+    log.Println("用户id", u.Uid)
+    log.Println("用户主目录：", u.HomeDir)
+    log.Println("主组id：", u.Gid)
+    // 用户所在的所有的组的id
+    s, _ := u.GroupIds()
+    log.Println("用户所在的所有组：", s)
+}
+```
+
+#### signal 信号处理
+
+程序在退出（正常退出或者强制退出，如 Ctrl+C，kill 等）时是可以执行一段清理代码的，将收尾工作做完后再真正退出。
+
+go语言中对信号的处理主要使用 os/signal 包中的两个方法，一个是 Notify 方法用来监听收到的信号，一个是 stop 方法用来取消监听。
+
+```go
+//第一个参数表示接收信号的 channel，第二个及后面的参数表示设置要监听的信号，如果不设置表示监听所有的信号。
+func Notify(c chan<- os.Signal, sig ...os.Signal) 
+```
+
+监听收到的信号：
+
+```go
+import (
+    "fmt"
+    "os"
+    "os/signal"
+)
+func main() {
+    c := make(chan os.Signal, 0)
+    signal.Notify(c)
+    // Block until a signal is received.
+    s := <-c
+    fmt.Println("Got signal:", s)
+}
+```
+
+使用 stop 方法来取消监听:
+
+```go
+import (
+    "fmt"
+    "os"
+    "os/signal"
+)
+func main() {
+    c := make(chan os.Signal, 0)
+    signal.Notify(c)
+    signal.Stop(c) //不允许继续往c中存入内容  
+    //使用 Stop 方法取消了 Notify 方法的监听，所以运行程序没有输出结果。
+    s := <-c       //c无内容，此处阻塞，所以不会执行下面的语句，也就没有输出
+    fmt.Println("Got signal:", s)
+}
+```
+
+### flag包
 
