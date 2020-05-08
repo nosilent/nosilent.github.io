@@ -3348,5 +3348,197 @@ func main() {
 }
 ```
 
-### flag包
+### 
+
+## 并发
+
+### 基本概念
+
+#### 进程和线程
+
+进程是程序在操作系统中的一次执行过程，系统进行资源分配和调度的一个独立单位。
+
+线程是进程的一个执行实体，是 CPU 调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。
+
+#### 并发和并行
+
+多线程程序在单核心的 cpu 上运行，称为并发；
+
+多线程程序在多核心的 cpu 上运行，称为并行。
+
+并发主要由切换时间片来实现“同时”运行，并行则是直接利用多核实现多线程的运行。
+
+#### 协程和线程
+
+协程：独立的栈空间，共享堆空间，调度由用户自己控制，本质上有点类似于用户级线程，这些用户级线程的调度也是自己实现的。
+
+线程：一个线程上可以跑多个协程，协程是轻量级的线程。
+
+### goroutine
+
+goroutine是一种非常轻量级的实现，可在单个进程里执行成千上万的并发任务，
+
+goroutine 其实就是线程，但是它比线程更小，十几个 goroutine 可能体现在底层就是五六个线程
+
+使用 go 关键字就可以创建 goroutine，将 go 声明放到一个需调用的函数之前，在相同地址空间调用运行这个函数，这样该函数执行时便会作为一个独立的并发线程，这种线程在Go语言中则被称为 goroutine。
+
+示例：
+
+```go
+//go 关键字放在方法调用前新建一个 goroutine 并执行方法体
+go GetThingDone(param1, param2);
+//新建一个匿名方法并执行
+go func(param1, param2) {
+}(val1, val2)
+//直接新建一个 goroutine 并在 goroutine 中执行代码块
+go {
+    //do someting...
+}
+```
+
+ goroutine 在多核 cpu 环境下是并行的，如果代码块在多个 goroutine 中执行，那么我们就实现了代码的并行。
+
+### channel
+
+channel 是Go语言在语言级别提供的 goroutine 间的通信方式，可以使用 channel 在两个或多个 goroutine 之间传递消息。
+
+channel 是进程内的通信方式，因此通过 channel 传递对象的过程和调用函数时的参数传递行为比较一致。
+
+channel 是类型相关的，一个 channel 只能传递一种类型的值，这个类型需要在声明 channel 时指定。
+
+定义一个 channel 时，也需要定义发送到 channel 的值的类型，示例：
+
+```go
+ci := make(chan int)
+cs := make(chan string)
+cf := make(chan interface{})
+```
+
+### 轻量级线程
+
+使用 **go** 关键字为一个函数创建一个 goroutine。一个函数可以被创建多个 goroutine，一个 goroutine 必定对应一个函数。
+
+格式：
+
+```go
+go 函数名( 参数列表 )
+
+//使用匿名函数创建goroutine
+go func( 参数列表 ){
+    函数体
+}( 调用参数列表 )
+```
+
+使用 go 关键字创建 goroutine 时，被调用函数的返回值会被忽略。
+
+需要在 goroutine 中返回数据，通过通道把数据从 goroutine 中作为返回值传出。
+
+所有 goroutine 在 main() 函数结束时会一同结束。
+
+### 并发
+
+两种最常见的并发通信模型：共享数据和消息
+
+共享数据是指多个并发单元分别保持对同一个数据的引用，实现对该数据的共享，
+
+Go语言提供的是另一种通信模型，即以消息机制而非共享内存作为通信方式。Go语言提供的消息通信机制被称为 channel。
+
+### 竞争状态
+
+有并发，就有资源竞争，如果两个或者多个 goroutine 在没有相互同步的情况下，访问某个共享的资源，比如同时对该资源进行读写时，就会处于相互竞争的状态，这就是并发中的资源竞争。
+
+对于同一个资源的读写必须是原子化的，也就是说，同一时间只能允许有一个 goroutine 对共享资源进行读写操作。
+
+#### 锁住共享资源
+
+Go语言提供了传统的同步 goroutine 的机制，就是对共享资源加锁。atomic 和 sync 包里的一些函数就可以对共享的资源进行加锁操作。
+
+##### 原子函数
+
+原子函数能够以很底层的加锁机制来同步访问整型变量和指针。
+
+示例：
+
+```go
+import (
+    "fmt"
+    "runtime"
+    "sync"
+    "sync/atomic"
+)
+var (
+    counter int64
+    wg      sync.WaitGroup
+)
+func main() {
+    wg.Add(2)
+    go incCounter(1)
+    go incCounter(2)
+    wg.Wait() //等待goroutine结束
+    fmt.Println(counter)
+}
+func incCounter(id int) {
+    defer wg.Done()
+    for count := 0; count < 2; count++ {
+        atomic.AddInt64(&counter, 1) //安全的对counter加1
+        runtime.Gosched()
+    }
+}
+```
+
+atmoic 包的 AddInt64 函数，这个函数会同步整型值的加法，方法是强制同一时刻只能有一个 gorountie 运行并完成这个加法操作,当 goroutine 试图去调用任何原子函数时，这些 goroutine 都会自动根据所引用的变量做同步处理。
+
+原子函数是 LoadInt64 和 StoreInt64。这两个函数提供了一种安全地读和写一个整型值的方式。
+
+##### 互斥锁
+
+另一种同步访问共享资源的方式是使用互斥锁，互斥锁这个名字来自互斥的概念。互斥锁用于在代码上创建一个临界区，保证同一时间只有一个 goroutine 可以执行这个临界代码。
+
+示例：
+
+```go
+import (
+    "fmt"
+    "runtime"
+    "sync"
+)
+var (
+    counter int64
+    wg      sync.WaitGroup
+    mutex   sync.Mutex
+)
+func main() {
+    wg.Add(2)
+    go incCounter(1)
+    go incCounter(2)
+    wg.Wait()
+    fmt.Println(counter)
+}
+func incCounter(id int) {
+    defer wg.Done()
+    for count := 0; count < 2; count++ {
+        //同一时刻只允许一个goroutine进入这个临界区
+        mutex.Lock()
+        {
+            value := counter
+            runtime.Gosched()
+            value++
+            counter = value
+        }
+        mutex.Unlock() //释放锁，允许其他正在等待的goroutine进入临界区
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
