@@ -3638,11 +3638,308 @@ x, ok := <-ch
 
 缓冲大小：决定通道最多可以保存的元素数量。
 
-### 超时
+### 互斥锁和读写互斥锁
+
+sync 包提供了两种锁类型：sync.Mutex 和 sync.RWMutex
+
+对于这两种锁类型，任何一个 Lock() 或 RLock() 均需要保证对应有 Unlock() 或 RUnlock() 调用与之对应，否则可能导致等待该锁的所有 goroutine 处于饥饿状态，甚至可能导致死锁。
+
+```go
+import (
+    "fmt"
+    "sync"
+)
+var (
+    // 逻辑中使用的某个变量
+    count int
+    // 与变量对应的使用互斥锁
+    countGuard sync.Mutex
+)
+func GetCount() int {
+    // 锁定
+    countGuard.Lock()
+    // 在函数退出时解除锁定
+    defer countGuard.Unlock()
+    return count
+}
+func SetCount(c int) {
+    countGuard.Lock()
+    count = c
+    countGuard.Unlock()
+}
+func main() {
+    // 可以进行并发安全的设置
+    SetCount(1)
+    // 可以进行并发安全的获取
+    fmt.Println(GetCount())
+}
+```
+
+### 等待组（sync.WaitGroup）
+
+使用等待组进行多个任务的同步，等待组可以保证在并发环境中完成指定数量的任务。
+
+在 sync.WaitGroup（等待组）类型中，每个 sync.WaitGroup 值在内部维护着一个计数，此计数的初始默认值为零。
 
 
 
+| 方法名                          | 功能                                    |
+| ------------------------------- | --------------------------------------- |
+| (wg * WaitGroup) Add(delta int) | 等待组的计数器 +1                       |
+| (wg * WaitGroup) Done()         | 等待组的计数器 -1                       |
+| (wg * WaitGroup) Wait()         | 当等待组计数器不等于 0 时阻塞直到变 0。 |
 
+等待组内部拥有一个计数器，计数器的值可以通过方法调用实现计数器的增加和减少。
+
+```go
+import (
+    "fmt"
+    "net/http"
+    "sync"
+)
+func main() {
+    // 声明一个等待组
+    var wg sync.WaitGroup
+    // 准备一系列的网站地址
+    var urls = []string{
+        "http://www.github.com/",
+        "https://www.qiniu.com/",
+        "https://www.golangtc.com/",
+    }
+    // 遍历这些地址
+    for _, url := range urls {
+        // 每一个任务开始时, 将等待组增加1
+        wg.Add(1)
+        // 开启一个并发
+        go func(url string) {
+            // 使用defer, 表示函数完成时将等待组值减1
+            defer wg.Done()
+            // 使用http访问提供的地址
+            _, err := http.Get(url)
+            // 访问完成后, 打印地址和可能发生的错误
+            fmt.Println(url, err)
+            // 通过参数传递url地址
+        }(url)
+    }
+    // 等待所有的任务完成
+    wg.Wait()
+    fmt.Println("over")
+}
+```
+
+### 死锁、活锁和饥饿
+
+#### 死锁
+
+死锁是指两个或两个以上的进程（或线程）在执行过程中，因争夺资源而造成的一种互相等待的现象，若无外力作用，它们都将无法推进下去
+
+死锁发生的条件有如下几种：
+
+- 互斥条件
+
+线程对资源的访问是排他性的，如果一个线程对占用了某资源，那么其他线程必须处于等待状态，直到该资源被释放。
+
+- 请求和保持条件
+
+线程 T1 至少已经保持了一个资源 R1 占用，但又提出使用另一个资源 R2 请求，而此时，资源 R2 被其他线程 T2 占用，于是该线程 T1 也必须等待，但又对自己保持的资源 R1 不释放。
+
+- 不剥夺条件
+
+线程已获得的资源，在未使用完之前，不能被其他线程剥夺，只能在使用完以后由自己释放。
+
+-  环路等待条件
+
+在死锁发生时，必然存在一个“进程 - 资源环形链”，即：{p0,p1,p2,...pn}，进程 p0（或线程）等待 p1 占用的资源，p1 等待 p2 占用的资源，pn 等待 p0 占用的资源。
+
+
+
+死锁解决办法：
+
+- 如果并发查询多个表，约定访问顺序；
+- 在同一个事务中，尽可能做到一次锁定获取所需要的资源；
+- 对于容易产生死锁的业务场景，尝试升级锁颗粒度，使用表级锁；
+- 采用分布式事务锁或者使用乐观锁。
+
+#### 活锁
+
+活锁是另一种形式的活跃性问题，该问题尽管不会阻塞线程，但也不能继续执行，因为线程将不断重复同样的操作，而且总会失败。
+
+活锁通常发生在处理事务消息中，如果不能成功处理某个消息，那么消息处理机制将回滚事务，并将它重新放到队列的开头。这样，错误的事务被一直回滚重复执行，这种形式的活锁通常是由过度的错误恢复代码造成的，因为它错误地将不可修复的错误认为是可修复的错误。
+
+当多个相互协作的线程都对彼此进行相应而修改自己的状态，并使得任何一个线程都无法继续执行时，就导致了活锁。
+
+
+
+活锁和死锁的区别在于，处于活锁的实体是在不断的改变状态，所谓的“活”，而处于死锁的实体表现为等待，活锁有可能自行解开，死锁则不能。
+
+#### 饥饿
+
+饥饿是指一个可运行的进程尽管能继续执行，但被调度器无限期地忽视，而不能被调度执行的情况。
+
+与死锁不同的是，饥饿锁在一段时间内，优先级低的线程最终还是会执行的，比如高优先级的线程执行完之后释放了资源。
+
+饥饿通常意味着有一个或多个贪婪的并发进程，它们不公平地阻止一个或多个并发进程，以尽可能有效地完成工作，或者阻止全部并发进程。
+
+
+
+- 死锁：是因为错误的使用了锁，导致异常；
+- 活锁：是饥饿的一种特殊情况，逻辑上感觉对，程序也一直在正常的跑，但就是效率低，逻辑上进行不下去；
+- 饥饿：与锁使用的粒度有关，通过计数取样，可以判断进程的工作效率。
+
+## 反射
+
+反射是指在程序运行期对程序本身进行访问和修改的能力。
+
+Go语言提供了一种机制在运行时更新和检查变量的值、调用变量的方法和变量支持的内在操作，但是在编译时并不知道这些变量的具体类型，这种机制被称为反射。
+
+Go语言中的反射是由 reflect 包提供支持的，它定义了两个重要的类型 Type 和 Value 任意接口值在反射中都可以理解为由 reflect.Type 和 reflect.Value 两部分组成，并且 reflect 包提供了 reflect.TypeOf 和 reflect.ValueOf 两个函数来获取任意对象的 Value 和 Type。
+
+### reflect.TypeOf
+
+使用` reflect.TypeOf() `函数可以获得任意值的类型对象，程序通过类型对象可以访问任意值的类型信息。
+
+```go
+package main
+import (
+    "fmt"
+    "reflect"
+)
+func main() {
+    var a int
+    typeOfA := reflect.TypeOf(a)
+    fmt.Println(typeOfA.Name(), typeOfA.Kind())
+}
+```
+
+在使用反射时，需要首先理解类型（Type）和种类（Kind）的区别。编程中，使用最多的是类型，但在反射中，当需要区分一个大品种的类型时，就会用到种类（Kind）。
+
+### 类型（Type）与种类（Kind）
+
+Go语言程序中的类型（Type）指的是系统原生数据类型，如 int、string、bool、float32 等类型，以及使用 type 关键字定义的类型，这些类型的名称就是其类型本身的名称。
+
+种类（Kind）指的是对象归属的品种。
+
+Go语言中的类型名称对应的反射获取方法是 reflect.Type 中的 Name() 方法，返回表示类型名称的字符串；类型归属的种类（Kind）使用的是 reflect.Type 中的 Kind() 方法，返回 reflect.Kind 类型的常量。
+
+```go
+import (
+    "fmt"
+    "reflect"
+)
+// 定义一个Enum类型
+type Enum int
+const (
+    Zero Enum = 0
+)
+func main() {
+    // 声明一个空结构体
+    type cat struct {
+    }
+    // 获取结构体实例的反射类型对象
+    typeOfCat := reflect.TypeOf(cat{})
+    // 显示反射类型对象的名称和种类
+    fmt.Println(typeOfCat.Name(), typeOfCat.Kind())  //cat struct
+    // 获取Zero常量的反射类型对象
+    typeOfA := reflect.TypeOf(Zero)
+    // 显示反射类型对象的名称和种类
+    fmt.Println(typeOfA.Name(), typeOfA.Kind()) //Enum int
+}
+```
+
+### reflect.Elem()
+
+Go语言程序中对指针获取反射对象时，可以通过 reflect.Elem() 方法获取这个指针指向的元素类型，这个获取过程被称为取元素，等效于对指针类型变量做了一个`*`操作。
+
+```go
+import (
+    "fmt"
+    "reflect"
+)
+func main() {
+    // 声明一个空结构体
+    type cat struct {
+    }
+    // 创建cat的实例
+    ins := &cat{}
+    // 获取结构体实例的反射类型对象
+    typeOfCat := reflect.TypeOf(ins)
+    // 显示反射类型对象的名称和种类
+    fmt.Printf("name:'%v' kind:'%v'\n", typeOfCat.Name(), typeOfCat.Kind())
+    //name:'' kind:'ptr'
+    
+    // 取类型的元素
+    typeOfCat = typeOfCat.Elem()
+    // 显示反射类型对象的名称和种类
+    fmt.Printf("element name: '%v', element kind: '%v'\n", typeOfCat.Name(), typeOfCat.Kind())
+    //element name: 'cat', element kind: 'struct'
+}
+```
+
+### 获取成员信息
+
+任意值通过 reflect.TypeOf() 获得反射对象信息后，如果它的类型是结构体，可以通过反射值对象 reflect.Type 的 NumField() 和 Field() 方法获得结构体成员的详细信息。
+
+reflect.Type 的 Field() 方法返回 StructField 结构，这个结构描述结构体的成员信息，通过这个信息可以获取成员与结构体的关系。
+
+reflect.Type 的 FieldByName() 方法查找结构体中指定名称的字段，直接获取其类型信息。
+
+```go
+import (
+    "fmt"
+    "reflect"
+)
+func main() {
+    // 声明一个空结构体
+    type cat struct {
+        Name string
+        // 带有结构体tag的字段
+        Type int `json:"type" id:"100"`
+    }
+    // 创建cat的实例
+    ins := cat{Name: "mimi", Type: 1}
+    // 获取结构体实例的反射类型对象
+    typeOfCat := reflect.TypeOf(ins)
+    // 遍历结构体所有成员
+    for i := 0; i < typeOfCat.NumField(); i++ {
+        // 获取每个成员的结构体字段类型
+        fieldType := typeOfCat.Field(i)
+        // 输出成员名和tag
+        fmt.Printf("name: %v  tag: '%v'\n", fieldType.Name, fieldType.Tag)
+        //name: Name  tag: ''
+        //name: Type  tag: 'json:"type" id:"100"'
+    }
+    // 通过字段名, 找到字段类型信息
+    if catType, ok := typeOfCat.FieldByName("Type"); ok {
+        // 从tag中取出需要的tag
+        fmt.Println(catType.Tag.Get("json"), catType.Tag.Get("id"))
+        //type 100
+    }
+}
+```
+
+通过 reflect.Type 获取结构体成员信息 reflect.StructField 结构中的 Tag 被称为结构体标签（StructTag）。结构体标签是对结构体字段的额外信息标签。
+
+使用tag的Get和Lookup 获取或查找对应键的值。
+
+###  reflect.TypeOf()
+
+函数 reflect.ValueOf 也会对底层的值进行恢复,
+
+类型 reflect.Value 有一个方法 Type()，它会返回一个 reflect.Type 类型的对象。
+
+```go
+import (
+    "fmt"
+    "reflect"
+)
+func main() {
+    var x float64 = 3.4
+    
+    fmt.Println("type:", reflect.TypeOf(x)) //type: float64
+    fmt.Println("value:", reflect.ValueOf(x)) //value: 3.4
+    fmt.Println("value:", reflect.ValueOf(x).type())////type: float64
+}
+```
 
 
 
