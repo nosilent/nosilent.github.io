@@ -150,6 +150,73 @@ function App(props){
 }
 ```
 
+### 组件传值
+
+## 事件机制
+
+```jsx
+//react中的事件需要解决this问题
+//1. 使用bind绑定
+//2. 使用箭头函数定义调用事件
+//3. 在constructor中绑定
+//4. 将事件调用写成箭头函数
+
+class App extend React.Component {
+  constructor(){
+    super()
+    this.fnByC = this.fnByC.bind(this)
+  }
+  fnByBind(){
+			console.log(this)
+  }
+  fnByArrow=()=>{
+    console.log(this)
+  }
+  fnByC(){
+    console.log(this)
+  }
+  render(){
+		return (
+    	<>
+      	<button	onClick={this.fnByBind.bind(this)}>使用bind绑定</button>
+        <button	onClick={this.fnByArrow}>使用箭头函数定义调用事件</button>
+      	<button	onClick={this.fnByC}>在constructor中绑定</button>
+      	<button	onClick={()=>{console.log(this)}}>事件调用写成箭头函数</button>
+      </>
+    )
+  }
+}
+```
+
+### 事件传参
+
+```jsx
+//react中的事件调用不能加（）,否则就是直接执行该函数
+//1.使用bind传参
+//2.将事件调用写成箭头函数的形式，在其内容调用传参的函数
+class App extend React.Component {
+  constructor(){
+    super()
+  }
+  fnByBind(arg){
+			console.log(arg)
+  }
+  fnc(arg){
+    console.log(arg)
+  }
+  render(){
+		return (
+    	<>
+      	<button	onClick={this.fnByBind.bind(this,'这是一个参数')}>使用bind传参</button>
+      	<button	onClick={()=>{this.fnc('传递的参数')}}>使用bind传参</button>
+      </>
+    )
+  }
+}
+```
+
+
+
 ## props
 
 在组件标签上添加的属性和方法都会通过对象的方式添加组件内部的props或this.props
@@ -177,6 +244,61 @@ function App(props){
 ```
 
 > this.props.children或者props.children可以方法组件标签之间的内容
+
+### 默认值设置
+
+#### 函数组件Props默认值设置
+
+```jsx
+function App(props){
+  return (
+       <div> {props.name}</div>
+  )
+}
+App.defaultPorps = {
+  name: 'react'
+}
+```
+
+#### 类组件Props默认值设置
+
+```jsx
+class App extend React.Component {
+  //第一种设置默认值的方式
+  static defaultProps ={
+    name: 'react'
+  }
+  render(){
+		return (
+    	<div>{this.props.name}{this.props.age}</div>
+    )
+  }
+}
+//第二种设置默认值方式
+App.defaultProps = {
+	age: 18
+}
+```
+
+### props类型校验
+
+需要引入`prop-types`包，函数组件和类组件使用方式相同。[参考]( https://react.docschina.org/docs/typechecking-with-proptypes.html )
+
+```jsx
+import PropTypes from 'prop-types';
+
+class Greeting extends React.Component {
+  render() {
+    return (
+      <h1>Hello, {this.props.name}</h1>
+    );
+  }
+}
+
+Greeting.propTypes = {
+  name: PropTypes.string
+};
+```
 
 ## 生命周期函数
 
@@ -333,6 +455,8 @@ class ThemedButton extends React.Component {
 
 ### 创建ref
 
+#### 使用`React.createRef`
+
 使用 `React.createRef()` 创建，并通过 `ref` 属性附加到 React 元素
 
 ```jsx
@@ -347,17 +471,16 @@ class App extends React.Component {
 }
 ```
 
-### 访问ref
-
 通过ref的`current` 属性访问当前绑定的元素
 
 ```jsx
+//获取ref
 this.myRef.current
 ```
 
 > **不能在函数组件上使用 ref 属性**，因为它们没有实例, 可以**在函数组件内部使用 ref 属性**只要它指向一个 DOM 元素或 class 组件
 
-### 回调ref
+#### 使用回调函数
 
 通过ref属性接受一个回调函数
 
@@ -367,15 +490,28 @@ constructor(){
       this.textInput = element;
     };
 }
-
 render(){
-  <input
-          type="text"
-          ref={this.setTextInputRef}   //this.textInput.current绑定到input
-    			ref= {el=>this.el = el}	     //this.el.current绑定到input
-        />
+  return <input
+    type="text"
+    ref={this.setTextInputRef}   //this.textInput.current绑定到input
+    ref= {el=>this.el = el}	     //this.el.current绑定到input
+   />
 }
 ```
+
+#### 使用字符串
+
+```jsx
+render(){
+  // console.log(this.ref.input)
+  return <input
+    type="text"
+    ref='input'
+   />
+}
+```
+
+
 
 ### refs转发
 
@@ -492,7 +628,7 @@ function Dashboard(){
 <Route path="/user/:username" component={User} />
 <Route path="/home" render={() => <div>Home</div>} />
 <Route path="/:id" children={<Child />} />
-<Route path="/:id"> <Child/> <Route>
+<Route path="/:id"> <Child/> </Route>
 ```
 
 在行内渲染内容时，推荐使用`render`或者`children`
@@ -549,11 +685,23 @@ function Dashboard(){
 
 ### Router
 
- 所有路由器组件的通用底层接口 
+ 所有路由器组件的通用底层接口。
 
+hashRouter: 使用哈希导航，导航栏路径有`#`号；
 
+browerRouter: 正常url导航，导航栏路径没有`#`号。
 
-### Hooks
+### Link
+
+路由跳转组件。
+
+Link:正常的跳转组件。
+
+NavLink: 会这当前link上添加一个`active`类。
+
+### 路由传参
+
+### 路由Hooks
 
 #### [useHistory](https://reacttraining.com/react-router/web/api/Hooks/usehistory)
 
@@ -778,9 +926,55 @@ const mapAction = dispatch=>{
     }  
   }
 }
-export defalut connect(mapState,mapAction)(MyApp)
+export default connect(mapState,mapAction)(MyApp)
 ```
 `mapState`用于获取`store`中的数据,`mapAction`用于改变`store`中的数据,在子组件中使用`props`或`this.props`使用`mapState`和`mapAction`中返回的数据
+
+### redux-thunk
+
+**使dispatch可以发送一个函数,发送异步action**
+
+```jsx
+import thunk from 'redux-thunk'
+import { createStore, applyMiddleware, compose} from 'redux';
+
+const composeEnhancers =  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose; 
+const enhancer = composeEnhancers(
+    //在这里使用后dispatch可以发送一个函数
+    applyMiddleware(thunk)
+  );
+const store = createStore(
+  reducer,enhancer
+)
+export default store
+
+
+//创建一个发送action的函数，可以发送异步请求，然后将请求数据dispatch
+const function func(){
+	return (dispatch)=>{
+		axios.get('/api/data.json').then(res=>{
+        	const action ={
+            	type: '....',
+            	data: res.data
+        	}
+			dispatch(action)
+        }
+    }
+} 
+    
+//在组件中  
+const mapDispatch = (dispatch)=>{
+	return {
+        func2(){
+            //在此处发送一个func()
+            dispatch(func())
+        }
+    }	    
+}
+export default connect(mapState，mapDispatch)(App)
+```
+
+
 
 ## 服务端渲染
 
