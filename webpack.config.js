@@ -8,7 +8,7 @@ const webpack = require('webpack')
 const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports = {
-  // mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV==='production'?'production':'development',
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname,'dist'),
@@ -30,7 +30,7 @@ module.exports = {
     //   minRatio: 1,
     //   deleteOriginalAssets: true
     // })
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
     // new webpack.DefinePlugin({
     //   'process.env.NODE_ENV': JSON.stringify('production')
     // })

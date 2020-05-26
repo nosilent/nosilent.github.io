@@ -12,3 +12,27 @@ npm install -g typescript
 tsc filename.ts
 ```
 
+## 类型
+
+### 基本类型
+
+支持js中的类型
+
+#### boolean
+
+#### number
+
+#### bigint
+
+#### string
+
+#### undefined
+
+#### null
+
+#### object
+
+### 特有类型
+
+ts中特有的类型
+
