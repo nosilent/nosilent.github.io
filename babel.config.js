@@ -4,7 +4,7 @@ module.exports = {
       ["import", 
         {
           "libraryName": "antd",
-          "libraryDirectory": "es",   // default: lib
+          "libraryDirectory": "lib",   // default: lib
           "style": "css"
         }
       ],

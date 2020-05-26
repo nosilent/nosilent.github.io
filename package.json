@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^4.1.0",
     "antd": "^4.2.5",
     "axios": "^0.19.2",
     "marked": "^0.8.0",

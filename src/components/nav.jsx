@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
-import { Menu, Dropdown, Tabs, Icon } from 'antd'
-
+import { Menu, Dropdown, Tabs,Button } from 'antd'
+import { DownOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 class Nav extends Component {
   getMenu(data) {
@@ -20,7 +20,7 @@ class Nav extends Component {
            if(item.children){
             let temp =(
               <Dropdown overlay={this.getMenu(item.children)}  trigger={['hover','click']} >
-                <span>{item.text} <Icon type='down' /></span>
+                <span>{item.text} <DownOutlined /> </span>
               </Dropdown>)
             return (<Tabs.TabPane tab={temp} key={item.text} forceRender={true} />)
            }else{

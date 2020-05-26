@@ -12,7 +12,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname,'dist'),
-    publicPath: 'dist',
+    publicPath: process.env.NODE_ENV==='production'?'dist':'',
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
@@ -30,7 +30,7 @@ module.exports = {
     //   minRatio: 1,
     //   deleteOriginalAssets: true
     // })
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin()
     // new webpack.DefinePlugin({
     //   'process.env.NODE_ENV': JSON.stringify('production')
     // })
