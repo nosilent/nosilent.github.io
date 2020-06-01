@@ -8,11 +8,11 @@ const webpack = require('webpack')
 const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports = {
-  mode: process.env.NODE_ENV==='production'?'production':'development',
+  mode: process.env.NODE_ENV=='production'?'production':'development',
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname,'dist'),
-    publicPath: process.env.NODE_ENV==='production'?'dist':'',
+    publicPath: process.env.NODE_ENV=='production'?'dist':'',
     filename: '[name].js',
     chunkFilename: '[name].js'
   },

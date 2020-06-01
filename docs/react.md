@@ -68,6 +68,28 @@ const element = (
 );
 ```
 
+## 样式模块化
+
+
+
+创建独立的以`.module.css`结尾的文件，在需要使用的文件中引入。
+
+```jsx
+//xx.module.css
+.boder {
+  border: 1px solid #ccc;
+}
+
+//xx.jsx
+import style from './xx.module.css'
+
+const App=()=>{
+  return (<div className={style.border}>局部样式</div>)
+}
+```
+
+
+
 ## 组件
 
 ### 有状态组件（类组件）
@@ -408,7 +430,7 @@ class App extends React.Component {
 }
 ```
 
-## 上下文context
+## context
 
 使用 context, 可以避免通过中间元素传递 props，就能将值深入传递进组件树；Context 设计目的是为了共享那些对于一个组件树而言是“全局”的数据
 
@@ -442,11 +464,11 @@ class ThemedButton extends React.Component {
   render() {
     return <Button theme={this.context} />;
     //也可以通过Consumer基于 context 值进行渲染渲染，不需要static contextType = ThemeContext;
-    return （
-             <ThemeContext.Consumer>
+    return (
+        <ThemeContext.Consumer>
          		{value=>(<Button theme={value} />) }
-        		</ThemeContext.Consumer>       
-    ）
+        </ThemeContext.Consumer>       
+    )
   }
 }
 ```
@@ -795,7 +817,7 @@ function example(){
 }
 ```
 
-### `useEffect `
+### useEffect 
 
 *Effect Hook* 可以在函数组件中执行副作用操作
 
@@ -844,9 +866,165 @@ useEffect(() => {
 
 ### 自定义`Hook`
 
+ 如果函数的名字以 “`use`” 开头并调用其他 Hook，这是一个自定义 Hook .
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+//自定义Hooks
+function useFriendStatus(friendID) {
+  const [isOnline, setIsOnline] = useState(null);
+
+  function handleStatusChange(status) {
+    setIsOnline(status.isOnline);
+  }
+
+  useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
+    };
+  });
+
+  return isOnline;
+}
+
+function FriendStatus(props) {
+  const isOnline = useFriendStatus(props.friend.id);
+
+  if (isOnline === null) {
+    return 'Loading...';
+  }
+  return isOnline ? 'Online' : 'Offline';
+}
+```
+
 ### 其他`Hook`
 
-## `redux`
+####  useContext
+
+```jsx
+const value = useContext(MyContext);
+```
+
+ 接收一个 context 对象（`React.createContext` 的返回值）并返回该 context 的当前值。当前的 context 值由上层组件中距离当前组件最近的 `MyContext` 的 `value` prop 决定。 
+
+```jsx
+const themes = {
+  light: {
+    foreground: "#000000",
+    background: "#eeeeee"
+  },
+  dark: {
+    foreground: "#ffffff",
+    background: "#222222"
+  }
+};
+
+const ThemeContext = React.createContext(themes.light);
+
+function App() {
+  return (
+    <ThemeContext.Provider value={themes.dark}>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar(props) {
+  return (
+    <div>
+      <ThemedButton />
+    </div>
+  );
+}
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);  
+  return ( 
+    <button style={{ background: theme.background, color: theme.foreground }}>
+      I am styled by theme context!    
+    </button>  );
+}
+```
+
+####  useReducer
+
+```jsx
+const [state, dispatch] = useReducer(reducer, initialArg, init);
+```
+
+ 接收一个形如 `(state, action) => newState` 的 reducer，并返回当前的 state 以及与其配套的 `dispatch` 方法。 
+
+```jsx
+const initialState = {count: 0};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return {count: state.count + 1};
+    case 'decrement':
+      return {count: state.count - 1};
+    default:
+      throw new Error();
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+      <button onClick={() => dispatch({type: 'increment'})}>+</button>
+    </>
+  );
+}
+```
+
+ 选择惰性地创建初始 state , 需要将 `init` 函数作为 `useReducer` 的第三个参数传入，这样初始 state 将被设置为 `init(initialArg)`。 
+
+```jsx
+function init(initialCount) {  return {count: initialCount};}
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return {count: state.count + 1};
+    case 'decrement':
+      return {count: state.count - 1};
+    case 'reset':      return init(action.payload);    default:
+      throw new Error();
+  }
+}
+
+function Counter({initialCount}) {
+  const [state, dispatch] = useReducer(reducer, initialCount, init);  
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({type: 'reset', payload: initialCount})}>
+  			Reset
+      </button>
+      <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+      <button onClick={() => dispatch({type: 'increment'})}>+</button>
+    </>
+  );
+}
+```
+
+#### useCallback
+
+#### useMemo
+
+####  useRef
+
+#### useImperativeHandle
+
+#### useLayoutEffect
+
+#### useDebugValue
+
+## redux
 
 ### reducer
 
