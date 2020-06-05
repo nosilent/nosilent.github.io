@@ -649,13 +649,14 @@ function Dashboard(){
 ```jsx
 <Route path="/user/:username" component={User} />
 <Route path="/home" render={() => <div>Home</div>} />
-<Route path="/:id" children={<Child />} />
+<Route path="/:id" children={(props)=><Child />} />
+//其他写法
 <Route path="/:id"> <Child/> </Route>
 ```
 
 在行内渲染内容时，推荐使用`render`或者`children`
 
-`children`方式优于`render`和`component`
+路由渲染优先级：`children`函数形式 > `component` > `render`函数形式
 
 #### Route属性
 
@@ -727,7 +728,7 @@ NavLink: 会这当前link上添加一个`active`类。
 
 #### [useHistory](https://reacttraining.com/react-router/web/api/Hooks/usehistory)
 
- 可以访问可用于导航的历史记录实例 
+ 可以访问用于导航的历史记录实例 
 
 ```jsx
 import { useHistory } from "react-router-dom";
