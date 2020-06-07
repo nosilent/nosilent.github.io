@@ -42,6 +42,11 @@
                     "text": "react",
                     "show": true,
                     "url": "docs/react"
+                },
+                {
+                    "text": "angular",
+                    "show": true,
+                    "url": "docs/angular"
                 }
             ]
         },
