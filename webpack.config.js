@@ -1,18 +1,18 @@
 const  path = require('path') 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const babelOption = require('./babel.config.js')
+// const babelOption = require('./babel.config.js')
 // const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const webpack = require('webpack')
 const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports = {
-  mode: process.env.NODE_ENV=='production'?'production':'development',
+  // mode: process.env.NODE_ENV=='production'?'production':'development',
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname,'dist'),
-    publicPath: process.env.NODE_ENV=='production'?'dist':'',
+    publicPath: 'dist',
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
@@ -42,14 +42,14 @@ module.exports = {
     rules:[
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader']
+        use: [ 'style-loader', 'css-loader','postcss-loader']
       },
       {
         test: /\.js|x$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
-          options: babelOption
+          // options: babelOption
         }
       }
     ]
