@@ -1,7 +1,7 @@
 const  path = require('path') 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-// const babelOption = require('./babel.config.js')
+const babelOption = require('./babel.config.js')
 // const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const webpack = require('webpack')
@@ -49,7 +49,7 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
-          // options: babelOption
+          options: babelOption
         }
       }
     ]
