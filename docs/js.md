@@ -540,6 +540,20 @@ obj1.obj2.foo(); // 42
 
  注意：new 会劫持所有普通函数并用构造对象的形式来调用它
 
+## 判断是否通过new调用函数
+
+在函数内部通过`new.target`可以访问当前调用对象，若通过`new`调用则返回当前对象，否则返回`undefined`
+
+```js
+function P(){
+   console.log(typeof new.target)
+}
+P()  //undefined
+new P()  //function
+```
+
+
+
 ## in和hasOwnProperty
 
 `in `操作符会检查属性是否在对象及其 [[Prototype]] 原型链中
@@ -974,6 +988,51 @@ class IncreasingCounter {
 }
 ```
 
+#### 类名修改
+
+不能在类声明语句中修改类名，在声明语句中类名是一个常量，修改会报错，可在外部修改。
+
+```js
+class Foo {
+  constructor(){
+    Foo = 'bar'   //error
+  }
+}
+Foo = 'bar'   //success
+console.log(Foo)  //bar
+```
+
+#### 类表达式
+
+```js
+//匿名
+let Pe = class {
+  constructor(){
+    
+  }
+}
+//命名
+let Pe = class People {
+  constructor(){
+	}
+}
+console.log(People)   //undefined
+```
+
+命名类表达式类名只能在声明内部访问，外部访问为`undefined`
+
+#### 立即调用类
+
+通过在类声明前后使用`new`和`()`立即创建类实例，类似于立即调用函数
+
+```js
+let p = new class {
+  constuctor(name){
+    this.name = name
+  }
+}('name')
+```
+
 
 
 #### 静态方法
@@ -1020,6 +1079,68 @@ import  xx from 'xx'|require(xx)，模块执行的顺序是先加载node自带�
 ## promise和async区别
 
 ## 面向对象
+
+ 面向对象的三大特点（封装，继承，多态） 
+
+面向对象是把构成问题事务分解成各个对象，建立对象的目的不是为了完成一个步骤，而是为了描叙某个事物在整个解决问题的步骤中的行为。 
+
+## 对象创建模式
+
+### 工厂模式
+
+用函数来封装以特定接口创建对象的细节
+
+```js
+function createPerson(name, age, job){
+  var o = new Object();
+  o.name = name;
+  o.age = age;
+  o.job = job;
+  o.sayName = function(){
+  alert(this.name);
+  };
+  return o;
+}
+var person1 = createPerson("Nicholas", 29, "Software Engineer")
+```
+
+缺点：没有解决对象识别的问题（即怎样知道一个对象的类型）
+
+### 构造函数模式
+
+创建自定义的构造函数，自定义对象类型的属性和方法
+
+```js
+function Person(name, age, job){
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  this.sayName = function(){
+  alert(this.name);
+  };
+}
+var person1 = new Person("Nicholas", 29, "Software Engineer");
+```
+
+与工厂模式区别：
+
+- 没有显式地创建对象
+- 直接将属性和方法赋给了 this 对象
+- 没有 return 语句
+
+缺点：每个方法都要在每个实例上重新创建一遍
+
+### 原型模式
+
+### 组合使用构造函数和原型模式
+
+### 动态原型模式
+
+### 寄生构造函数模式
+
+### 稳妥构造函数模式
+
+
 
 ## 内存泄漏
 
