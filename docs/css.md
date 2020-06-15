@@ -180,13 +180,19 @@ css属性：`overflow：hidden`；`transition：all 1000ms ease`；
 
 属性：
 
-- flex： 
-- flex-direction
-- flex-grow
-- flex-flow
-- flex-basis
-- flex-shrink
-- flex-wrap
+- flex： 简写flex-grow、flex-shrink、flex-basis属性
+- flex-direction：定义主轴
+- flex-grow: 定义子元素伸长比例，**子元素属性**
+- flex-flow: 同时定义flex-direction和flex-wrap属性
+
+```css
+flex-flow: <'flex-direction'> <'flex-wrap'>
+flex-flow: row nowrap;
+```
+
+- flex-basis：子元素的基础大小。
+- flex-shrink：定义子元素收缩比例，**子元素属性**
+- flex-wrap：超出容器大小是否允许换行。
 - justify-content： 子元素在父元素主轴的对齐方式，**父元素属性**
 - justify-items: 统一设置直接子元素的justify-self属性，**父元素属性**
 - justify-self: 子元素相对于自身容器范围在主轴上的对齐方式，**子元素属性**
@@ -194,7 +200,7 @@ css属性：`overflow：hidden`；`transition：all 1000ms ease`；
   - center、start、end、flex-end、flex-start 、space-between 、space-around、stretch
 - align-items： 统一设置直接子元素的align-self属性，**父元素属性**
 - align-self：子元素相对于自身容器范围在侧轴上的对齐方式，**子元素属性**
-- order
+- order：子元素排列顺序，初始为0,值越小越排在前。可以为负
 
 ## 初始化样式
 
@@ -213,7 +219,7 @@ CSS初始化为了解决不同浏览器对有些标签的默认值不同引起�
 
   1. 使用margin: 0 auto
 2. 使用定位
-  
+
 ```css
   /*块元素宽度已知*/
   {
@@ -228,17 +234,17 @@ CSS初始化为了解决不同浏览器对有些标签的默认值不同引起�
       left: 50%;
       transform: translateX(-50%);
   }
-  ```
-  
+```
+
 3. 父元素使用 `display:flex` 和 `justify-content: center`
-  
+
 ```css
   {
       display: flex;
       justify-content: center;
   }
-  ```
-  
+```
+
 - 竖直居中
 
   1. 使用定位

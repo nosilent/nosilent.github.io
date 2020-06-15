@@ -1468,3 +1468,241 @@ store.state.b // -> moduleB 的状态
 
 ## vue3.0
 
+## vue-router源码解析
+
+### 构造函数说明
+
+```tsx
+constructor (options: RouterOptions = {}) {
+  this.app = null
+  this.apps = []
+  this.options = options
+  this.beforeHooks = []     //收集beforeEach中添加的方法
+  this.resolveHooks = []   //收集beforeResolve中添加的方法
+  this.afterHooks = []    //收集afterEach中添加的方法
+  //createMatcher生产路由表
+  this.matcher = createMatcher(options.routes || [], this)
+
+  let mode = options.mode || 'hash'
+  
+  //supportsPushState判断是否存在window.history和window.history.pushState类型为funntion
+  this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false
+  if (this.fallback) {
+    mode = 'hash'
+  }
+  //inBrowser = typeof window !== 'undefined'，判断是否在浏览器中运行
+  if (!inBrowser) {
+    mode = 'abstract'
+  }
+  this.mode = mode
+
+  //根据不同的mode生产不同的history。HTML5History,HashHistory,AbstractHistory都继承于History类
+  switch (mode) {
+    case 'history':
+      this.history = new HTML5History(this, options.base)
+      break
+    case 'hash':
+      this.history = new HashHistory(this, options.base, this.fallback)
+      break
+    case 'abstract':
+      this.history = new AbstractHistory(this, options.base)
+      break
+    default:
+      if (process.env.NODE_ENV !== 'production') {
+        assert(false, `invalid mode: ${mode}`)
+      }
+  }
+}
+```
+
+#### 初始化路由表
+
+初始化路由表是在构造函数中`this.matcher = createMatcher(options.routes || [], this)`完成
+
+##### createMatcher
+
+```tsx
+export function createMatcher (
+  routes: Array<RouteConfig>,
+  router: VueRouter
+): Matcher {
+  //pathList:[]  添加各路由的url   ['/'.'/home']
+  //pathMap:{} 将各路由的url于路由信息对应  {'/':{path:'/',name:'..',...},'/home':{...}}
+  //nameMap:{} 为路由中定义了name数据，则将name和路由信息对应 {'home':{path:'/home',...}}
+  const { pathList, pathMap, nameMap } = createRouteMap(routes)
+  
+  //将新路由添加的已存在的路由表中
+  function addRoutes (routes) {
+    createRouteMap(routes, pathList, pathMap, nameMap)
+  }
+  function match (
+    raw: RawLocation,
+    currentRoute?: Route,
+    redirectedFrom?: Location
+  ){...}
+    
+  return {
+    match,
+    addRoutes
+  }
+}
+```
+
+##### createRouteMap
+
+```tsx
+export function createRouteMap (
+  routes: Array<RouteConfig>,
+  oldPathList?: Array<string>,
+  oldPathMap?: Dictionary<RouteRecord>,
+  oldNameMap?: Dictionary<RouteRecord>
+): {
+  pathList: Array<string>,
+  pathMap: Dictionary<RouteRecord>,
+  nameMap: Dictionary<RouteRecord>
+} {
+  // the path list is used to control path matching priority
+  const pathList: Array<string> = oldPathList || []
+  // $flow-disable-line
+  const pathMap: Dictionary<RouteRecord> = oldPathMap || Object.create(null)
+  // $flow-disable-line
+  const nameMap: Dictionary<RouteRecord> = oldNameMap || Object.create(null)
+
+  routes.forEach(route => {
+    //循环路由表，生产对应的pathList, pathMap, nameMap
+    addRouteRecord(pathList, pathMap, nameMap, route)
+  })
+
+  // ensure wildcard routes are always at the end
+  for (let i = 0, l = pathList.length; i < l; i++) {
+    if (pathList[i] === '*') {
+      pathList.push(pathList.splice(i, 1)[0])
+      l--
+      i--
+    }
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    // warn if routes do not include leading slashes
+    const found = pathList
+    // check for missing leading slash
+      .filter(path => path && path.charAt(0) !== '*' && path.charAt(0) !== '/')
+
+    if (found.length > 0) {
+      const pathNames = found.map(path => `- ${path}`).join('\n')
+      warn(false, `Non-nested routes must include a leading slash character. Fix the following routes: \n${pathNames}`)
+    }
+  }
+
+  return {
+    pathList,
+    pathMap,
+    nameMap
+  }
+}
+```
+
+##### addRouteRecord
+
+解析单条路由：
+
+1. 若存在子路由`children`，则将子路由信息添加到`pathList`,`pathMap`,`nameMap`
+
+2. 若`pathMap`不存在当前路由，则将路由信息添加到`pathList`，`pathMap`
+3. 若路由的`alias`属性存在，则循环`alias`生产`{path: alias,childrend:router.children}`,将路由信息添加到`pathList`，`pathMap`
+4. 若路由存在`name`属性并且`nameMap`中没有对应的路由信息，则将路由信息添加到`nameMap`
+
+```tsx
+function addRouteRecord (
+  pathList: Array<string>,
+  pathMap: Dictionary<RouteRecord>,
+  nameMap: Dictionary<RouteRecord>,
+  route: RouteConfig,
+  parent?: RouteRecord,
+  matchAs?: string
+) {
+  const { path, name } = route
+  const pathToRegexpOptions: PathToRegexpOptions =
+    route.pathToRegexpOptions || {}
+  //normalizePath去掉路由url末尾的'/'，将url中的'//'变为'/'
+  const normalizedPath = normalizePath(path, parent, pathToRegexpOptions.strict)
+
+  if (typeof route.caseSensitive === 'boolean') {
+    pathToRegexpOptions.sensitive = route.caseSensitive
+  }
+
+  const record: RouteRecord = {
+    path: normalizedPath,
+    regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
+    components: route.components || { default: route.component },
+    instances: {},
+    name,
+    parent,
+    matchAs,
+    redirect: route.redirect,
+    beforeEnter: route.beforeEnter,
+    meta: route.meta || {},
+    props:
+      route.props == null
+        ? {}
+        : route.components
+          ? route.props
+          : { default: route.props }
+  }
+//将存在的子路由表添加到pathList, pathMap, nameMap
+  if (route.children) {
+    route.children.forEach(child => {
+      const childMatchAs = matchAs
+        ? cleanPath(`${matchAs}/${child.path}`)
+        : undefined
+      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs)
+    })
+  }
+//添加不存的路由信息到pathList, pathMap中
+  if (!pathMap[record.path]) {
+    pathList.push(record.path)
+    pathMap[record.path] = record
+  }
+//将存在的路由别名添加到pathList, pathMap, nameMap
+  if (route.alias !== undefined) {
+    const aliases = Array.isArray(route.alias) ? route.alias : [route.alias]
+    for (let i = 0; i < aliases.length; ++i) {
+      const alias = aliases[i]
+      if (process.env.NODE_ENV !== 'production' && alias === path) {
+        warn(
+          false,
+          `Found an alias with the same value as the path: "${path}". You have to remove that alias. It will be ignored in development.`
+        )
+        // skip in dev to make it work
+        continue
+      }
+
+      const aliasRoute = {
+        path: alias,
+        children: route.children
+      }
+      addRouteRecord(
+        pathList,
+        pathMap,
+        nameMap,
+        aliasRoute,
+        parent,
+        record.path || '/' // matchAs
+      )
+    }
+  }
+//将具名的路由添加到对应的nameMap中
+  if (name) {
+    if (!nameMap[name]) {
+      nameMap[name] = record
+    } else if (process.env.NODE_ENV !== 'production' && !matchAs) {
+      warn(
+        false,
+        `Duplicate named routes definition: ` +
+          `{ name: "${name}", path: "${record.path}" }`
+      )
+    }
+  }
+}
+```
+
