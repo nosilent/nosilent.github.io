@@ -1021,7 +1021,31 @@ NgModule是由@NgModule装饰器标记的类。 @NgModule使用元数据对象�
 
  每个Angular应用都有至少一个模块，即根模块 ， 引导该模块以启动应用程序 。
 
-### 根模块
+### 配置说明
+
+- **declarations**： 将组件、指令和管道注册到该模块，在该模块中使用未注册的组件会报错。
+
+-  **imports** ：在该模块中引入其他模块功能，如操作DOM功能
+-  **providers** ：引入数据管理
+-  **bootstrap** ：引入页面渲染模板
+
+### 常用模块
+
+| NgModule              | 位置                        | 说明                                            |
+| :-------------------- | :-------------------------- | :---------------------------------------------- |
+| `BrowserModule`       | `@angular/platform-browser` | 在浏览器中运行应用程序时                        |
+| `CommonModule`        | `@angular/common`           | 需要使用NgIf，NgFor时                           |
+| `FormsModule`         | `@angular/forms`            | 想要构建模板驱动的表单（包括NgModel）时         |
+| `ReactiveFormsModule` | `@angular/forms`            | 建立响应式表单                                  |
+| `RouterModule`        | `@angular/router`           | 想使用RouterLink，.forRoot（）和.forChild（）时 |
+| `HttpClientModule`    | `@angular/common/http`      | 与服务器通信时                                  |
+
+### 入口组件
+
+入口组件有两种类型：
+
+- 定义在`bootstrap`中的根组件
+- 定义在路由表中组件
 
 
 
