@@ -169,11 +169,14 @@ trackByItems(index: number, item: Item): number { return item.id; }
 
 ## 模板引用变量 
 
-类似于`vue`中的`ref`，使用`#name`的形式，通过`name`直接获取当前元素，可以在组件模板中的任何位置使用引用变量，只能用于`html`模板中， 
+类似于`vue`中的`ref`，使用`#name`的形式，通过`name`直接获取当前元素，可以在组件模板中的任何位置使用引用变量，只能用于`html`模板中， 使用`@viewChild(node)`装饰器后可以在组件中使用。
 
 ```jsx
 <input #phone placeholder="phone number" />
 <button (click)="callPhone(phone.value)">Call</button>
+
+//xx.component.ts
+@viewChild(phone) input;   //将其赋值给变量input
 ```
 
 配合`ngForm`使用可以增强功能
@@ -257,6 +260,8 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 //3. 给内部接受值定义一个别名为appHighlight，在外使用别名，内部使用原始名
 @Input('appHighlight') highlightColor: string;
+
+//@HostListener 装饰器订阅某个属性型指令所在的宿主 DOM 元素的事件
 @HostListener('mouseenter') onMouseEnter() {
   this.highlight(this.highlightColor || 'red');
 }
@@ -1047,6 +1052,65 @@ NgModule是由@NgModule装饰器标记的类。 @NgModule使用元数据对象�
 - 定义在`bootstrap`中的根组件
 - 定义在路由表中组件
 
+### 自定义模块
+
+通过使用`ng g module`创建模块以及对应组件和路由。
+
+1. 定义模块
+
+```jsx
+// custom.module.ts
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CustomComponent } from './custom.component';
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: [CustomComponent],
+  exports: [CustomComponent]   //暴露出去，使其他模块也能用该组件
+})
+export class CustomerDashboardModule { }
+```
+
+2. 在自定义模块的路由中配置路由表。
+
+```jsx
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router'; 
+import {CustomComponent} from  './custom.component'
+
+const routes: Routes = [
+  {path: '',component: CustomComponent}，   //路径为空，默认加载该组件
+  {path: '/one',component: CustomOneComponent} //访问根路由配置该模块url + 该路由path，加载该组件
+]; 
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class CustomRouterModule { }
+```
+
+3. 在根路由中配置对应路由表。
+
+```jsx
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router'; 
+
+const routes: Routes = [
+    //当url为custom时，懒加载custom.module下的custom组件
+    {path: 'custom',loadChildren: './module/custom/custom.module#Custom'}
+]; 
+
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+
 
 
 ## 网络请求
@@ -1123,7 +1187,7 @@ export class HeroService {
 
 ### **ngAfterViewInit**
 
-在`ngAfterContentChecked`第一次调用时执行一次。*执行一次*
+视图加载完成，类似于vue中的`mounted`,可以获取页面DOM元素， 在`ngAfterContentChecked`第一次调用时执行一次。*执行一次*
 
 ### ngAfterViewChecked 
 
@@ -1177,18 +1241,30 @@ export class AppRoutingModule { }
 
 ```jsx
 <a routerLink='/home'></a>
+//路由传值使用queryParams，接受一个对象
+<a routerLink='/news' [queryParams]='{value: 2}'></a>  
+
+
 ```
 
-通过这组件中定义`Location`用于路由跳转
+通过这组件中定义`Router`用于路由跳转
 
 ```jsx
-import {Location} from '@angular/common'
+import {Router，NavigationExtras} from '@angular/router'
 export class HomeComponent implements OnInit {
-  constructor(private location:Location) { }
+  constructor(private router:Router) { }
   ngOnInit() {
   }
   to(){
-    this.location.go('/detail')
+    //普通路由或动态路由
+    this.router.navigate(['/detail'])
+    this.router.navigate(['/detail',value])
+    
+    //使用query传值需要引入NavigationExtras模块  
+      let value: NavigationExtras = {
+		queryParams: {id: 12}
+      }
+      this.router.navigate(['/detail'],value)
   }
 }
 ```
@@ -1199,6 +1275,9 @@ export class HomeComponent implements OnInit {
 
 ```jsx
 { path: 'detail/:id', component: HeroDetailComponent },
+
+//动态路由
+<a [routerLink]='["/detail/",12]'></a>      
 ```
 
 通过在对应组件中定义`ActivatedRoute`获取当前路由信息
@@ -1210,6 +1289,14 @@ export class HomeComponent implements OnInit {
   constructor(private route:ActivatedRoute) { }
   ngOnInit() {
     console.log(this.route)
+      // 路由使用了rxjs，需要使用subscribe,获取使用queryParams传值
+      this.route.queryParams.subscribe((data)=>{
+          console.log(data)
+      })
+      //动态路由传值
+      this.route.params.subscribe((data)=>{
+          console.log(data)
+      })
   }
 }
 ```
