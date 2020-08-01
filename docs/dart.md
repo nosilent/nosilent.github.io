@@ -1253,6 +1253,37 @@ String say(String from, String msg,[String device = 'carrier pigeon', String moo
 };
 ```
 
+### 函数作为参数
+
+```dart
+//1 未明确定义参数，但可以接受参数
+int test1(Function callback){
+    callback()
+}
+test1((){
+    print('callback')
+})
+    
+//2 定义指定参数
+int test2(int callback(int a,int b)){
+    callback(1,2)
+}
+test2((int a,int b){
+    print(a);
+    print(b);
+})
+
+//3 
+typedef Callback = int Function(int a, int b)
+int test3(Callback cb){
+	cb(1,2)
+}
+test3((a,b){
+    print(a);
+    print(b);
+})
+```
+
 ### 词法作用域
 
 ### 闭包

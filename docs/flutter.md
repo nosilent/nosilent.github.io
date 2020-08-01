@@ -1219,9 +1219,57 @@ TextSpan(
 
 
 
-## 事件
+## 事件监听
+
+### InkWell
+
+```dart
+InkWell(
+    child: SizedBox(height: 100,width: 100),
+    onTap: (){
+
+    },
+)
+```
+
+### Listener
+
+指针事件
+
+```dart
+Listener(
+    onPointerMove: (e){
+    },
+    child: SizedBox(height:100,width:100),
+)
+```
+
+### GestureDetector
+
+手势事件
+
+```dart
+GestureDetector(
+    child: SizedBox(height: 100,width: 100),
+    onTap: (){
+
+    },
+)
+```
 
 
+
+## key
+
+key是部件的唯一标识，flutter根据key来判断是否是同意的部件从而确定是否重新渲染该部件。
+
+也可以通过key来获取该部件的信息，类似于`vue`中的`ref`。
+
+步骤：在父组件中创建一个key,传递给需要的部件，通过该key获取该部件的信息。
+
+### localkey
+
+### globalkey
 
 ## 路由导航
 
@@ -1392,6 +1440,69 @@ GestureDetector(
 ```
 
 ## 状态管理
+
+### inheritedWidget
+
+#### 创建
+
+1. 创建子类
+2. 使用初始化列表调用`super`传递子`widget`
+3. 创建子类的静态`of`方法
+4. 实现抽象方法`updateShouldnotify`
+
+```dart
+class MyProvider extends InheritedWidget {
+    final count;
+    MyPovider({Widget child}):super(child: child);
+    static MyProvider of(BuildContext context){
+        //从element树向上查找最近的MyProviderElement,从该element中取出widget
+        return context.dependOnInheritedWidgetOfExactType()
+    }
+    
+    @override
+  	bool updateShouldNotify(InheritedWidget oldWidget) {
+       return true;    
+  	}
+}
+```
+
+#### 使用
+
+1. 通过子类创建实例，通过`child`的定义子`widget`
+2. 在子`widget`中调用子类的`of`方法获取子类中的数据
+
+```dart
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final _count = 0;
+  @override
+  Widget build(BuildContext context) {
+    return MyProvider(
+        count: _count,
+    	child: Column(
+        	childen: [
+                Content()
+            ]
+        ),
+    );
+  }
+}
+
+class Content extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+     //调用子类的of方法获取子类中的数据
+    final count = MyProvider.of(context).count
+    return Text('count: $count')
+  }
+}
+```
+
+
 
 ### provider
 
