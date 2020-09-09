@@ -3794,7 +3794,7 @@ Go语言提供了一种机制在运行时更新和检查变量的值、调用变
 
 Go语言中的反射是由 reflect 包提供支持的，它定义了两个重要的类型 Type 和 Value 任意接口值在反射中都可以理解为由 reflect.Type 和 reflect.Value 两部分组成，并且 reflect 包提供了 reflect.TypeOf 和 reflect.ValueOf 两个函数来获取任意对象的 Value 和 Type。
 
-### reflect.TypeOf
+### TypeOf
 
 使用` reflect.TypeOf() `函数可以获得任意值的类型对象，程序通过类型对象可以访问任意值的类型信息。
 
@@ -3813,13 +3813,29 @@ func main() {
 
 在使用反射时，需要首先理解类型（Type）和种类（Kind）的区别。编程中，使用最多的是类型，但在反射中，当需要区分一个大品种的类型时，就会用到种类（Kind）。
 
-### 类型（Type）与种类（Kind）
+#### TypeOf对象方法
 
-Go语言程序中的类型（Type）指的是系统原生数据类型，如 int、string、bool、float32 等类型，以及使用 type 关键字定义的类型，这些类型的名称就是其类型本身的名称。
+- TypeOf对象获取结构体成员访问的方法列表
+
+| 方法                                                         | 说明                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Field(i int) StructField                                     | 根据索引，返回索引对应的结构体字段的信息。当值不是结构体或索引超界时发生宕机 |
+| NumField() int                                               | 返回结构体成员字段数量。当类型不是结构体或索引超界时发生宕机 |
+| FieldByName(name string) (StructField, bool)                 | 根据给定字符串返回字符串对应的结构体字段的信息。没有找到时 bool 返回 false，当类型不是结构体或索引超界时发生宕机 |
+| FieldByIndex(index []int) StructField                        | 多层成员访问时，根据 []int 提供的每个结构体的字段索引，返回字段的信息。没有找到时返回零值。当类型不是结构体或索引超界时 发生宕机 |
+| FieldByNameFunc( match func(string) bool) (StructField,bool) | 根据匹配函数匹配需要的字段。当值不是结构体或索引超界时发生宕机 |
+
+
+
+#### 类型（Name）与种类（Kind）
+
+Go语言程序中的类型指的是系统原生数据类型，如 int、string、bool、float32 等类型，以及使用 type 关键字定义的类型，这些类型的名称就是其类型本身的名称。
 
 种类（Kind）指的是对象归属的品种。
 
-Go语言中的类型名称对应的反射获取方法是 reflect.Type 中的 Name() 方法，返回表示类型名称的字符串；类型归属的种类（Kind）使用的是 reflect.Type 中的 Kind() 方法，返回 reflect.Kind 类型的常量。
+`Name()` 方法获取Go语言中的类型名称，返回表示类型名称的字符串；
+
+`Kind() `方法获取类型归属的种类，返回类型的常量。
 
 ```go
 import (
@@ -3846,9 +3862,9 @@ func main() {
 }
 ```
 
-### reflect.Elem()
+#### Elem()
 
-Go语言程序中对指针获取反射对象时，可以通过 reflect.Elem() 方法获取这个指针指向的元素类型，这个获取过程被称为取元素，等效于对指针类型变量做了一个`*`操作。
+`reflect.Elem() `方法获取这个指针指向的元素类型，这个获取过程被称为取元素，等效于对指针类型变量做了一个`*`操作。
 
 ```go
 import (
@@ -3875,13 +3891,13 @@ func main() {
 }
 ```
 
-### 获取成员信息
+#### 获取成员信息
 
-任意值通过 reflect.TypeOf() 获得反射对象信息后，如果它的类型是结构体，可以通过反射值对象 reflect.Type 的 NumField() 和 Field() 方法获得结构体成员的详细信息。
+任意值通过 reflect.TypeOf() 获得反射对象信息后，如果它的类型是结构体，可以通过反射值对象 reflect.Type 的 `NumField() `和` Field()` 方法获得结构体成员的详细信息。
 
-reflect.Type 的 Field() 方法返回 StructField 结构，这个结构描述结构体的成员信息，通过这个信息可以获取成员与结构体的关系。
+`Field()` 方法返回 StructField 结构，这个结构描述结构体的成员信息，通过这个信息可以获取成员与结构体的关系。
 
-reflect.Type 的 FieldByName() 方法查找结构体中指定名称的字段，直接获取其类型信息。
+`FieldByName()` 方法查找结构体中指定名称的字段，直接获取其类型信息。
 
 ```go
 import (
@@ -3921,7 +3937,7 @@ func main() {
 
 使用tag的Get和Lookup 获取或查找对应键的值。
 
-###  reflect.TypeOf()
+###  ValueOf 
 
 函数 reflect.ValueOf 也会对底层的值进行恢复,
 
@@ -3940,6 +3956,106 @@ func main() {
     fmt.Println("value:", reflect.ValueOf(x).type())////type: float64
 }
 ```
+
+#### ValueOf 对象方法
+
+- ValueOf反射值获取原始值的方法
+
+| 方法名                   | 说  明                                                       |
+| ------------------------ | ------------------------------------------------------------ |
+| Interface() interface {} | 将值以 interface{} 类型返回，可以通过类型断言转换为指定类型  |
+| Int() int64              | 将值以 int 类型返回，所有有符号整型均可以此方式返回          |
+| Uint() uint64            | 将值以 uint 类型返回，所有无符号整型均可以此方式返回         |
+| Float() float64          | 将值以双精度（float64）类型返回，所有浮点数（float32、float64）均可以此方式返回 |
+| Bool() bool              | 将值以 bool 类型返回                                         |
+| Bytes() []bytes          | 将值以字节数组 []bytes 类型返回                              |
+| String() string          | 将值以字符串类型返回                                         |
+
+
+
+- ValueOf反射值对象的成员访问方法
+
+| Field(i int) Value                             | 根据索引，返回索引对应的结构体成员字段的反射值对象。当值不是结构体或索引超界时发生宕机 |
+| ---------------------------------------------- | ------------------------------------------------------------ |
+| NumField() int                                 | 返回结构体成员字段数量。当值不是结构体或索引超界时发生宕机   |
+| FieldByName(name string) Value                 | 根据给定字符串返回字符串对应的结构体字段。没有找到时返回零值，当值不是结构体或索引超界时发生宕机 |
+| FieldByIndex(index []int) Value                | 多层成员访问时，根据 []int 提供的每个结构体的字段索引，返回字段的值。 没有找到时返回零值，当值不是结构体或索引超界时发生宕机 |
+| FieldByNameFunc(match func(string) bool) Value | 根据匹配函数匹配需要的字段。找到时返回零值，当值不是结构体或索引超界时发生宕机 |
+
+
+
+- ValueOf反射值对象的零值和有效性判断方法
+
+| 方 法          | 说 明                                                        |
+| -------------- | ------------------------------------------------------------ |
+| IsNil() bool   | 返回值是否为 nil。如果值类型不是通道（channel）、函数、接口、map、指针或 切片时发生 panic，类似于语言层的`v== nil`操作 |
+| IsValid() bool | 判断值是否有效。 当值本身非法时，返回 false，例如 reflect Value不包含任何值，值为 nil 等。 |
+
+
+
+- ValueOf反射值对象的判定及获取元素的方法
+
+| 方法名         | 备注                                                         |
+| -------------- | ------------------------------------------------------------ |
+| Elem() Value   | 取值指向的元素值，类似于语言层`*`操作。当值类型不是指针或接口时发生宕 机，空指针时返回 nil 的 Value |
+| Addr() Value   | 对可寻址的值返回其地址，类似于语言层`&`操作。当值不可寻址时发生宕机 |
+| CanAddr() bool | 表示值是否可寻址                                             |
+| CanSet() bool  | 返回值能否被修改。要求值可寻址且是导出的字段                 |
+
+
+
+- ValueOf反射值对象修改值的方法
+
+| Set(x Value)        | 将值设置为传入的反射值对象的值                               |
+| ------------------- | ------------------------------------------------------------ |
+| Setlnt(x int64)     | 使用 int64 设置值。当值的类型不是 int、int8、int16、 int32、int64 时会发生宕机 |
+| SetUint(x uint64)   | 使用 uint64 设置值。当值的类型不是 uint、uint8、uint16、uint32、uint64 时会发生宕机 |
+| SetFloat(x float64) | 使用 float64 设置值。当值的类型不是 float32、float64 时会发生宕机 |
+| SetBool(x bool)     | 使用 bool 设置值。当值的类型不是 bod 时会发生宕机            |
+| SetBytes(x []byte)  | 设置字节数组 []bytes值。当值的类型不是 []byte 时会发生宕机   |
+| SetString(x string) | 设置字符串值。当值的类型不是 string 时会发生宕机             |
+
+### 通过反射修改变量值
+
+```go
+// 声明整型变量a并赋初值
+var a int = 1024
+// 获取变量a的反射值对象
+valueOfA := reflect.ValueOf(a)
+// 尝试将a修改为1(此处会发生崩溃)
+valueOfA.SetInt(1)
+```
+
+### 通过反射调用函数
+
+如果反射值对象（reflect.Value）中值的类型为函数时，可以通过 reflect.Value 调用该函数。
+
+使用反射调用函数时，需要将参数使用反射值对象的切片 []reflect.Value 构造后传入 Call() 方法中，调用完成时，函数的返回值通过 []reflect.Value 返回。
+
+```go
+import (
+    "fmt"
+    "reflect"
+)
+// 普通函数
+func add(a, b int) int {
+    return a + b
+}
+func main() {
+    // 将函数包装为反射值对象
+    funcValue := reflect.ValueOf(add)
+    // 构造函数参数, 传入两个整型值
+    paramList := []reflect.Value{reflect.ValueOf(10), reflect.ValueOf(20)}
+    // 反射调用函数
+    retList := funcValue.Call(paramList)
+    // 获取第一个返回值, 取整数值
+    fmt.Println(retList[0].Int())
+}
+```
+
+
+
+## 文件处理
 
 
 
