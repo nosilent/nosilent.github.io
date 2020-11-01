@@ -1,11 +1,11 @@
 const  path = require('path') 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const babelOption = require('./babel.config.js')
 // const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const webpack = require('webpack')
-const CompressionPlugin = require("compression-webpack-plugin")
+// const webpack = require('webpack')
+// const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports = {
   // mode: process.env.NODE_ENV=='production'?'production':'development',
