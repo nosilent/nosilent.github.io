@@ -21,4 +21,4 @@ const app: App = (context.app = {
     return app
   }
 ```
-插件注册时，会将该插件添加到`Set`中，并调用插件函数（插件本身或intall方法）传入**app**实例和其他参数。
+插件注册时，会将该插件添加到`Set`中，并调用插件函数（插件本身或install方法）传入**app**实例和其他参数。
