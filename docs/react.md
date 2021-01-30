@@ -722,7 +722,88 @@ Link:正常的跳转组件。
 
 NavLink: 会这当前link上添加一个`active`类。
 
-### 路由传参
+### 路由参数
+
+#### params参数
+
+```jsx
+function Home(props){
+	return (
+    	<div>
+            <Link to='/detail/1'> 详情</Link>
+			<Route path='/detail/:id' component={Detail}></Route>
+        </div>
+    )
+}
+
+function Detail(props){
+    let { id } = props.match.params
+	return <div>detail {id} <div>
+}
+```
+
+#### search参数
+
+```jsx
+function Home(props){
+	return (
+    	<div>
+            <Link to='/detail/?id=1&name=haha'> 详情</Link>
+			<Route path='/detail' component={Detail}></Route>
+        </div>
+    )
+}
+import qs from 'querystring'
+function Detail(props){
+    //将{id:1，age:18}转换id=1&age=18的形式
+    //let str = qs.stringify({id:1，age:18})
+    
+    //将id=1&age=18的形式转换成{id:1，age:18}
+    let { id } = qs.parse(props.location.search.slice(1))
+	return <div>detail {id} <div>
+}
+```
+
+
+
+#### state参数
+
+页面刷新state参数也存在
+
+```jsx
+function Home(props){
+	return (
+    	<div>
+            <Link to={{pathname: '/detail', state={id:1,age: 18} }}> 详情</Link>
+			<Route path='/detail' component={Detail}></Route>
+        </div>
+    )
+}
+function Detail(props){
+    let { id } = props.location.state||{}
+	return <div>detail {id} <div>
+}
+```
+
+
+
+### 路由跳转
+
+```jsx
+//search传参
+props.history.push('/detail?id=1')
+props.history.replace('/detail?id=1')
+
+//params传参
+props.history.push('/detail/1')
+props.history.replace('/detail/1')
+
+//state传参
+props.history.push('/detail',{id:1})
+props.history.replace('/detail',{id:1})
+```
+
+
 
 ### 路由Hooks
 
