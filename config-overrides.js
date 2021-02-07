@@ -14,5 +14,5 @@ module.exports = override(
     "css": true
     }]
   ),
-  setWebpackPublicPath(process.env.NODE_ENV === 'production' ? '/build': '')
+  setWebpackPublicPath(process.env.NODE_ENV === 'production' ? 'build': '')
 );
