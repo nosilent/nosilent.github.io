@@ -38,22 +38,22 @@ function App() {
   return (
     <div className='app'>
       <Header tabs={ tabs }></Header>
-      <div className='main'>
-        { menu.length && <div className='menu' ref={rMenu} onClick={menuTo}>
-          <Menu menu={menu}></Menu>
-        </div>}
-        <div className='content' ref={rContent}>
-          {
-            config
-            && 
-            <Switch>
-              <Route exact path={`/${config.docs}/:name`} render={ props=><Main  {...props} setMenu={setMenu} initLocation={initLocation} /> }></Route>
-              <Route path='/404' component={ Err404 }></Route>
-              <Redirect from='/' to={ `/${config.docs}/${config.index}` }></Redirect>
-            </Switch>
-          }
+      {
+        config 
+        && 
+        <div className='main'>
+          <div className='menu' ref={rMenu} onClick={menuTo}>
+            <Menu menu={menu}></Menu>
+          </div>
+          <div className='content' ref={rContent}>
+              <Switch>
+                <Route exact path={`/${config.docs}/:name`} render={ props=><Main  {...props} setMenu={setMenu} initLocation={initLocation} /> }></Route>
+                <Route path='/404' component={ Err404 }></Route>
+                <Redirect from='/' to={ `/${config.docs}/${config.index}` }></Redirect>
+              </Switch>
+          </div>
         </div>
-      </div>
+      }
     </div>
   );
 }
