@@ -39,9 +39,9 @@ function App() {
     <div className='app'>
       <Header tabs={ tabs }></Header>
       <div className='main'>
-        <div className='menu' ref={rMenu} onClick={menuTo}>
+        { menu.length && <div className='menu' ref={rMenu} onClick={menuTo}>
           <Menu menu={menu}></Menu>
-        </div>
+        </div>}
         <div className='content' ref={rContent}>
           {
             config
