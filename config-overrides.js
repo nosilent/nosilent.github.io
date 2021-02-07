@@ -17,7 +17,7 @@ module.exports = override(
   setWebpackPublicPath(process.env.NODE_ENV === 'production' ? 'build': ''),
   addWebpackExternals({
     react: "React",
-    "react-dom": "ReactDom",
+    "react-dom": "ReactDOM",
     axios:"axios",
     prismjs: "prism",
     marked: 'marked'
