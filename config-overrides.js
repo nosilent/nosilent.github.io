@@ -1,4 +1,4 @@
-const { override, fixBabelImports,addBabelPlugin,setWebpackPublicPath,addWebpackPlugin } = require('customize-cra');
+const { override, fixBabelImports,addBabelPlugin,setWebpackPublicPath,addWebpackExternals } = require('customize-cra');
 
 module.exports = override(
   fixBabelImports('import', {
@@ -14,5 +14,12 @@ module.exports = override(
     "css": true
     }]
   ),
-  setWebpackPublicPath(process.env.NODE_ENV === 'production' ? 'build': '')
+  setWebpackPublicPath(process.env.NODE_ENV === 'production' ? 'build': ''),
+  addWebpackExternals({
+    react: "React",
+    "react-dom": "ReactDom",
+    axios:"axios",
+    prismjs: "prism",
+    marked: 'marked'
+  })
 );
