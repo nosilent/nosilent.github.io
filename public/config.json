@@ -6,49 +6,59 @@
                 {
                     "text": "html",
                     "show": true,
-                    "url": "docs/html"
+                    "url": "docs/html",
+                    "icon": "html"
                 },
                 {
                     "text": "css",
                     "show": true,
-                    "url": "docs/css"
+                    "url": "docs/css",
+                    "icon": "css"
                 },
                 {
                     "text": "js",
                     "show": true,
-                    "url": "docs/js"
+                    "url": "docs/js",
+                    "icon": "js"
                 },
                 {
                     "text": "jquery",
                     "show": false,
-                    "url": "docs/jquery"
+                    "url": "docs/jquery",
+                    "icon": "jQuery"
                 },
                 {
                     "text": "typescript",
                     "show": false,
-                    "url": "docs/typescript"
+                    "url": "docs/typescript",
+                    "icon": "ts"
                 },
                 {
                     "text": "bootstrap",
                     "show": true,
-                    "url": "docs/bootstrap"
+                    "url": "docs/bootstrap",
+                    "icon": "bootstrap"
                 },
                 {
                     "text": "vue",
                     "show": true,
-                    "url": "docs/vue"
+                    "url": "docs/vue",
+                    "icon": "vue"
                 },
                 {
                     "text": "react",
                     "show": true,
-                    "url": "docs/react"
+                    "url": "docs/react",
+                    "icon": "react"
                 },
                 {
                     "text": "angular",
                     "show": true,
-                    "url": "docs/angular"
+                    "url": "docs/angular",
+                    "icon": "angular"
                 }
-            ]
+            ],
+            "icon": "web"
         },
         {
             "text": "版本控制",
@@ -71,24 +81,28 @@
                 {
                     "text": "dart",
                     "show": true,
-                    "url": "docs/dart"
+                    "url": "docs/dart",
+                    "icon": "dart"
                 },
                 {
                     "text": "flutter",
                     "show": true,
-                    "url": "docs/flutter"
+                    "url": "docs/flutter",
+                    "icon": "flutter"
                 }
             ]
         },
         {
             "text": "go",
             "show": true,
-            "url": "docs/go"
+            "url": "docs/go",
+            "icon": "go"
         },
         {
             "text": "mysql",
             "show": true,
-            "url": "docs/mysql"
+            "url": "docs/mysql",
+            "icon": "sql"
         }
     ],
     "title_end_tag": "title",
