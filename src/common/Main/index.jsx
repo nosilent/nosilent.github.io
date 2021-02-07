@@ -47,7 +47,6 @@ marked.use({ renderer })
 function Main(props){
 	const [content,setContent] = useState('')
 	const contentNodes = useRef()
-	let { match } = props
 	useEffect(()=>{
 		axios.get(`${props.location.pathname}.md`).then(res=>{
 			list = []
@@ -61,7 +60,7 @@ function Main(props){
 			props.setMenu([])
 			props.history.push('/404')
 		})
-	},[match.params.name])
+	},[props.location.pathname])
 	
 	return  <div dangerouslySetInnerHTML={{__html: content}} className='text' ref={contentNodes}></div>
 }

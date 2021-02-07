@@ -32,6 +32,9 @@ html,body,#root,.app {
 .app .tc {
     text-align: center;
 }
+.app .top {
+    background: #fff;
+}
 .app .main {
     height: 100%;
     overflow: hidden;
