@@ -1,9 +1,11 @@
 body,p,div {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 ul,ol {
     padding-left: 2.5em;
+    box-sizing: border-box;
 }
 html,body,#root,.app {
     height: 100%;
