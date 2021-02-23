@@ -74,3 +74,51 @@ func main() {
 
 
 
+## 赋值类型
+
+- 数组传参：值传递
+- 切片传参：地址传递
+- map传参：地址传递
+
+结构体传参或赋值时，根据赋值或参数定义的类型来确定参数值是传递地址还是传递值。
+
+```go
+type People struct {
+	Name string
+	Age  int
+}
+
+func setProp(p *People) {
+	p.Name = "world"
+	p.Age = 19
+}
+func (p People) say() {
+	fmt.Printf("this.Name=%v this.Age=%v \n", p.Name, p.Age)
+}
+func main() {
+	p := People{
+		Name: "hello",
+		Age:  18,
+	}
+
+	p.say()   //this.Name=hello this.Age=18
+    
+    //传递地址
+	setProp(&p)
+    
+	p.say()   //this.Name=world this.Age=19
+    
+    //传递值
+	p1 := p
+	p1.Name = "aaa"
+	p.say()    //this.Name=world this.Age=19
+	p1.say()   //this.Name=aaa this.Age=19
+    
+    //传递地址
+    p2 := &p
+	(*p2).Name = "p2"
+	p.say()       //this.Name=p2 this.Age=19
+	(*p2).say()  //this.Name=p2 this.Age=19
+}
+```
+

@@ -82,6 +82,8 @@ CSS选择器的解析是从右向左解析的。
 
 ## 文字超出超出显示省略号
 
+### 单行文本溢出
+
 ```css
 .text {
   overflow: hidden;
@@ -89,6 +91,20 @@ CSS选择器的解析是从右向左解析的。
   text-overflow: ellipsis;
 }
 ```
+
+### 多行文本溢出
+
+```css
+.text {
+	display: -webkit-box;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+  	-webkit-box-orient: vertical;  /* 设置对齐模式 */
+  	-webkit-line-clamp: 2;  /* 设置行数 */
+}
+```
+
+
 
 ## 可继承的样式和不可继承的样式
 
