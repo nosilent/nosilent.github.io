@@ -98,9 +98,9 @@ CSS选择器的解析是从右向左解析的。
 .text {
 	display: -webkit-box;
 	overflow: hidden;
-  	text-overflow: ellipsis;
-  	-webkit-box-orient: vertical;  /* 设置对齐模式 */
-  	-webkit-line-clamp: 2;  /* 设置行数 */
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;  /* 设置对齐模式 */
+  -webkit-line-clamp: 2;  /* 设置行数 */
 }
 ```
 
