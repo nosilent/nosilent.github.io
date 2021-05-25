@@ -94,9 +94,26 @@
         },
         {
             "text": "go",
-            "show": true,
-            "url": "docs/go",
-            "icon": "go"
+            "children":[
+                {
+                    "url": "docs/go",
+                    "text":"go基础",
+                    "icon": "go",
+                    "show": true
+                },
+                {
+                    "url":"docs/go笔记",
+                    "text":"go笔记",
+                    "icon":"go",
+                    "show":true
+                },
+                {
+                    "url": "docs/goweb",
+                    "text": "goweb",
+                    "icon": "go",
+                    "show": true
+                }
+            ]
         },
         {
             "text": "mysql",
