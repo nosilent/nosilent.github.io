@@ -116,10 +116,21 @@
             ]
         },
         {
-            "text": "mysql",
-            "show": true,
-            "url": "docs/mysql",
-            "icon": "sql"
+            "text": "数据库",
+            "children":[
+                {
+                    "text": "mysql",
+                    "show": true,
+                    "url": "docs/mysql",
+                    "icon": "sql"
+                },
+                {
+                    "text": "redis",
+                    "show": true,
+                    "url": "docs/redis",
+                    "icon": "redis"
+                }
+            ]
         }
     ],
     "title_end_tag": "title",
