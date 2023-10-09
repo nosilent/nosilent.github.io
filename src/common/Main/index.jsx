@@ -52,11 +52,12 @@ function Main(props){
 			list = []
 			n = 0
 			props.initLocation()
-			let content = marked(res.data)
+			let content = marked.parse(res.data)
 			setContent(content)
 			props.setMenu(list)
 			prism.highlightAll()
 		}).catch(err=>{
+			console.log("===>", err)
 			props.setMenu([])
 			props.history.push('/404')
 		})
