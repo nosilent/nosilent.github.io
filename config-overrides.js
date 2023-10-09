@@ -8,7 +8,7 @@ module.exports = override(
   }),
   addBabelPlugin(
     ["prismjs", {
-      "languages": ["javascript", "css", "html", "jsx", "go", "dart", "git", "bash", "less", "python", "typescript", "js-extras", "json", "stylus"],
+      "languages": ["javascript", "css", "html", "jsx", "go", "dart", "git", "bash", "less", "python", "typescript", "js-extras", "json", "stylus","solidity"],
     "plugins": ["line-numbers", "show-language"],
     "theme": "okaidia",
     "css": true

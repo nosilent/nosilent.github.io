@@ -131,6 +131,23 @@
                     "icon": "redis"
                 }
             ]
+        },
+        {
+            "text": "区块链",
+            "children":[
+                {
+                    "text": "solidity",
+                    "show": true,
+                    "url": "docs/solidity",
+                    "icon": "solidity"
+                }
+            ]
+        },
+        {
+            "text": "linux",
+            "show": true,
+            "url": "docs/linux",
+            "icon": "linux"
         }
     ],
     "title_end_tag": "title",
