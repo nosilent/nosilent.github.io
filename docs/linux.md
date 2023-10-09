@@ -54,27 +54,29 @@
 - chgrp: 改变文件所属群组
 - chown: 改变文件拥有者
 - chmod: 改变文件的权限
+
 ```bash
-# 指令   群组   需要修改的文件名
- chgrp  users  filename
+  # 指令   群组   需要修改的文件名
+  chgrp  users  filename
 
-# 指令  拥有者:群组  需要修改的文件名 
- chown root:root   filename
-# 指令  拥有者  需要修改的文件名 
- chown root   filename
+  # 指令  拥有者:群组  需要修改的文件名 
+  chown root:root   filename
+  # 指令  拥有者  需要修改的文件名 
+  chown root   filename
 
-# 指令   .群组  需要修改的文件名 
- chown  .root  filename
+  # 指令   .群组  需要修改的文件名 
+  chown  .root  filename
 
-# 指令   权限  文件
- chmod  777   filename
-# 指令   权限(u表示拥有者，g表示群组，o表示其他成员)      文件
- chmod    u=rwx,go=rx                           filename
-# 指令   权限(a表示所有，+表示加入，-表示移除，=表示设定)  文件
- chmod   a+w                                     filename
- chmod   u-w                                     filename
- chmod   o=x                                     filename
+  # 指令   权限  文件
+  chmod  777   filename
+  # 指令   权限(u表示拥有者，g表示群组，o表示其他成员)      文件
+  chmod    u=rwx,go=rx                           filename
+  # 指令   权限(a表示所有，+表示加入，-表示移除，=表示设定)  文件
+  chmod   a+w                                     filename
+  chmod   u-w                                     filename
+  chmod   o=x                                     filename
 ```
+
 > `chown`可以同时修改`拥有者`和`群组`,也可以只修改其中的一个
 
 ### 文件种类与扩展名
@@ -95,8 +97,9 @@
 
 ### 文件操作
 - 复制
+
 ```bash 
-# 指令 操作 需要复制的文件   复制目的地
+  # 指令 操作 需要复制的文件   复制目的地
   cp      sourcefile     targetfile
   cp  -s  sourcefile     targetfile  
   cp  -l  sourcefile     targetfile
@@ -105,28 +108,31 @@
   cp  -a  sourcefile     targetfile
   cp  -p  sourcefile     targetfile
 ```
+
 > `-s`是`符号链接`(快捷方式),`-l`是实体链接, `-u`表示目录文件与原文件有差异时才复制，`-r`递归持续复制，`-p`表示连同文件的属性一起复制
 
 - 移除
+
 ```bash
-# 指令  操作   文件/目录
+  # 指令  操作   文件/目录
    rm         filename
    rm   -i    filename
    rm   -r    targetname
    rmdir      targetname
 ```
+
 > `-i`会二次确认，`-r`表示递归删除, `-f`表示强制删除
 
 - 移动
 ```bash
-# 指令  原文件        目的地文件
-  mv   sourcefile   targetfile 
+  # 指令  原文件        目的地文件
+    mv   sourcefile   targetfile 
 
-# 将 /temp/test文件移动到/demo目录下，移动后名称为test1
-  mv   /temp/test   /demo/test1
+  # 将 /temp/test文件移动到/demo目录下，移动后名称为test1
+    mv   /temp/test   /demo/test1
 
-# 将 /temp/test 移动到 /demo/目录下，文件名不变
-  mv   /temp/test   /demo/
+  # 将 /temp/test 移动到 /demo/目录下，文件名不变
+    mv   /temp/test   /demo/
 ```
 > `mv`命令也可以用来修改文件名称；当移动到地址结尾带有`/`时，表示将文件移动到该目录下；结尾不带`/`时，表示移动后的文件名
 
@@ -166,24 +172,24 @@
 
 - 文件隐藏属性
 ```bash
-# chattr [+-=][ASacdistu] 文件或目录名称
-# + 增加某一个特殊参数
-# - 移除某一个特殊参数
-# = 设定
-# A 设定该属性，文件的atime不会被修改
-# S 设定该属性，文件进行任何修改时，同步写入磁盘
-# a 设定该属性，文件将只能增加数据，不能删除或修改数据
-# c 设定该属性，将自动压缩文件或解压缩文件
-# d 当dump程序被执行时，可使该文件或目录不会被dump备份
-# i 文件不能被删除、改名、设定连接也无法写入或新增数据，只能root能设定此属性
-# s 设定该属性，文件如果被删除，将会被完成移除出硬盘空间
-# u 与s相反，文件被删除了，数据内容其实还存在磁盘中
+  # chattr [+-=][ASacdistu] 文件或目录名称
+  # + 增加某一个特殊参数
+  # - 移除某一个特殊参数
+  # = 设定
+  # A 设定该属性，文件的atime不会被修改
+  # S 设定该属性，文件进行任何修改时，同步写入磁盘
+  # a 设定该属性，文件将只能增加数据，不能删除或修改数据
+  # c 设定该属性，将自动压缩文件或解压缩文件
+  # d 当dump程序被执行时，可使该文件或目录不会被dump备份
+  # i 文件不能被删除、改名、设定连接也无法写入或新增数据，只能root能设定此属性
+  # s 设定该属性，文件如果被删除，将会被完成移除出硬盘空间
+  # u 与s相反，文件被删除了，数据内容其实还存在磁盘中
 ```
 > `a`和`i`设定值必须`root`才能设定
 
 ```bash
-# lsattr [-adR] 文件或目录
-# -a 将隐藏文件的属性也展示出来
-# -d 如果是目录，仅列出目录本身的属性而非目录内的文件名
-# -R 连同目录的数据也一并列出来
+  # lsattr [-adR] 文件或目录
+  # -a 将隐藏文件的属性也展示出来
+  # -d 如果是目录，仅列出目录本身的属性而非目录内的文件名
+  # -R 连同目录的数据也一并列出来
 ```
