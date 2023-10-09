@@ -6,12 +6,12 @@
     "runtime-main.js": "/static/js/runtime-main.7534aa0d.js",
     "runtime-main.js.map": "/static/js/runtime-main.7534aa0d.js.map",
     "static/css/2.f16753bd.chunk.css": "/static/css/2.f16753bd.chunk.css",
-    "static/js/2.6dadc88b.chunk.js": "/static/js/2.6dadc88b.chunk.js",
-    "static/js/2.6dadc88b.chunk.js.map": "/static/js/2.6dadc88b.chunk.js.map",
+    "static/js/2.e144600c.chunk.js": "/static/js/2.e144600c.chunk.js",
+    "static/js/2.e144600c.chunk.js.map": "/static/js/2.e144600c.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.f16753bd.chunk.css.map": "/static/css/2.f16753bd.chunk.css.map",
     "static/css/main.98222de8.chunk.css.map": "/static/css/main.98222de8.chunk.css.map",
-    "static/js/2.6dadc88b.chunk.js.LICENSE.txt": "/static/js/2.6dadc88b.chunk.js.LICENSE.txt",
+    "static/js/2.e144600c.chunk.js.LICENSE.txt": "/static/js/2.e144600c.chunk.js.LICENSE.txt",
     "static/media/index.2ac1849a.less": "/static/media/index.2ac1849a.less",
     "static/media/index.58a4b429.less": "/static/media/index.58a4b429.less",
     "static/media/index.e90871b5.less": "/static/media/index.e90871b5.less"
@@ -19,7 +19,7 @@
   "entrypoints": [
     "static/js/runtime-main.7534aa0d.js",
     "static/css/2.f16753bd.chunk.css",
-    "static/js/2.6dadc88b.chunk.js",
+    "static/js/2.e144600c.chunk.js",
     "static/css/main.98222de8.chunk.css",
     "static/js/main.984f57a8.chunk.js"
   ]
